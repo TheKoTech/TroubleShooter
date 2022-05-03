@@ -1,8 +1,12 @@
 #include "cApp.h"
 
+// cApp.cpp это имплементация контроллера.
+
+
 wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftClick)
 	EVT_CLOSE(OnClosed)
+	EVT_BUTTON(10000, UpdateText)
 wxEND_EVENT_TABLE()
 
 enum AppStatus { green, yellow, red, black };
@@ -73,6 +77,11 @@ bool cApp::UpdateIcon()
 
 	// wxTaskBarIcon.SetIcon() это защищённый метод
 	return taskBarIcon->UpdateIcon(icon, new wxString(std::string("Pinger")));
+}
+
+void cApp::UpdateText(wxCommandEvent &event)
+{
+	mainFrame->sampleText1->SetLabelText("Text\nChanged");
 }
 
 wxIMPLEMENT_APP(cApp);

@@ -3,6 +3,8 @@
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 
+// cApp это контроллер приложения.
+
 enum AppStatus;
 
 class cApp : public wxApp
@@ -17,11 +19,16 @@ private:
 	AppStatus appStatus;
 	cFrame* mainFrame;
 	cTaskBarIcon* taskBarIcon;
+
+	// Todo: модель
+
+	// Обновление UI
+	bool UpdateIcon();
+	void UpdateText(wxCommandEvent &event);
+
+	// Ивенты
 	void OnTaskBarIconLeftClick(wxTaskBarIconEvent& event);
 	void OnClosed(wxCloseEvent& event);
 	wxDECLARE_EVENT_TABLE();
-
-	bool UpdateIcon();
-
 };
 

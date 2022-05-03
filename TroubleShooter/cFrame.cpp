@@ -2,7 +2,7 @@
 
 wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
 	EVT_CLOSE(OnClosed)
-	//EVT_MOTION(OnMouseMove)
+	EVT_BUTTON(10000, OnButtonClick)
 wxEND_EVENT_TABLE()
 
 const int clientWidth = 700;
@@ -59,7 +59,6 @@ void cFrame::InitializeUI()
 	// Panel 1 - Stability
 	titleText1 = new wxStaticText(stabilityPanel, wxID_ANY, wxString("Connection Stability"));
 	titleText1->SetFont(*titleFont);
-	btn = new wxButton(stabilityPanel, wxID_ANY, "Test");
 
 
 	stabilitySizer->Add(titleText1, 0, wxLEFT | wxALIGN_LEFT, 40);
@@ -73,7 +72,7 @@ void cFrame::InitializeUI()
 	//wxLineChartCtrl* chart = new wxLineChartCtrl(stabilityPanel, wxID_ANY);
 
 
-	stabilitySizer->Add(btn, 0, wxALL | wxALIGN_RIGHT, 10);
+
 	stabilityPanel->SetSizerAndFit(stabilitySizer);
 
 
@@ -87,6 +86,18 @@ void cFrame::InitializeUI()
 		0,
 		wxGROW | wxALL,
 		10);
+	btn = new wxButton(scanPanel, 10000, "Test");
+	scanSizer->Add(
+		btn,
+		0,
+		wxSTRETCH_NOT | wxALL,
+		10);
+	sampleText1 = new wxStaticText(scanPanel, wxID_ANY, wxString("1 sample\n2 sample\n3 sample"));
+	scanSizer->Add(
+		sampleText1,
+		1, 
+		wxGROW | wxALL,
+		10);
 
 
 	scanPanel->SetSizerAndFit(scanSizer);
@@ -96,10 +107,15 @@ void cFrame::InitializeUI()
 
 }
 
-//void cFrame::OnMouseMove(wxMouseEvent& event)
-//{
-//	titleText1->SetLabel(wxString(std::to_string(event.GetX()) + "; " + std::to_string(event.GetY())));
-//}
+void cFrame::OnButtonClick(wxCommandEvent& event)
+{
+	parent->ProcessEvent(event);
+}
+
+void cFrame::OnMouseMove(wxMouseEvent& event)
+{
+	titleText1->SetLabel(wxString(std::to_string(event.GetX()) + "; " + std::to_string(event.GetY())));
+}
 
 void cFrame::OnClosed(wxCloseEvent& event)
 {

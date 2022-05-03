@@ -19,6 +19,8 @@ public:
 	void LoadIcon(wxIcon* icon);
 	void OnClosed(wxCloseEvent& event);
 
+	wxStaticText* sampleText1 = nullptr;
+
 private:
 	wxApp* parent = nullptr;
 	wxFrame* frame = nullptr;
@@ -29,14 +31,15 @@ private:
 	wxPanel* stabilityPanel = nullptr;
 	wxStaticText* titleText1 = nullptr;
 	
-	
 	wxButton* btn = nullptr;
+	
 
 	wxPanel* scanPanel = nullptr;
 
 	void InitializeUI();
+	void OnButtonClick(wxCommandEvent& event);
 
-	//void OnMouseMove(wxMouseEvent& event);
+	void OnMouseMove(wxMouseEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
 
