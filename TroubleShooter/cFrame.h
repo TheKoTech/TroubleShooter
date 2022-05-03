@@ -3,6 +3,10 @@
 #include <wx/display.h>
 #include <wx/taskbar.h>
 #include <wx/statline.h>
+#include <wx/vector.h>
+#include "wx/charts/wxchart.h"
+#include "wx/charts/wxlinechartctrl.h"
+
 
 enum IconId;
 
@@ -24,6 +28,7 @@ private:
 
 	wxPanel* stabilityPanel = nullptr;
 	wxStaticText* titleText1 = nullptr;
+	
 	
 	wxButton* btn = nullptr;
 

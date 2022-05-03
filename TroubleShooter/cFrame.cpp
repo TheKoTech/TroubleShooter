@@ -46,6 +46,16 @@ void cFrame::InitializeUI()
 	wxFont* titleFont = new wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
 
 
+	// Frame
+	frameSizer->Add(stabilityPanel, 1, wxEXPAND);
+	frameSizer->Add(new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL),
+		0,
+		wxALL | wxEXPAND,
+		5);
+	frameSizer->Add(scanPanel, 1, wxEXPAND);
+	this->SetSizerAndFit(frameSizer);
+
+
 	// Panel 1 - Stability
 	titleText1 = new wxStaticText(stabilityPanel, wxID_ANY, wxString("Connection Stability"));
 	titleText1->SetFont(*titleFont);
@@ -58,6 +68,11 @@ void cFrame::InitializeUI()
 		0,
 		wxGROW | wxALL,
 		10);
+
+	//wxChartsCategoricalData::ptr catData(new wxChartsCategoricalData());
+	//wxLineChartCtrl* chart = new wxLineChartCtrl(stabilityPanel, wxID_ANY);
+
+
 	stabilitySizer->Add(btn, 0, wxALL | wxALIGN_RIGHT, 10);
 	stabilityPanel->SetSizerAndFit(stabilitySizer);
 
@@ -72,18 +87,13 @@ void cFrame::InitializeUI()
 		0,
 		wxGROW | wxALL,
 		10);
+
+
 	scanPanel->SetSizerAndFit(scanSizer);
 
 
 
-	// Frame
-	frameSizer->Add(stabilityPanel, 1, wxEXPAND);
-	frameSizer->Add(new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL),
-		0,
-		wxALL | wxEXPAND,
-		5);
-	frameSizer->Add(scanPanel, 1, wxEXPAND);
-	this->SetSizerAndFit(frameSizer);
+
 }
 
 //void cFrame::OnMouseMove(wxMouseEvent& event)
