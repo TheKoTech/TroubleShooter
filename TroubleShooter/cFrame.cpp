@@ -13,6 +13,7 @@ cFrame::cFrame(wxApp* parent) : wxFrame(nullptr, wxID_ANY, "App prototype")
 {
 	this->parent = parent;
 
+	// Frame Options
 	this->SetClientSize(clientSize);
 	wxSize* windowSize = new wxSize(this->ClientToWindowSize(wxSize(clientWidth, clientHeight)));
 	this->SetPosition(wxPoint(
@@ -56,28 +57,66 @@ void cFrame::InitializeUI()
 	this->SetSizerAndFit(frameSizer);
 
 
-	// Panel 1 - Stability
-	titleText1 = new wxStaticText(stabilityPanel, wxID_ANY, wxString("Connection Stability"));
-	titleText1->SetFont(*titleFont);
-
-
-	stabilitySizer->Add(titleText1, 0, wxLEFT | wxALIGN_LEFT, 40);
+	// Panel 1 - Network Stability
+	titleStability = new wxStaticText(stabilityPanel, wxID_ANY, wxString("Connection Stability"));
+	titleStability->SetFont(*titleFont);
+	stabilitySizer->Add(titleStability, 0, wxLEFT | wxALIGN_LEFT, 40);
 	stabilitySizer->Add(
 		new wxStaticLine(stabilityPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL),
-		0,
-		wxGROW | wxALL,
+		0, 
+		wxGROW | wxALL, 
 		10);
 
-	//wxChartsCategoricalData::ptr catData(new wxChartsCategoricalData());
-	//wxLineChartCtrl* chart = new wxLineChartCtrl(stabilityPanel, wxID_ANY);
+	wxVector<wxRealPoint> data;
+	data.push_back(wxRealPoint(10, 20));
+	data.push_back(wxRealPoint(13, 16));
+	data.push_back(wxRealPoint(7, 30));
+	data.push_back(wxRealPoint(15, 34));
+	data.push_back(wxRealPoint(25, 4));
 
+	// Create the dataset with an initial single series.
+	XYSimpleDataset* dataset = new XYSimpleDataset();
+
+	// Further series can be added here, for example ...
+	XYSerie* serie = new XYSerie(data);
+	dataset->AddSerie(serie);
+
+	// Create a renderer
+	XYLineRenderer* renderer = new XYLineRenderer();
+	renderer->SetSeriePen(size_t(2), new wxPen(*wxBLUE, wxPENSTYLE_SOLID));
+	dataset->SetRenderer(renderer);
+
+	// Create plot
+	XYPlot* plot = new XYPlot();
+	plot->AddDataset(dataset);
+
+	// Define Axes and add to the plot
+	NumberAxis* leftAxis = new NumberAxis(AXIS_LEFT);
+	leftAxis->SetFixedBounds(0, 40);
+	NumberAxis* bottomAxis = new NumberAxis(AXIS_BOTTOM);
+	bottomAxis->SetFixedBounds(0, 200);
+
+	
+	plot->AddAxis(leftAxis);
+	plot->AddAxis(bottomAxis);
+	
+	// Create chart
+	Chart* chart = new Chart(plot, "This is a chart");
+
+	// A separate panel must be created for the plot
+	wxChartPanel* chartPanel = new wxChartPanel(stabilityPanel, wxID_ANY, chart);
+
+	stabilitySizer->Add(chartPanel,
+		1,
+		wxALL | wxEXPAND,
+		10);
+	
 
 
 	stabilityPanel->SetSizerAndFit(stabilitySizer);
 
 
-
-	// Panel 2 - Scanner
+	// Panel 2 - IP Scanner
 	wxStaticText* titleText2 = new wxStaticText(scanPanel, wxID_ANY, wxString("IP Scanner"));
 	titleText2->SetFont(*titleFont);
 	scanSizer->Add(titleText2, 0, wxLEFT | wxALIGN_LEFT, 40);
@@ -110,11 +149,6 @@ void cFrame::InitializeUI()
 void cFrame::OnButtonClick(wxCommandEvent& event)
 {
 	parent->ProcessEvent(event);
-}
-
-void cFrame::OnMouseMove(wxMouseEvent& event)
-{
-	titleText1->SetLabel(wxString(std::to_string(event.GetX()) + "; " + std::to_string(event.GetY())));
 }
 
 void cFrame::OnClosed(wxCloseEvent& event)

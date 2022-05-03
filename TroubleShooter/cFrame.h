@@ -4,8 +4,10 @@
 #include <wx/taskbar.h>
 #include <wx/statline.h>
 #include <wx/vector.h>
-#include "wx/charts/wxchart.h"
-#include "wx/charts/wxlinechartctrl.h"
+#include "wx/chart.h"
+#include <wx/xy/xysimpledataset.h>
+#include <wx/xy/xyplot.h>
+#include <wx/xy/xylinerenderer.h>
 
 
 enum IconId;
@@ -20,7 +22,7 @@ public:
 	void OnClosed(wxCloseEvent& event);
 
 	wxStaticText* sampleText1 = nullptr;
-
+	
 private:
 	wxApp* parent = nullptr;
 	wxFrame* frame = nullptr;
@@ -29,9 +31,11 @@ private:
 	wxBoxSizer* scanSizer = nullptr;
 
 	wxPanel* stabilityPanel = nullptr;
-	wxStaticText* titleText1 = nullptr;
+	wxStaticText* titleStability = nullptr;
 	
 	wxButton* btn = nullptr;
+
+	
 	
 
 	wxPanel* scanPanel = nullptr;
@@ -39,7 +43,6 @@ private:
 	void InitializeUI();
 	void OnButtonClick(wxCommandEvent& event);
 
-	void OnMouseMove(wxMouseEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
 
