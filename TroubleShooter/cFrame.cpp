@@ -68,11 +68,13 @@ void cFrame::InitializeUI()
 		10);
 
 	wxVector<wxRealPoint> data;
-	data.push_back(wxRealPoint(10, 20));
-	data.push_back(wxRealPoint(13, 16));
-	data.push_back(wxRealPoint(7, 30));
+	data.push_back(wxRealPoint(0, 20));
+	data.push_back(wxRealPoint(5, 16));
+	data.push_back(wxRealPoint(10, 30));
 	data.push_back(wxRealPoint(15, 34));
-	data.push_back(wxRealPoint(25, 4));
+	data.push_back(wxRealPoint(20, 4));
+	data.push_back(wxRealPoint(25, 39));
+	data.erase(&data.front());
 
 	// Create the dataset with an initial single series.
 	XYSimpleDataset* dataset = new XYSimpleDataset();
@@ -83,7 +85,7 @@ void cFrame::InitializeUI()
 
 	// Create a renderer
 	XYLineRenderer* renderer = new XYLineRenderer();
-	renderer->SetSeriePen(size_t(2), new wxPen(*wxBLUE, wxPENSTYLE_SOLID));
+	renderer->SetSeriePen(size_t(0), new wxPen(*wxBLUE, 1, wxPENSTYLE_SOLID));
 	dataset->SetRenderer(renderer);
 
 	// Create plot
@@ -94,12 +96,13 @@ void cFrame::InitializeUI()
 	NumberAxis* leftAxis = new NumberAxis(AXIS_LEFT);
 	leftAxis->SetFixedBounds(0, 40);
 	NumberAxis* bottomAxis = new NumberAxis(AXIS_BOTTOM);
-	bottomAxis->SetFixedBounds(0, 200);
+	bottomAxis->SetFixedBounds(0, 21);
 
-	
 	plot->AddAxis(leftAxis);
 	plot->AddAxis(bottomAxis);
-	
+	plot->LinkDataHorizontalAxis(size_t(0), size_t(0)); // no idea what those are, but they are required 
+	plot->LinkDataVerticalAxis(size_t(0), size_t(0));   // for the program not to crash
+
 	// Create chart
 	Chart* chart = new Chart(plot, "This is a chart");
 
