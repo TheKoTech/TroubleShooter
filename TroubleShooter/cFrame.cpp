@@ -1,4 +1,5 @@
 #include "cFrame.h"
+#include "Colors.cpp"
 
 wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
 	EVT_CLOSE(OnClosed)
@@ -6,24 +7,19 @@ wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
 wxEND_EVENT_TABLE()
 
 const int clientWidth = 700;
-const int clientHeight = 400;
+const int clientHeight = 320;
 const wxSize clientSize = wxSize(clientWidth, clientHeight);
 
-cFrame::cFrame(wxApp* parent) : wxFrame(nullptr, wxID_ANY, "App prototype")
+cFrame::cFrame(wxApp* parent, Chart* chart) : wxFrame(nullptr, wxID_ANY, "App prototype",
+	wxDefaultPosition,
+	wxDefaultSize,
+	wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX))
 {
 	this->parent = parent;
+	this->chart = chart;
 
-	// Frame Options
-	this->SetClientSize(clientSize);
-	wxSize* windowSize = new wxSize(this->ClientToWindowSize(wxSize(clientWidth, clientHeight)));
-	this->SetPosition(wxPoint(
-		wxDisplay().GetClientArea().GetWidth() - windowSize->GetWidth() - 10,
-		wxDisplay().GetClientArea().GetHeight() - windowSize->GetHeight() - 10));
-	this->SetBackgroundColour(*wxWHITE);
-	
-	InitializeUI();
-	this->SetClientSize(clientSize);
-	this->SetMinClientSize(clientSize);
+	initializeUI();
+	applyFrameSettings();
 }
 
 cFrame::~cFrame()
@@ -31,134 +27,167 @@ cFrame::~cFrame()
 
 }
 
-void cFrame::InitializeUI()
+void cFrame::initializeUI() 
 {
-	frameSizer = new wxBoxSizer(wxHORIZONTAL);
+	// for icons
+	wxPNGHandler* handler = new wxPNGHandler;
+	wxImage::AddHandler(handler);
 
-	stabilityPanel = new wxPanel(this, wxID_ANY/*, wxPoint(0, 0), wxSize(clientWidth / 2, clientHeight)*/);
-	stabilityPanel->SetBackgroundColour(*wxWHITE);
-	scanPanel = new wxPanel(this, wxID_ANY/*, wxPoint(clientWidth / 2, 0), wxSize(clientWidth / 2, clientHeight)*/);
-	scanPanel->SetBackgroundColour(*wxWHITE);
+	mainPanel = new wxPanel(this);
+	contentPanel = new wxPanel(mainPanel);
+	statusBarPanel = new wxPanel(mainPanel);
 
-	stabilitySizer = new wxBoxSizer(wxVERTICAL);
-	scanSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer = new wxBoxSizer(wxVERTICAL);
+	//titleBarSizer = new wxBoxSizer(wxHORIZONTAL);
+	statusBarSizer = new wxGridBagSizer();
+	contentSizer = new wxBoxSizer(wxHORIZONTAL);
 
-
-	wxFont* titleFont = new wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
-
-
-	// Frame
-	frameSizer->Add(stabilityPanel, 1, wxEXPAND);
-	frameSizer->Add(new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL),
-		0,
-		wxALL | wxEXPAND,
-		5);
-	frameSizer->Add(scanPanel, 1, wxEXPAND);
-	this->SetSizerAndFit(frameSizer);
+	// Create the actual Controls
+	createContent();
+	createStatusBar();
 
 
-	// Panel 1 - Network Stability
-	titleStability = new wxStaticText(stabilityPanel, wxID_ANY, wxString("Connection Stability"));
-	titleStability->SetFont(*titleFont);
-	stabilitySizer->Add(titleStability, 0, wxLEFT | wxALIGN_LEFT, 40);
-	stabilitySizer->Add(
-		new wxStaticLine(stabilityPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL),
-		0, 
-		wxGROW | wxALL, 
-		10);
 
-	wxVector<wxRealPoint> data;
-	data.push_back(wxRealPoint(0, 20));
-	data.push_back(wxRealPoint(5, 16));
-	data.push_back(wxRealPoint(10, 30));
-	data.push_back(wxRealPoint(15, 34));
-	data.push_back(wxRealPoint(20, 4));
-	data.push_back(wxRealPoint(25, 39));
-	data.erase(&data.front());
+	mainSizer->Add(contentPanel, 1, wxGROW);
+	mainSizer->Add(statusBarPanel, 1, wxGROW);
+	contentPanel->SetSizerAndFit(contentSizer);
+	statusBarPanel->SetSizerAndFit(statusBarSizer);
+	mainPanel->SetSizerAndFit(mainSizer);
 
-	// Create the dataset with an initial single series.
-	XYSimpleDataset* dataset = new XYSimpleDataset();
+	contentPanel->SetBackgroundColour(BG_COLOUR);
+	statusBarPanel->SetBackgroundColour(BG_COLOUR_STATUSBAR);
+}
 
-	// Further series can be added here, for example ...
-	XYSerie* serie = new XYSerie(data);
-	dataset->AddSerie(serie);
+void cFrame::createTitleBar()
+{
+	wxStaticText* titleText = new wxStaticText(titleBarPanel, wxID_ANY, wxString("App prototype"));
+	titleText->SetFont(wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+	titleBarSizer->Add(titleText, 0, wxGROW | wxLEFT, 12);
 
-	// Create a renderer
-	XYLineRenderer* renderer = new XYLineRenderer();
-	renderer->SetSeriePen(size_t(0), new wxPen(*wxBLUE, 1, wxPENSTYLE_SOLID));
-	dataset->SetRenderer(renderer);
+	//todo: add buttons as images
+}
+void cFrame::createContent()
+{
+	// content is divided into 2 panels - chart and labels.
 
-	// Create plot
-	XYPlot* plot = new XYPlot();
-	plot->AddDataset(dataset);
+	wxPanel* contPanelLeft = new wxPanel(contentPanel);
+	wxPanel* contPanelRight = new wxPanel(contentPanel);
+	wxGridBagSizer* leftSizer = new wxGridBagSizer();
+	wxGridBagSizer* rightSizer = new wxGridBagSizer();
 
-	// Define Axes and add to the plot
-	NumberAxis* leftAxis = new NumberAxis(AXIS_LEFT);
-	leftAxis->SetFixedBounds(0, 40);
-	NumberAxis* bottomAxis = new NumberAxis(AXIS_BOTTOM);
-	bottomAxis->SetFixedBounds(0, 21);
+	contPanelLeft->SetBackgroundColour(BG_COLOUR);
+	contPanelRight->SetBackgroundColour(BG_COLOUR_AUX);
 
-	plot->AddAxis(leftAxis);
-	plot->AddAxis(bottomAxis);
-	plot->LinkDataHorizontalAxis(size_t(0), size_t(0)); // no idea what those are, but they are required 
-	plot->LinkDataVerticalAxis(size_t(0), size_t(0));   // for the program not to crash
+	contentSizer->Add(contPanelLeft, 1, wxALL | wxGROW, 0);
+	contentSizer->Add(contPanelRight, 1, wxALL | wxGROW, 0);
 
-	// Create chart
-	Chart* chart = new Chart(plot, "This is a chart");
 
-	// A separate panel must be created for the plot
-	wxChartPanel* chartPanel = new wxChartPanel(stabilityPanel, wxID_ANY, chart);
 
-	stabilitySizer->Add(chartPanel,
-		1,
-		wxALL | wxEXPAND,
-		10);
+	// initialize controls
+
+	wxFont titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+	wxFont subtitleFont = wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+
+	wxStaticText* connectionTitle = new wxStaticText(contPanelLeft, wxID_ANY, "Connection Stability");
+	connectionTitle->SetForegroundColour(TITLE_COLOUR);
+	connectionTitle->SetFont(titleFont);
 	
-
-
-	stabilityPanel->SetSizerAndFit(stabilitySizer);
-
-
-	// Panel 2 - IP Scanner
-	wxStaticText* titleText2 = new wxStaticText(scanPanel, wxID_ANY, wxString("IP Scanner"));
-	titleText2->SetFont(*titleFont);
-	scanSizer->Add(titleText2, 0, wxLEFT | wxALIGN_LEFT, 40);
-	scanSizer->Add(
-		new wxStaticLine(scanPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL),
-		0,
-		wxGROW | wxALL,
-		10);
-	btn = new wxButton(scanPanel, 10000, "Test");
-	scanSizer->Add(
-		btn,
-		0,
-		wxSTRETCH_NOT | wxALL,
-		10);
-	sampleText1 = new wxStaticText(scanPanel, wxID_ANY, wxString("1 sample\n2 sample\n3 sample"));
-	scanSizer->Add(
-		sampleText1,
-		1, 
-		wxGROW | wxALL,
-		10);
-
-
-	scanPanel->SetSizerAndFit(scanSizer);
+	chart->GetPlot()->SetBackground(new FillAreaDraw(TITLE_COLOUR, BG_COLOUR));
+	chart->SetBackground(new FillAreaDraw(BG_COLOUR_AUX, BG_COLOUR));
+	wxChartPanel* chartPanel = new wxChartPanel(contPanelLeft, wxID_ANY, chart, wxDefaultPosition, wxSize(400, 240));
+	chartPanel->SetAntialias(true);
 
 
 
+	wxStaticText* statusTitle = new wxStaticText(contPanelRight, wxID_ANY, "Status");
+	statusTitle->SetForegroundColour(TITLE_COLOUR);
+	statusTitle->SetFont(titleFont);
+	
+	wxStaticText* warningTitle = new wxStaticText(contPanelRight, wxID_ANY, "Warnings");
+	warningTitle->SetForegroundColour(FG_COLOUR);
+	warningTitle->SetFont(subtitleFont);
+
+	//wxPanel* lanPanel = createStatusPanelElement();
+
+
+
+	// Add controls to sizers
+
+	leftSizer->Add(connectionTitle,
+		wxGBPosition(0, 0),
+		wxDefaultSpan,
+		wxALL | wxALIGN_TOP,
+		12);
+	leftSizer->Add(chartPanel,
+		wxGBPosition(1, 0),
+		wxDefaultSpan,
+		wxLeft | wxRight | wxGROW,
+		12);
+
+	rightSizer->Add(statusTitle,
+		wxGBPosition(0, 0),
+		wxDefaultSpan,
+		wxALL | wxALIGN_TOP,
+		12);
+	rightSizer->Add(warningTitle,
+		wxGBPosition(0, 1),
+		wxDefaultSpan,
+		wxLEFT | wxTOP | wxALIGN_TOP,
+		15);
+
+	contPanelLeft->SetSizerAndFit(leftSizer);
+	contPanelRight->SetSizerAndFit(rightSizer);
+
+	// todo: Link events
 
 }
+void cFrame::createStatusBar()
+{	
+	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
+	wxStaticBitmap * settingsButton = new wxStaticBitmap(statusBarPanel, wxID_ANY, wxBitmapBundle(settingsImage));
+
+	wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+
+	wxStaticText* settingsText = new wxStaticText(statusBarPanel, wxID_ANY, "Settings");
+	settingsText->SetForegroundColour(FG_STATUSBAR_COLOUR);
+	settingsText->SetFont(font);
+
+	statusBarSizer->Add(settingsButton, wxGBPosition(0, 1), wxDefaultSpan, wxALL | wxGROW | wxALIGN_CENTER_VERTICAL, 1);
+	statusBarSizer->Add(settingsText, wxGBPosition(0, 0), wxDefaultSpan, wxALL | wxGROW | wxALIGN_CENTER_VERTICAL, 1);
+	
+}
+
+wxPanel* cFrame::createStatusPanelElement()
+{
+	
+
+	return nullptr;
+}
+
+void cFrame::applyFrameSettings()
+{
+	this->SetBackgroundColour(*wxWHITE);
+	this->SetClientSize(clientSize);
+	this->SetMinClientSize(clientSize);
+	wxSize windowSize = this->ClientToWindowSize(clientSize);
+	this->SetPosition(wxPoint(
+		wxDisplay().GetClientArea().GetWidth() - windowSize.GetWidth() - 10,
+		wxDisplay().GetClientArea().GetHeight() - windowSize.GetHeight() - 10));
+}
+
+
+
+// Event handlers
 
 void cFrame::OnButtonClick(wxCommandEvent& event)
 {
 	parent->ProcessEvent(event);
 }
-
 void cFrame::OnClosed(wxCloseEvent& event)
 {
 	parent->ProcessEvent(event);
+	this->Destroy();
 }
-
 void cFrame::LoadIcon(wxIcon* icon)
 {
 	SetIcon(*icon);

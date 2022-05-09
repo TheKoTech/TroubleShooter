@@ -24,6 +24,9 @@
     <ClInclude Include="cTaskBarIcon.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="ChartController.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp">
@@ -33,6 +36,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="cTaskBarIcon.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartController.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Colors.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,6 +56,18 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="res\Icon_yellow.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\Icon_settings.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\status_icon_green.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\status_icon_red.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\status_icon_yellow.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

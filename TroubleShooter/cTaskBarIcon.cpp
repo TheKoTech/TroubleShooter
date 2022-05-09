@@ -4,7 +4,7 @@
 #include <string.h>
 
 wxBEGIN_EVENT_TABLE(cTaskBarIcon, wxTaskBarIcon)
-	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftClick)
+	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
 	//EVT_CLOSE(OnClosed)
 wxEND_EVENT_TABLE()
 
@@ -17,7 +17,7 @@ cTaskBarIcon::~cTaskBarIcon()
 {
 }
 
-void cTaskBarIcon::OnTaskBarIconLeftClick(wxTaskBarIconEvent& event)
+void cTaskBarIcon::OnTaskBarIconLeftUp(wxTaskBarIconEvent& event)
 {
 	parent->ProcessEvent(event);
 }

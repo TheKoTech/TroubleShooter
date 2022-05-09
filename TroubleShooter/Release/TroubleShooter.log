@@ -1,0 +1,88 @@
+﻿  cApp.cpp
+  cFrame.cpp
+  DatasetController.cpp
+  cTaskBarIcon.cpp
+wxFreeChart17ud.lib(xysimpledataset.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(xysimpledataset.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(xysimpledataset.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+wxFreeChart17ud.lib(marker.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(marker.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(axisplot.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(axisplot.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(chartpanel.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(chartpanel.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(chart.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(chart.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(xylinerenderer.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(xylinerenderer.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(dataset.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(dataset.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(xyplot.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(xyplot.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(numberaxis.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(numberaxis.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(xydataset.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(xydataset.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(areadraw.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(areadraw.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(plot.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(plot.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(axis.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(axis.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(legend.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(legend.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(title.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(title.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(art.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(art.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(renderer.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(renderer.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(xyrenderer.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(xyrenderer.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(labelaxis.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(labelaxis.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+wxFreeChart17ud.lib(symbol.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in cApp.obj
+wxFreeChart17ud.lib(symbol.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in cApp.obj
+LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+cFrame.obj : error LNK2001: unresolved external symbol "public: void __thiscall AxisPlot::RemoveDataset(class Dataset *)" (?RemoveDataset@AxisPlot@@QAEXPAVDataset@@@Z)
+wxFreeChart17ud.lib(renderer.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(xyrenderer.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(labelaxis.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(symbol.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(axis.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(legend.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(title.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(art.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(numberaxis.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(xydataset.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(areadraw.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(plot.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(chart.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(xylinerenderer.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(dataset.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(xyplot.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(xysimpledataset.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(marker.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(axisplot.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(chartpanel.obj) : error LNK2001: unresolved external symbol __imp___invalid_parameter
+wxFreeChart17ud.lib(renderer.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(xyrenderer.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(labelaxis.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(symbol.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(axis.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(legend.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(title.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(art.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(numberaxis.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(xydataset.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(areadraw.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(plot.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(chart.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(xylinerenderer.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(dataset.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(xyplot.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(xysimpledataset.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(marker.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(axisplot.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+wxFreeChart17ud.lib(chartpanel.obj) : error LNK2001: unresolved external symbol __imp___CrtDbgReport
+C:\Users\1\source\repos\TroubleShooter\Release\TroubleShooter.exe : fatal error LNK1120: 3 unresolved externals

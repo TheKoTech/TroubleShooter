@@ -9,7 +9,7 @@ public:
 	cTaskBarIcon(wxApp* parent);
 	~cTaskBarIcon();
 
-	void OnTaskBarIconLeftClick(wxTaskBarIconEvent& event);
+	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
 	void OnClosed(wxCloseEvent& event);
 
 	bool UpdateIcon(wxIcon* newIcon);

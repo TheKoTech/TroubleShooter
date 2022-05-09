@@ -21,18 +21,25 @@
   <ItemGroup>
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cFrame.h" />
+    <ClInclude Include="ChartController.h" />
     <ClInclude Include="cTaskBarIcon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cFrame.cpp" />
+    <ClCompile Include="ChartController.cpp" />
     <ClCompile Include="cTaskBarIcon.cpp" />
+    <ClCompile Include="Colors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon_black.ico" />
     <Image Include="res\Icon_green.ico" />
     <Image Include="res\Icon_red.ico" />
+    <Image Include="res\Icon_settings.png" />
     <Image Include="res\Icon_yellow.ico" />
+    <Image Include="res\status_icon_green.png" />
+    <Image Include="res\status_icon_red.png" />
+    <Image Include="res\status_icon_yellow.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -110,7 +117,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WXFC)\lib\vc_lib;$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxFreeChart17ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(WXFC)\lib\vc_lib\wxFreeChart17ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,7 +136,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WXFC)\lib\vc_lib;$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxFreeChart17ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(WXFC)\lib\vc_lib\wxFreeChart17ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

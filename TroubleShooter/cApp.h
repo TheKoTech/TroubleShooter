@@ -2,6 +2,7 @@
 #include "wx/wx.h"
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
+#include "ChartController.h"
 
 // cApp это контроллер приложения.
 
@@ -19,15 +20,17 @@ private:
 	AppStatus appStatus;
 	cFrame* mainFrame;
 	cTaskBarIcon* taskBarIcon;
+	ChartController chartController;
 
 	// Todo: модель
 
 	// Обновление UI
 	bool UpdateIcon();
-	void UpdateText(wxCommandEvent &event);
+	void initializeChartSeries();
+	void updateChartSerie();
 
 	// Ивенты
-	void OnTaskBarIconLeftClick(wxTaskBarIconEvent& event);
+	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
 	void OnClosed(wxCloseEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
