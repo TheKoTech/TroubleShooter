@@ -154,7 +154,6 @@ void cFrame::createStatusBar()
 
 	statusBarSizer->Add(settingsButton, wxGBPosition(0, 1), wxDefaultSpan, wxALL | wxGROW | wxALIGN_CENTER_VERTICAL, 1);
 	statusBarSizer->Add(settingsText, wxGBPosition(0, 0), wxDefaultSpan, wxALL | wxGROW | wxALIGN_CENTER_VERTICAL, 1);
-	
 }
 
 wxPanel* cFrame::createStatusPanelElement()

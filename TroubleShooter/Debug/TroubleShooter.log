@@ -1,2 +1,4 @@
-﻿  LINK : program database C:\Users\1\source\repos\TroubleShooter\Debug\TroubleShooter.pdb missing; performing full link
+﻿  cApp.cpp
+  cTaskBarIcon.cpp
+  Generating Code...
   TroubleShooter.vcxproj -> C:\Users\1\source\repos\TroubleShooter\Debug\TroubleShooter.exe

@@ -1,7 +1,15 @@
 #pragma once
+
+#include <wx/msw/msvcrt.h>
+
 #include "wx/wx.h"
 #include <wx/taskbar.h>
 #include "cFrame.h"
+
+enum MenuItems {
+	MENU_SHOW = 6000,
+	MENU_EXIT = 6001
+};
 
 class cTaskBarIcon : wxTaskBarIcon
 {
@@ -10,14 +18,16 @@ public:
 	~cTaskBarIcon();
 
 	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
-	void OnClosed(wxCloseEvent& event);
+	void OnTaskBarIconRightUp(wxTaskBarIconEvent& event);
+	void Show(wxCommandEvent& event);
+	void Close(wxCommandEvent& event);
 
-	bool UpdateIcon(wxIcon* newIcon);
-	bool UpdateIcon(wxIcon* newIcon, wxString* newTooltip);
-	void UpdateTooltip(wxString* newTooltip);
+
+	bool UpdateIcon(wxIcon newIcon);
+	bool UpdateIcon(wxIcon newIcon, wxString newTooltip);
+	void UpdateTooltip(wxString newTooltip);
 
 private:
 	wxApp* parent;
 	wxDECLARE_EVENT_TABLE();
 };
-

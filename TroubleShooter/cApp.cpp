@@ -2,10 +2,14 @@
 
 // cApp.cpp это имплементация контроллера.
 
+#include <wx/msw/msvcrt.h>
+
 
 wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
 	EVT_CLOSE(OnClosed)
+	EVT_MENU(MENU_SHOW, OnTaskBarIconMenuShow)
+	EVT_MENU(MENU_EXIT, OnTaskBarIconMenuClose)
 wxEND_EVENT_TABLE()
 
 enum AppStatus { green, yellow, red, black };
@@ -21,77 +25,62 @@ bool cApp::OnInit()
 {
 	appStatus = green;
 
-	taskBarIcon = new cTaskBarIcon(this);
-	mainFrame = nullptr;
-	chartController = ChartController();
+	taskBarIcon = new cTaskBarIcon(this); 
+	mainFrame = nullptr; // MEMORY LEAK
+	chartController = ChartController(); // not leaking
 
-	wxICOHandler* handler = new wxICOHandler;
-	wxImage::AddHandler(handler);
+	wxICOHandler* handler = new wxICOHandler(); // not leaking
+	wxImage::AddHandler(handler); // not leaking
 	UpdateIcon();
 	return true;
 }
 
 
-void cApp::OnTaskBarIconLeftUp(wxTaskBarIconEvent& event)
-{
-	//todo: wrap it into an "OnWindowOpen()" event ?
-	if (mainFrame == nullptr) {
-		mainFrame = new cFrame(this, chartController.CreateChart());
-		UpdateIcon(); 
-		mainFrame->Show();
-		mainFrame->Raise();
-		initializeChartSeries();
-	}
-	else
-	{
-		mainFrame->Close();
-	}
-}
-
+void cApp::OnTaskBarIconLeftUp(wxTaskBarIconEvent& event) { createFrame(); }
 void cApp::OnClosed(wxCloseEvent& event)
 {
 	if (event.GetEventObject() == mainFrame)
 	{
-		chartController.ClearDataset();
-		mainFrame->Destroy();
-		mainFrame = nullptr;
+		closeFrame();
 	}
 }
+void cApp::OnTaskBarIconMenuShow(wxCommandEvent& event) { createFrame(); }
+void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event) 
+{ 
+	closeFrame();
+}
 
-/* 
-  Should be called on AppStatusChanged() or something.
-*/
+//Should be called on AppStatusChanged() or something.
 bool cApp::UpdateIcon()
 {
-	std::string iconPath = "res/Icon_";
+	wxString iconPath;
 	switch (appStatus)
 	{
 	case green:
-		iconPath += "green.ico";
+		iconPath = wxString("res/Icon_green.ico");
 		break;
 	case yellow:
-		iconPath += "yellow.ico";
+		iconPath = wxString("res/Icon_yellow.ico");
 		break;
 	case red:
-		iconPath += "red.ico";
+		iconPath = wxString("res/Icon_red.ico");
 		break;
 	case black:
-		iconPath += "black.ico";
+		iconPath = wxString("res/Icon_black.ico");
 		break;
 	}
 
-	wxIcon* icon = new wxIcon(iconPath, wxBITMAP_TYPE_ICO);
+	wxIcon icon = wxIcon(iconPath, wxBITMAP_TYPE_ICO); // not leaking
 
 	if (mainFrame != nullptr)
-		mainFrame->SetIcon(*icon);
+		mainFrame->SetIcon(icon); // nope
 
 	// wxTaskBarIcon.SetIcon() это защищённый метод
-	return taskBarIcon->UpdateIcon(icon, new wxString(std::string("Pinger")));
+	return taskBarIcon->UpdateIcon(icon, wxString("Pinger")); // not leaking
 }
 
-/*
-  This method is called on window start. It receives log data from a file, forms it into series and passes it to cFrame.
-*/
+
+//This method is called on window start. It receives log data from a file, forms it into series and passes it to cFrame.
 void cApp::initializeChartSeries()
 {
 	// data comes from a file
@@ -114,12 +103,32 @@ void cApp::initializeChartSeries()
 	chartController.CreateSerie(ChartController::dsLAN, data);
 }
 
-/*
-This has to be called each App update (2-3sec)
-*/
 void cApp::updateChartSerie()
 {
 	//dsController.UpdateSerie(id, newPoint);
+}
+
+void cApp::createFrame()
+{
+	if (mainFrame == nullptr) {
+		mainFrame = new cFrame(this, chartController.CreateChart());
+		UpdateIcon();
+		mainFrame->Show();
+		mainFrame->Raise();
+		initializeChartSeries();
+	}
+	else
+	{
+		mainFrame->Raise();
+	}
+}
+void cApp::closeFrame()
+{
+	if (mainFrame != nullptr) {
+		chartController.ClearDataset();
+		mainFrame->Destroy();
+		mainFrame = nullptr;
+	}
 }
 
 wxIMPLEMENT_APP(cApp);

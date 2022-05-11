@@ -1,4 +1,8 @@
 #pragma once
+
+#include <wx/msw/msvcrt.h>
+
+
 #include "wx/wx.h"
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
@@ -24,14 +28,18 @@ private:
 
 	// Todo: модель
 
-	// Обновление UI
+	// UI Методы
 	bool UpdateIcon();
 	void initializeChartSeries();
 	void updateChartSerie();
+	void createFrame();
+	void closeFrame();
 
 	// Ивенты
 	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
 	void OnClosed(wxCloseEvent& event);
+	void OnTaskBarIconMenuShow(wxCommandEvent& event);
+	void OnTaskBarIconMenuClose(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();
 };
 
