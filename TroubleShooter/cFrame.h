@@ -30,12 +30,12 @@ private:
 	wxPanel* mainPanel;
 	wxPanel* titleBarPanel;
 	wxPanel* contentPanel;
-	wxPanel* statusBarPanel;
+	wxPanel* statusbarPanel;
 
 	// Each requires a separate Sizer to put items in order. Additionally, all panels are put into a sizer.
 	wxBoxSizer* mainSizer;
 	wxBoxSizer* titleBarSizer;
-	wxGridBagSizer* statusBarSizer;
+	wxBoxSizer* statusBarSizer;
 	wxBoxSizer* contentSizer;
 
 	Chart* chart;

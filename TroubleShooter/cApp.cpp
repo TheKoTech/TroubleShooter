@@ -1,9 +1,5 @@
 #include "cApp.h"
 
-// cApp.cpp это имплементация контроллера.
-
-#include <wx/msw/msvcrt.h>
-
 
 wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
@@ -119,7 +115,13 @@ void cApp::createFrame()
 	}
 	else
 	{
-		mainFrame->Raise();
+		if (mainFrame->IsIconized())
+		{
+			mainFrame->Maximize(false);
+			mainFrame->Raise();
+		}
+		else
+			mainFrame->Iconize();
 	}
 }
 void cApp::closeFrame()

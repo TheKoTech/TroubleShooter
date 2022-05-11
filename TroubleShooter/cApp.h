@@ -1,17 +1,13 @@
 #pragma once
-
-#include <wx/msw/msvcrt.h>
-
-
 #include "wx/wx.h"
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 #include "ChartController.h"
 
-// cApp это контроллер приложения.
 
 enum AppStatus;
 
+// cApp это контроллер приложения.
 class cApp : public wxApp
 {
 public:

@@ -35,11 +35,11 @@ void cFrame::initializeUI()
 
 	mainPanel = new wxPanel(this);
 	contentPanel = new wxPanel(mainPanel);
-	statusBarPanel = new wxPanel(mainPanel);
+	statusbarPanel = new wxPanel(mainPanel);
 
 	mainSizer = new wxBoxSizer(wxVERTICAL);
 	//titleBarSizer = new wxBoxSizer(wxHORIZONTAL);
-	statusBarSizer = new wxGridBagSizer();
+	statusBarSizer = new wxBoxSizer(wxVERTICAL);
 	contentSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	// Create the actual Controls
@@ -49,13 +49,13 @@ void cFrame::initializeUI()
 
 
 	mainSizer->Add(contentPanel, 1, wxGROW);
-	mainSizer->Add(statusBarPanel, 1, wxGROW);
+	mainSizer->Add(statusbarPanel, 1, wxGROW);
 	contentPanel->SetSizerAndFit(contentSizer);
-	statusBarPanel->SetSizerAndFit(statusBarSizer);
+	statusbarPanel->SetSizerAndFit(statusBarSizer);
 	mainPanel->SetSizerAndFit(mainSizer);
 
 	contentPanel->SetBackgroundColour(BG_COLOUR);
-	statusBarPanel->SetBackgroundColour(BG_COLOUR_STATUSBAR);
+	statusbarPanel->SetBackgroundColour(BG_COLOUR_STATUSBAR);
 }
 
 void cFrame::createTitleBar()
@@ -143,17 +143,23 @@ void cFrame::createContent()
 }
 void cFrame::createStatusBar()
 {	
-	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
-	wxStaticBitmap * settingsButton = new wxStaticBitmap(statusBarPanel, wxID_ANY, wxBitmapBundle(settingsImage));
-
 	wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 
-	wxStaticText* settingsText = new wxStaticText(statusBarPanel, wxID_ANY, "Settings");
+
+	wxPanel* settingsPanel = new wxPanel(statusbarPanel);
+	wxBoxSizer* settingsSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
+	wxStaticBitmap * settingsBmp = new wxStaticBitmap(settingsPanel, wxID_ANY, wxBitmapBundle(settingsImage));
+
+	wxStaticText* settingsText = new wxStaticText(settingsPanel, wxID_ANY, "Settings");
 	settingsText->SetForegroundColour(FG_STATUSBAR_COLOUR);
 	settingsText->SetFont(font);
 
-	statusBarSizer->Add(settingsButton, wxGBPosition(0, 1), wxDefaultSpan, wxALL | wxGROW | wxALIGN_CENTER_VERTICAL, 1);
-	statusBarSizer->Add(settingsText, wxGBPosition(0, 0), wxDefaultSpan, wxALL | wxGROW | wxALIGN_CENTER_VERTICAL, 1);
+	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL);
+	settingsPanel->SetSizerAndFit(settingsSizer);
+
+	statusBarSizer->Add(settingsPanel, 1, wxALIGN_RIGHT | wxRIGHT, 10);
 }
 
 wxPanel* cFrame::createStatusPanelElement()
@@ -174,10 +180,7 @@ void cFrame::applyFrameSettings()
 		wxDisplay().GetClientArea().GetHeight() - windowSize.GetHeight() - 10));
 }
 
-
-
 // Event handlers
-
 void cFrame::OnButtonClick(wxCommandEvent& event)
 {
 	parent->ProcessEvent(event);
