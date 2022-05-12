@@ -21,9 +21,23 @@ public:
 	void ShowSettings(wxCommandEvent& event);
 	void Close(wxCommandEvent& event);
 
-
+	/**
+	 * Change cTaskBarIcon's image.
+	 * @param newIcon - new icon.
+	 */
 	bool UpdateIcon(wxIcon newIcon);
+
+	/**
+	 * Change cTaskBarIcon's image and tooltip.
+	 * @param newIcon - new icon.
+	 * @param newTooltip - new tooltip.
+	 */
 	bool UpdateIcon(wxIcon newIcon, wxString newTooltip);
+
+	/**
+	 * Change cTaskBarIcon's tooltip.
+	 * @param newTooltip - new tooltip.
+	 */
 	void UpdateTooltip(wxString newTooltip);
 
 private:

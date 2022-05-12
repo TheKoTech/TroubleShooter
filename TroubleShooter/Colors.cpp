@@ -1,13 +1,13 @@
 #include "wx/colour.h"
 
-const wxColour TITLE_COLOUR = wxColour(255, 255, 255);
-const wxColour FG_COLOUR = wxColour(190, 190, 190);
-const wxColour FG_STATUSBAR_COLOUR = wxColour(80, 80, 80);
-const wxColour BG_COLOUR = wxColour(30, 30, 30);
-const wxColour BG_COLOUR_AUX = wxColour(40, 40, 40);
-const wxColour BG_COLOUR_STATUSBAR = wxColour(18, 18, 18);
-const wxColour ACCENT_COLOUR = wxColour(99, 171, 236);
+#define COL_TITLE wxColour(255, 255, 255)
+#define COL_FG wxColour(190, 190, 190)
+#define COL_FG_STATUSBAR wxColour(80, 80, 80)
+#define COL_BG wxColour(30, 30, 30)
+#define COL_BG_AUX wxColour(40, 40, 40)
+#define COL_BG_STATUSBAR wxColour(18, 18, 18)
 
-const wxColour GREEN_COLOUR = wxColour(106, 183, 4);
-const wxColour YELLOW_COLOUR = wxColour(232, 219, 5);
-const wxColour RED_COLOUR = wxColour(187, 8, 12);
+#define COL_GREEN wxColour(106, 183, 4)
+#define COL_YELLOW wxColour(232, 219, 5)
+#define COL_RED wxColour(187, 8, 12)
+#define COL_BLUE wxColour(99, 171, 236)

@@ -29,10 +29,6 @@ cFrame::~cFrame()
 
 void cFrame::initializeUI() 
 {
-	// for icons
-	wxPNGHandler* handler = new wxPNGHandler;
-	wxImage::AddHandler(handler);
-
 	mainPanel = new wxPanel(this);
 	contentPanel = new wxPanel(mainPanel);
 	statusbarPanel = new wxPanel(mainPanel);
@@ -54,8 +50,8 @@ void cFrame::initializeUI()
 	statusbarPanel->SetSizerAndFit(statusBarSizer);
 	mainPanel->SetSizerAndFit(mainSizer);
 
-	contentPanel->SetBackgroundColour(BG_COLOUR);
-	statusbarPanel->SetBackgroundColour(BG_COLOUR_STATUSBAR);
+	contentPanel->SetBackgroundColour(COL_BG);
+	statusbarPanel->SetBackgroundColour(COL_BG_STATUSBAR);
 }
 
 void cFrame::createTitleBar()
@@ -75,8 +71,8 @@ void cFrame::createContent()
 	wxGridBagSizer* leftSizer = new wxGridBagSizer();
 	wxGridBagSizer* rightSizer = new wxGridBagSizer();
 
-	contPanelLeft->SetBackgroundColour(BG_COLOUR);
-	contPanelRight->SetBackgroundColour(BG_COLOUR_AUX);
+	contPanelLeft->SetBackgroundColour(COL_BG);
+	contPanelRight->SetBackgroundColour(COL_BG_AUX);
 
 	contentSizer->Add(contPanelLeft, 1, wxALL | wxGROW, 0);
 	contentSizer->Add(contPanelRight, 1, wxALL | wxGROW, 0);
@@ -89,22 +85,22 @@ void cFrame::createContent()
 	wxFont subtitleFont = wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
 
 	wxStaticText* connectionTitle = new wxStaticText(contPanelLeft, wxID_ANY, "Connection Stability");
-	connectionTitle->SetForegroundColour(TITLE_COLOUR);
+	connectionTitle->SetForegroundColour(COL_TITLE);
 	connectionTitle->SetFont(titleFont);
 	
-	chart->GetPlot()->SetBackground(new FillAreaDraw(TITLE_COLOUR, BG_COLOUR));
-	chart->SetBackground(new FillAreaDraw(BG_COLOUR_AUX, BG_COLOUR));
+	chart->GetPlot()->SetBackground(new FillAreaDraw(COL_TITLE, COL_BG));
+	chart->SetBackground(new FillAreaDraw(COL_BG_AUX, COL_BG));
 	wxChartPanel* chartPanel = new wxChartPanel(contPanelLeft, wxID_ANY, chart, wxDefaultPosition, wxSize(400, 240));
 	chartPanel->SetAntialias(true);
 
 
 
 	wxStaticText* statusTitle = new wxStaticText(contPanelRight, wxID_ANY, "Status");
-	statusTitle->SetForegroundColour(TITLE_COLOUR);
+	statusTitle->SetForegroundColour(COL_TITLE);
 	statusTitle->SetFont(titleFont);
 	
 	wxStaticText* warningTitle = new wxStaticText(contPanelRight, wxID_ANY, "Warnings");
-	warningTitle->SetForegroundColour(FG_COLOUR);
+	warningTitle->SetForegroundColour(COL_FG);
 	warningTitle->SetFont(subtitleFont);
 
 	//wxPanel* lanPanel = createStatusPanelElement();
@@ -152,7 +148,7 @@ void cFrame::createStatusBar()
 	wxStaticBitmap * settingsBmp = new wxStaticBitmap(settingsPanel, wxID_ANY, wxBitmapBundle(settingsImage));
 
 	wxStaticText* settingsText = new wxStaticText(settingsPanel, wxID_ANY, "Settings");
-	settingsText->SetForegroundColour(FG_STATUSBAR_COLOUR);
+	settingsText->SetForegroundColour(COL_FG_STATUSBAR);
 	settingsText->SetFont(font);
 
 	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
@@ -189,8 +185,4 @@ void cFrame::OnClosed(wxCloseEvent& event)
 {
 	parent->ProcessEvent(event);
 	this->Destroy();
-}
-void cFrame::LoadIcon(wxIcon* icon)
-{
-	SetIcon(*icon);
 }

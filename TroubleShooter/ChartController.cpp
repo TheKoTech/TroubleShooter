@@ -1,26 +1,28 @@
 #include "ChartController.h"
 
-ChartController::ChartController()
+#define MINUTE 59 // 59 since counting from zero
+
+ChartController::ChartController() = default;
+ChartController::~ChartController() = default;
+
+void ChartController::CreateSerie(SerieType type, wxVector<wxRealPoint> data)
 {
-
-
+	if (0 <= type && type <= 3) {
+		auto* serie = new XYSerie(data);
+		dataset->AddSerie(serie);
+		dataset->DatasetChanged();
+	}
 }
 
-ChartController::~ChartController()
+void ChartController::AppendToSerie(SerieType type, double newDelay)
 {
-}
+	// shift values to the left
+	for (int i = 0; i < MINUTE; i++)
+		dataset->GetSerie(type)->UpdateX(i, dataset->GetSerie(type)->GetX(i + 1));
 
-// Creates a serie and updates dataset
-void ChartController::CreateSerie(SerieType serieType, wxVector<wxRealPoint> data)
-{
-	XYSerie* serie = new XYSerie(data);
-	dataset->AddSerie(serie);
-	dataset->DatasetChanged();
-}
+	// the new value is put at the 0 sec mark - the right edge of the chart
+	dataset->GetSerie(type)->UpdatePoint(MINUTE, wxPoint(MINUTE, newDelay));
 
-void ChartController::UpdateSerie(int id, wxRealPoint* newPoint = nullptr)
-{
-	
 	dataset->DatasetChanged();
 }
 
@@ -31,24 +33,29 @@ void ChartController::ClearDataset()
 	chart = nullptr;
 }
 
-XYPlot* ChartController::GetPlot()
-{
-	return plot;
-}
+//XYPlot* ChartController::GetPlot()
+//{
+//	return plot;
+//}
+//
+//XYSimpleDataset* ChartController::GetDataset()
+//{
+//	return dataset;
+//}
+//XYSerie* ChartController::GetSerie(int index)
+//{
+//	return dataset->GetSerie(index);
+//}
+//XYSerie* ChartController::GetSerie(SerieType type)
+//{
+//	return dataset->GetSerie(type);
+//}
 
-XYSimpleDataset* ChartController::GetDataset()
-{
-	return dataset;
-}
-XYSerie* ChartController::GetSerie(int index)
-{
-	return dataset->GetSerie(index);
-}
 
 Chart* ChartController::CreateChart()
 {
 	dataset = new XYSimpleDataset();
-	XYLineRenderer* renderer = new XYLineRenderer();
+	auto* renderer = new XYLineRenderer();
 	dataset->SetRenderer(renderer);
 	plot = new XYPlot();
 
@@ -63,8 +70,8 @@ Chart* ChartController::CreateChart()
 	dataset->SetRenderer(new XYLineRenderer());
 
 	// create left and bottom number axes
-	NumberAxis* rightAxis = new NumberAxis(AXIS_RIGHT);
-	NumberAxis* bottomAxis = new NumberAxis(AXIS_BOTTOM);
+	auto* rightAxis = new NumberAxis(AXIS_RIGHT);
+	auto* bottomAxis = new NumberAxis(AXIS_BOTTOM);
 	rightAxis->SetFixedBounds(0, 2000);
 	bottomAxis->SetFixedBounds(0, 60);
 	rightAxis->IntegerValues(true);
@@ -73,9 +80,6 @@ Chart* ChartController::CreateChart()
 	// add axes and dataset to plot
 	plot->AddObjects(dataset, rightAxis, bottomAxis);
 
-
-
 	// and finally create chart
 	return new Chart(plot, wxEmptyString);
 }
-

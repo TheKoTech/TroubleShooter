@@ -12,16 +12,17 @@
 #include <wx/xy/xylinerenderer.h>
 #include <wx/axisplot.h>
 
+//todo: optimize imports
+
+
 /*
-* The main app frame
+* The main window of the app or the TopLevelWindow
 */
 class cFrame : public wxFrame
 {
 public:
 	cFrame(wxApp* parent, Chart* chart); 
 	~cFrame();
-
-	void LoadIcon(wxIcon* icon);
 	
 private:
 	wxApp* parent;
@@ -49,6 +50,8 @@ private:
 	void applyFrameSettings();
 
 	// Event handlers
+	
+	// Not used
 	void OnButtonClick(wxCommandEvent& event);
 	void OnClosed(wxCloseEvent& event);
 

@@ -46,23 +46,7 @@ void cTaskBarIcon::Close(wxCommandEvent& event) {
 	this->Destroy();
 }
 
-/**
- * Change cTaskBarIcon's image.
- * @param newIcon - new icon.
- */
+
 bool cTaskBarIcon::UpdateIcon(wxIcon newIcon) { return SetIcon(wxBitmapBundle(newIcon), this->m_strTooltip); }
-
-/**
- * Change cTaskBarIcon's image and tooltip.
- * @param newIcon - new icon.
- * @param newTooltip - new tooltip.
- */
 bool cTaskBarIcon::UpdateIcon(wxIcon newIcon, wxString newTooltip) { return SetIcon(wxBitmapBundle(newIcon), newTooltip); }
-
-/**
- * Change cTaskBarIcon's tooltip.
- * @param newTooltip - new tooltip.
- */
 void cTaskBarIcon::UpdateTooltip(wxString newTooltip) { this->m_strTooltip = newTooltip; }
-
-
