@@ -32,6 +32,30 @@ bool cApp::OnInit()
 	wxImage::AddHandler(new wxPNGHandler);
 	wxImage::AddHandler(new wxICOHandler); 
 	UpdateIcon();
+
+	int timeout = 1000;
+
+	////// Проверка работоспособности кода //////
+	int num_adresses = 7;
+	string* adresses = new string[]{
+		"yandex.ru",
+		"google.com",
+		"ru.wikipedia.com",
+		"192.168.0.6",
+		"rutracker.org",
+		"hhhh",
+		"iafisher.com"
+	};
+	PingRes* res_ping = new PingRes[num_adresses];
+	MultiPing(res_ping, adresses, num_adresses, timeout);
+
+	for (int i = 0; i < num_adresses; ++i) {
+		Logger logger(res_ping[i].adress, res_ping[i].time);
+		logger.WriteLog();
+		logger.Check();
+	}
+	////// конец проверки работоспособности кода //////
+
 	return true;
 }
 
