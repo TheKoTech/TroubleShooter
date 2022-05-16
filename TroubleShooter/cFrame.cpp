@@ -3,14 +3,13 @@
 
 wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
 	EVT_CLOSE(OnClosed)
-	EVT_BUTTON(10000, OnButtonClick)
 wxEND_EVENT_TABLE()
 
 const int clientWidth = 700;
 const int clientHeight = 320;
 const wxSize clientSize = wxSize(clientWidth, clientHeight);
 
-cFrame::cFrame(wxApp* parent, Chart* chart) : wxFrame(nullptr, wxID_ANY, "App prototype",
+cFrame::cFrame(wxApp* parent, Chart* chart) : wxFrame(nullptr, wxID_ANY, "Pinger",
 	wxDefaultPosition,
 	wxDefaultSize,
 	wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX))
@@ -138,24 +137,27 @@ void cFrame::createContent()
 
 }
 void cFrame::createStatusBar()
-{	
+{
 	wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+	settingsPanel = new wxPanel(statusbarPanel, 100);
 
-
-	wxPanel* settingsPanel = new wxPanel(statusbarPanel);
-	wxBoxSizer* settingsSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
-	wxStaticBitmap * settingsBmp = new wxStaticBitmap(settingsPanel, wxID_ANY, wxBitmapBundle(settingsImage));
-
-	wxStaticText* settingsText = new wxStaticText(settingsPanel, wxID_ANY, "Settings");
+	wxStaticText* settingsText = new wxStaticText(settingsPanel, 100, "Settings");
 	settingsText->SetForegroundColour(COL_FG_STATUSBAR);
 	settingsText->SetFont(font);
 
-	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL);
+	wxBoxSizer* settingsSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
+	wxStaticBitmap* settingsBmp = new wxStaticBitmap(settingsPanel, 100, wxBitmapBundle(settingsImage));
+
+	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 	settingsPanel->SetSizerAndFit(settingsSizer);
 
-	statusBarSizer->Add(settingsPanel, 1, wxALIGN_RIGHT | wxRIGHT, 10);
+	settingsPanel->Bind(wxEVT_ENTER_WINDOW, &cFrame::OnEnterSettingsPanel, this);
+	settingsPanel->Bind(wxEVT_LEAVE_WINDOW, &cFrame::OnLeaveSettingsPanel, this);
+	bindMouseEventRecursive(settingsPanel, &cFrame::OnSettingsLeftUp);
+
+	statusBarSizer->Add(settingsPanel, 1, wxALIGN_RIGHT);
 }
 
 wxPanel* cFrame::createStatusPanelElement()
@@ -167,7 +169,6 @@ wxPanel* cFrame::createStatusPanelElement()
 
 void cFrame::applyFrameSettings()
 {
-	this->SetBackgroundColour(*wxWHITE);
 	this->SetClientSize(clientSize);
 	this->SetMinClientSize(clientSize);
 	wxSize windowSize = this->ClientToWindowSize(clientSize);
@@ -177,12 +178,51 @@ void cFrame::applyFrameSettings()
 }
 
 // Event handlers
-void cFrame::OnButtonClick(wxCommandEvent& event)
-{
-	parent->ProcessEvent(event);
-}
+
 void cFrame::OnClosed(wxCloseEvent& event)
 {
 	parent->ProcessEvent(event);
 	this->Destroy();
+}
+
+void cFrame::bindMouseEventRecursive(wxWindow* window, void (cFrame::*method)(wxMouseEvent&))
+{
+	if (window)
+	{
+		window->Bind(wxEVT_LEFT_UP, method, this);
+
+		auto node = window->GetChildren().GetFirst();
+		while (node)
+		{
+			auto child = node->GetData();
+			this->bindMouseEventRecursive(child, method);
+			node = node->GetNext();
+		}
+	}
+}
+
+void cFrame::OnEnterSettingsPanel(wxMouseEvent& event)
+{
+	bool mouseInside = settingsPanel->GetClientRect().Contains(event.GetPosition());
+
+	if (mouseInside) {
+		settingsPanel->SetBackgroundColour(COL_BG);
+		settingsPanel->Refresh();
+	}
+}
+
+void cFrame::OnLeaveSettingsPanel(wxMouseEvent& event)
+{
+	bool mouseInside = settingsPanel->GetClientRect().Contains(event.GetPosition());
+
+	if (!mouseInside) {
+		settingsPanel->SetBackgroundColour(COL_BG_STATUSBAR);
+		settingsPanel->Refresh();
+	}
+}
+
+void cFrame::OnSettingsLeftUp(wxMouseEvent& event)
+{
+	parent->ProcessEvent(event);
+	
 }

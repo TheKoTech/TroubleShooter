@@ -1,6 +1,4 @@
 #pragma once
-
-#include <wx/msw/msvcrt.h>
 #include "wx/wx.h"
 #include <wx/taskbar.h>
 

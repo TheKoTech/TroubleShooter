@@ -9,8 +9,10 @@ enum ControllerEvents {
 
 wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
+	EVT_LEFT_UP(OnPanelLeftUp)
 	EVT_CLOSE(OnClosed)
 	EVT_MENU(MENU_SHOW, OnTaskBarIconMenuShow)
+	EVT_MENU(MENU_SETTINGS, OnTaskBarIconMenuSettings)
 	EVT_MENU(MENU_EXIT, OnTaskBarIconMenuClose)
 	EVT_TIMER(TIMER, OnTimer)
 wxEND_EVENT_TABLE()
@@ -27,7 +29,8 @@ bool cApp::OnInit()
 	taskBarIcon = new cTaskBarIcon(this); 
 	mainFrame = nullptr; // hidden on start
 	chartController = ChartController();
-	
+	settingsFrame = nullptr;
+
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
 	wxImage::AddHandler(new wxICOHandler); 
@@ -42,10 +45,54 @@ void cApp::OnClosed(wxCloseEvent& event)
 	// cFrame window closing is managed here in the controller, not in the class itself
 	if (event.GetEventObject() == mainFrame)
 		closeFrame();
+	if (event.GetEventObject() == settingsFrame)
+		closeSettingsFrame();
 }
 void cApp::OnTaskBarIconMenuShow(wxCommandEvent& event) { createFrame(); }
-void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event) { closeFrame(); }
+void cApp::OnTaskBarIconMenuSettings(wxCommandEvent& event) { createSettingsFrame(); }
+void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event) 
+{ 
+	closeFrame(); 
+	closeSettingsFrame();
+}
 
+void cApp::OnPanelLeftUp(wxMouseEvent& event)
+{
+	//if (event.GetId() == 100) {
+	//	// check if mouse is over the settings Panel-"Button"
+	//	bool settings = mainFrame->settingsPanel->GetClientRect().Contains(event.GetPosition());
+
+	//	if (settings) {
+	//		createSettingsFrame();
+	//	}
+	//}
+}
+
+void cApp::createSettingsFrame()
+{
+	if (settingsFrame == nullptr) {
+		settingsFrame = new cSettingsFrame(this);
+		UpdateIcon();
+		settingsFrame->Show();
+		//settingsFrame->Raise();
+	}
+	else
+	{
+		if (settingsFrame->IsIconized())
+		{
+			settingsFrame->Maximize(false);
+			settingsFrame->Raise();
+		}
+		else
+			settingsFrame->Iconize();
+	}
+}
+
+void cApp::closeSettingsFrame()
+{
+	settingsFrame->Destroy();
+	settingsFrame = nullptr;
+}
 
 void cApp::OnTimer(wxTimerEvent& event)
 {
@@ -76,6 +123,9 @@ bool cApp::UpdateIcon()
 
 	if (mainFrame != nullptr)
 		mainFrame->SetIcon(icon);
+
+	if (settingsFrame != nullptr)
+		settingsFrame->SetIcon(wxIcon(wxString("res/Icon_settings.png")));
 
 	return taskBarIcon->UpdateIcon(icon, wxString("Pinger"));
 }

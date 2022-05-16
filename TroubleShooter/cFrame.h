@@ -24,6 +24,10 @@ public:
 	cFrame(wxApp* parent, Chart* chart); 
 	~cFrame();
 	
+	//Those panels act as buttons:
+	//wxPanel* LANpanel, ISPpanel
+	wxPanel* settingsPanel; // Basically, a button
+
 private:
 	wxApp* parent;
 
@@ -48,12 +52,14 @@ private:
 	void createStatusBar();
 	wxPanel* createStatusPanelElement();
 	void applyFrameSettings();
+	void bindMouseEventRecursive(wxWindow* window, void (cFrame::* method)(wxMouseEvent&));
 
 	// Event handlers
 	
-	// Not used
-	void OnButtonClick(wxCommandEvent& event);
 	void OnClosed(wxCloseEvent& event);
+	void OnEnterSettingsPanel(wxMouseEvent& event);
+	void OnLeaveSettingsPanel(wxMouseEvent& event);
+	void OnSettingsLeftUp(wxMouseEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

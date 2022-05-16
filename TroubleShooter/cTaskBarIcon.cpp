@@ -24,7 +24,7 @@ void cTaskBarIcon::OnTaskBarIconRightUp(wxTaskBarIconEvent& event)
 	wxMenu menu;
 
 	wxMenuItem* itemShow = new wxMenuItem(&menu, MENU_SHOW, wxString("Show"), wxString("Show the app window"));
-	wxMenuItem* itemSettings = new wxMenuItem(&menu, MENU_SHOW, wxString("Settings"), wxString("Show the settings window"));
+	wxMenuItem* itemSettings = new wxMenuItem(&menu, MENU_SETTINGS, wxString("Settings"), wxString("Show the settings window"));
 	wxMenuItem* itemExit = new wxMenuItem(&menu, MENU_EXIT, wxString("Exit"), wxString("Exit the app"));
 
 	menu.Append(itemShow);
@@ -39,7 +39,7 @@ void cTaskBarIcon::Show(wxCommandEvent& event) { parent->ProcessEvent(event); }
 void cTaskBarIcon::ShowSettings(wxCommandEvent& event)
 {
 	//todo: open settings in cApp
-	//parent->ProcessEvent(event);
+	parent->ProcessEvent(event);
 }
 void cTaskBarIcon::Close(wxCommandEvent& event) {
 	parent->ProcessEvent(event);

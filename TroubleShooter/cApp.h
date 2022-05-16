@@ -3,6 +3,7 @@
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 #include "ChartController.h"
+#include "cSettingsFrame.h"
 
 enum AppStatus { green, yellow, red, black };
 
@@ -21,6 +22,7 @@ private:
 	// The AppStatus represents the current connection status: OK (green), Unstable (yellow), Outage (Red) or that the App is disabled (black)
 	AppStatus appStatus;
 	cFrame* mainFrame;
+	cSettingsFrame* settingsFrame;
 	cTaskBarIcon* taskBarIcon;
 	ChartController chartController;
 
@@ -37,12 +39,16 @@ private:
 	void initializeChartSeries();
 	void createFrame();
 	void closeFrame();
+	void createSettingsFrame();
+	void closeSettingsFrame();
 
 	// Ивенты
 	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
 	void OnClosed(wxCloseEvent& event);
 	void OnTaskBarIconMenuShow(wxCommandEvent& event);
+	void OnTaskBarIconMenuSettings(wxCommandEvent& event);
 	void OnTaskBarIconMenuClose(wxCommandEvent& event);
+	void OnPanelLeftUp(wxMouseEvent& event);
 
 	void OnTimer(wxTimerEvent& event);
 
