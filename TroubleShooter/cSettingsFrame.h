@@ -12,7 +12,7 @@ enum {
 	SETTINGS_HOST = 3103
 };
 
-class cSettingsFrame : public wxFrame
+class cSettingsFrame : public wxFrame 
 {
 public:
 	cSettingsFrame(wxApp* parent);
@@ -21,7 +21,7 @@ public:
 private:
 	wxApp* parent = nullptr;
 
-	wxPanel* mPanel = nullptr;
+	bool settingsChanged;
 	wxTextCtrl* lanInput = nullptr;
 	wxTextCtrl* ispInput = nullptr;
 	wxTextCtrl* dnsInput = nullptr;
@@ -30,8 +30,9 @@ private:
 	void initializeUI();
 	void applyFrameSettings();
 
+	void OnApplyButtonClick(wxCommandEvent& event);
+	void OnDiscardButtonClick(wxCommandEvent& event);
 	void OnClosed(wxCloseEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };
-

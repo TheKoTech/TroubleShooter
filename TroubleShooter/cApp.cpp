@@ -15,6 +15,8 @@ wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_MENU(MENU_SETTINGS, OnTaskBarIconMenuSettings)
 	EVT_MENU(MENU_EXIT, OnTaskBarIconMenuClose)
 	EVT_TIMER(TIMER, OnTimer)
+	EVT_BUTTON(SETTINGS_APPLY, OnApplySettingsButtonClick)
+	EVT_BUTTON(SETTINGS_DISCARD, OnDiscardSettingsButtonClick)
 wxEND_EVENT_TABLE()
 
 // not used
@@ -61,6 +63,16 @@ void cApp::OnPanelLeftUp(wxMouseEvent& event)
 	if (event.GetId() == FRAME_SETTINGS)
 		createSettingsFrame();
 	event.Skip();
+}
+
+void cApp::OnApplySettingsButtonClick(wxCommandEvent& event)
+{
+
+}
+
+void cApp::OnDiscardSettingsButtonClick(wxCommandEvent& event)
+{
+
 }
 
 void cApp::createSettingsFrame()

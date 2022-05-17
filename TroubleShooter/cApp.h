@@ -49,6 +49,8 @@ private:
 	void OnTaskBarIconMenuSettings(wxCommandEvent& event);
 	void OnTaskBarIconMenuClose(wxCommandEvent& event);
 	void OnPanelLeftUp(wxMouseEvent& event);
+	void OnApplySettingsButtonClick(wxCommandEvent& event);
+	void OnDiscardSettingsButtonClick(wxCommandEvent& event);
 
 	void OnTimer(wxTimerEvent& event);
 
