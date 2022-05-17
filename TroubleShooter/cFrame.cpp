@@ -22,9 +22,7 @@ cFrame::cFrame(wxApp* parent, Chart* chart) : wxFrame(nullptr, wxID_ANY, "Pinger
 }
 
 cFrame::~cFrame()
-{
-
-}
+= default;
 
 void cFrame::initializeUI() 
 {
@@ -55,7 +53,7 @@ void cFrame::initializeUI()
 
 void cFrame::createTitleBar()
 {
-	wxStaticText* titleText = new wxStaticText(titleBarPanel, wxID_ANY, wxString("App prototype"));
+	auto const titleText = new wxStaticText(titleBarPanel, wxID_ANY, wxString("App prototype"));
 	titleText->SetFont(wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
 	titleBarSizer->Add(titleText, 0, wxGROW | wxLEFT, 12);
 
@@ -65,10 +63,10 @@ void cFrame::createContent()
 {
 	// content is divided into 2 panels - chart and labels.
 
-	wxPanel* contPanelLeft = new wxPanel(contentPanel);
-	wxPanel* contPanelRight = new wxPanel(contentPanel);
-	wxGridBagSizer* leftSizer = new wxGridBagSizer();
-	wxGridBagSizer* rightSizer = new wxGridBagSizer();
+	auto const contPanelLeft = new wxPanel(contentPanel);
+	auto const contPanelRight = new wxPanel(contentPanel);
+	auto const leftSizer = new wxGridBagSizer();
+	auto const rightSizer = new wxGridBagSizer();
 
 	contPanelLeft->SetBackgroundColour(COL_BG);
 	contPanelRight->SetBackgroundColour(COL_BG_AUX);
@@ -80,25 +78,24 @@ void cFrame::createContent()
 
 	// initialize controls
 
-	wxFont titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
-	wxFont subtitleFont = wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+	auto const titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+	auto const subtitleFont = wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
 
-	wxStaticText* connectionTitle = new wxStaticText(contPanelLeft, wxID_ANY, "Connection Stability");
+	auto const connectionTitle = new wxStaticText(contPanelLeft, wxID_ANY, "Connection Stability");
 	connectionTitle->SetForegroundColour(COL_TITLE);
 	connectionTitle->SetFont(titleFont);
 	
 	chart->GetPlot()->SetBackground(new FillAreaDraw(COL_TITLE, COL_BG));
 	chart->SetBackground(new FillAreaDraw(COL_BG_AUX, COL_BG));
-	wxChartPanel* chartPanel = new wxChartPanel(contPanelLeft, wxID_ANY, chart, wxDefaultPosition, wxSize(400, 240));
+	auto const chartPanel = new wxChartPanel(contPanelLeft, wxID_ANY, chart, wxDefaultPosition, wxSize(400, 240));
 	chartPanel->SetAntialias(true);
 
 
-
-	wxStaticText* statusTitle = new wxStaticText(contPanelRight, wxID_ANY, "Status");
+	auto const statusTitle = new wxStaticText(contPanelRight, wxID_ANY, "Status");
 	statusTitle->SetForegroundColour(COL_TITLE);
 	statusTitle->SetFont(titleFont);
-	
-	wxStaticText* warningTitle = new wxStaticText(contPanelRight, wxID_ANY, "Warnings");
+
+	auto const warningTitle = new wxStaticText(contPanelRight, wxID_ANY, "Warnings");
 	warningTitle->SetForegroundColour(COL_FG);
 	warningTitle->SetFont(subtitleFont);
 
@@ -138,16 +135,16 @@ void cFrame::createContent()
 }
 void cFrame::createStatusBar()
 {
-	wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
-	settingsPanel = new wxPanel(statusbarPanel, 100);
+	auto const font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+	settingsPanel = new wxPanel(statusbarPanel, FRAME_SETTINGS);
 
-	wxStaticText* settingsText = new wxStaticText(settingsPanel, 100, "Settings");
+	auto const settingsText = new wxStaticText(settingsPanel, FRAME_SETTINGS, "Settings");
 	settingsText->SetForegroundColour(COL_FG_STATUSBAR);
 	settingsText->SetFont(font);
 
-	wxBoxSizer* settingsSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
-	wxStaticBitmap* settingsBmp = new wxStaticBitmap(settingsPanel, 100, wxBitmapBundle(settingsImage));
+	auto const settingsSizer = new wxBoxSizer(wxHORIZONTAL);
+	auto const settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
+	auto const settingsBmp = new wxStaticBitmap(settingsPanel, FRAME_SETTINGS, wxBitmapBundle(settingsImage));
 
 	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
@@ -162,8 +159,6 @@ void cFrame::createStatusBar()
 
 wxPanel* cFrame::createStatusPanelElement()
 {
-	
-
 	return nullptr;
 }
 
@@ -209,6 +204,10 @@ void cFrame::OnEnterSettingsPanel(wxMouseEvent& event)
 		settingsPanel->SetBackgroundColour(COL_BG);
 		settingsPanel->Refresh();
 	}
+	else
+	{
+		event.Skip();
+	}
 }
 
 void cFrame::OnLeaveSettingsPanel(wxMouseEvent& event)
@@ -219,10 +218,17 @@ void cFrame::OnLeaveSettingsPanel(wxMouseEvent& event)
 		settingsPanel->SetBackgroundColour(COL_BG_STATUSBAR);
 		settingsPanel->Refresh();
 	}
+	else
+	{
+		event.Skip();
+	}
 }
 
 void cFrame::OnSettingsLeftUp(wxMouseEvent& event)
 {
-	parent->ProcessEvent(event);
-	
+	// if (event.GetId() == FRAME_SETTINGS) {
+	// 	parent->QueueEvent(event.Clone());
+	// }
+	event.Skip();
+
 }

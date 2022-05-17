@@ -1,4 +1,5 @@
 #include "cSettingsFrame.h"
+#include "Colors.cpp"
 
 
 wxBEGIN_EVENT_TABLE(cSettingsFrame, wxFrame)
@@ -15,18 +16,19 @@ cSettingsFrame::cSettingsFrame(wxApp* parent) : wxFrame(nullptr, wxID_ANY, "Sett
 	applyFrameSettings();
 }
 
-cSettingsFrame::~cSettingsFrame() = default;
-
 void cSettingsFrame::initializeUI()
 {
-	mPanel = new wxPanel(this, 102);
-	auto mSizer = new wxGridBagSizer();
+	mPanel = new wxPanel(this);
+	auto const buttonPanel = new wxPanel(this);
+	auto const mSizer = new wxGridBagSizer();
+	auto const buttonSizer = new wxBoxSizer(wxVERTICAL);
+	mPanel->SetBackgroundColour(COL_BG_AUX);
 
-	
-	wxFont titleFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(500));
-	wxFont normalFont = wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 
-	wxStaticText* titleText = new wxStaticText(mPanel, wxID_ANY, "Settings");
+	auto const titleFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+	auto const normalFont = wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+
+	auto const titleText = new wxStaticText(mPanel, wxID_ANY, "Settings");
 	titleText->SetForegroundColour(COL_TITLE);
 	titleText->SetFont(titleFont);
 
@@ -34,7 +36,6 @@ void cSettingsFrame::initializeUI()
 	ispInput = new wxTextCtrl(mPanel, 11001, wxString("10.0.0.1"));
 	dnsInput = new wxTextCtrl(mPanel, 11002, wxString("8.8.8.8"));
 	hostInput = new wxTextCtrl(mPanel, 11003, wxString("yandex.ru"));
-
 
 	lanInput->SetBackgroundColour(COL_BG_AUX);
 	ispInput->SetBackgroundColour(COL_BG_AUX);
@@ -46,15 +47,34 @@ void cSettingsFrame::initializeUI()
 	dnsInput->SetForegroundColour(COL_FG);
 	hostInput->SetForegroundColour(COL_FG);
 
+	auto const applyButton = new wxButton(buttonPanel, SETTINGS_APPLY, wxString("Apply"));
+	auto const discardButton = new wxButton(buttonPanel, SETTINGS_DISCARD, wxString("Discard"));
 
-	mSizer->Add(titleText, wxGBPosition(0, 0), wxDefaultSpan, wxALL, 12);
-	mSizer->Add(lanInput, wxGBPosition(1, 0), wxDefaultSpan, wxALL, 12);
-	mSizer->Add(ispInput, wxGBPosition(2, 0), wxDefaultSpan, wxALL, 12);
-	mSizer->Add(dnsInput, wxGBPosition(3, 0), wxDefaultSpan, wxALL, 12);
-	mSizer->Add(hostInput, wxGBPosition(4, 0), wxDefaultSpan, wxALL, 12);
+	//auto vButtonSizer = new wxBoxSizer(wxVERTICAL);
+	auto hButtonSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	hButtonSizer->AddStretchSpacer(5);
+	hButtonSizer->Add(applyButton, 1, wxALL | wxALIGN_CENTER, 5);
+	hButtonSizer->Add(discardButton, 1, wxALL | wxALIGN_CENTER, 5);
+
+
+	mSizer->Add(titleText, wxGBPosition(0, 0), wxDefaultSpan, wxALL, 5);
+	mSizer->Add(lanInput, wxGBPosition(1, 0), wxDefaultSpan, wxALL, 5);
+	mSizer->Add(ispInput, wxGBPosition(2, 0), wxDefaultSpan, wxALL, 5);
+	mSizer->Add(dnsInput, wxGBPosition(3, 0), wxDefaultSpan, wxALL, 5);
+	mSizer->Add(hostInput, wxGBPosition(4, 0), wxDefaultSpan, wxALL, 5);
+	//mSizer->AddStretchSpacer(1);
+	mSizer->Add(hButtonSizer, wxGBPosition(5,0), wxGBSpan(1, 2), wxALL | wxALIGN_RIGHT, 5);
+
+	
 
 	mPanel->SetSizerAndFit(mSizer);
+	auto windowSizer = new wxBoxSizer(wxVERTICAL);
+	windowSizer->Add(mPanel, 0, wxGROW | wxALL, 10);
+	this->SetSizerAndFit(windowSizer);
 }
+
+cSettingsFrame::~cSettingsFrame() = default;
 
 void cSettingsFrame::applyFrameSettings()
 {

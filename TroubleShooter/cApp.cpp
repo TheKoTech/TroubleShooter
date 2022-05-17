@@ -5,7 +5,7 @@
 enum ControllerEvents {
 	TIMER = 60
 };
-//todo: move all event enums to a separate .cpp file
+//todo: move all event enums to a separate .cpp file?
 
 wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
@@ -58,14 +58,9 @@ void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event)
 
 void cApp::OnPanelLeftUp(wxMouseEvent& event)
 {
-	//if (event.GetId() == 100) {
-	//	// check if mouse is over the settings Panel-"Button"
-	//	bool settings = mainFrame->settingsPanel->GetClientRect().Contains(event.GetPosition());
-
-	//	if (settings) {
-	//		createSettingsFrame();
-	//	}
-	//}
+	if (event.GetId() == FRAME_SETTINGS)
+		createSettingsFrame();
+	event.Skip();
 }
 
 void cApp::createSettingsFrame()
@@ -74,24 +69,20 @@ void cApp::createSettingsFrame()
 		settingsFrame = new cSettingsFrame(this);
 		UpdateIcon();
 		settingsFrame->Show();
-		//settingsFrame->Raise();
 	}
 	else
 	{
-		if (settingsFrame->IsIconized())
-		{
-			settingsFrame->Maximize(false);
-			settingsFrame->Raise();
-		}
-		else
-			settingsFrame->Iconize();
+		settingsFrame->Raise();
+		settingsFrame->Maximize(false);
 	}
 }
 
 void cApp::closeSettingsFrame()
 {
-	settingsFrame->Destroy();
-	settingsFrame = nullptr;
+	if (settingsFrame != nullptr) {
+		settingsFrame->Destroy();
+		settingsFrame = nullptr;
+	}
 }
 
 void cApp::OnTimer(wxTimerEvent& event)
@@ -119,7 +110,7 @@ bool cApp::UpdateIcon()
 		break;
 	}
 
-	wxIcon icon = wxIcon(iconPath, wxBITMAP_TYPE_ICO);
+	auto icon = wxIcon(iconPath, wxBITMAP_TYPE_ICO);
 
 	if (mainFrame != nullptr)
 		mainFrame->SetIcon(icon);
@@ -139,7 +130,7 @@ void cApp::initializeChartSeries(/*log file*/)
 	// –азница в значени€х X должна совпадать с 3 секундным обновлением таймером, который пока оставим константой. Ќужно учесть, что мы добавим опцию изменить это врем€.
 	// The X value difference must match the 3s timer update that we will hardcode as a const. Keep in mind, that we will implement an option to change that time further on.
 
-	wxVector<wxRealPoint> data = wxVector<wxRealPoint>();
+	auto data = wxVector<wxRealPoint>();
 	data.push_back(wxRealPoint(60, 127));
 	data.push_back(wxRealPoint(55, 141));
 	data.push_back(wxRealPoint(50, 137));

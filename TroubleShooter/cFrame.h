@@ -2,18 +2,14 @@
 #include "wx/wx.h"
 #include <wx/display.h>
 #include <wx/taskbar.h>
-#include <wx/statline.h>
 #include <wx/vector.h>
 #include <wx/gbsizer.h>
 #include "wx/chart.h"
-#include <wx/xy/xyplot.h>
-#include <wx/chartpanel.h>
-#include <wx/xy/xysimpledataset.h>
-#include <wx/xy/xylinerenderer.h>
 #include <wx/axisplot.h>
 
-//todo: optimize imports
-
+enum cFrameIDs {
+	FRAME_SETTINGS = 100
+};
 
 /*
 * The main window of the app or the TopLevelWindow

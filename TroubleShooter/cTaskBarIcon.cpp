@@ -23,9 +23,9 @@ void cTaskBarIcon::OnTaskBarIconRightUp(wxTaskBarIconEvent& event)
 { 
 	wxMenu menu;
 
-	wxMenuItem* itemShow = new wxMenuItem(&menu, MENU_SHOW, wxString("Show"), wxString("Show the app window"));
-	wxMenuItem* itemSettings = new wxMenuItem(&menu, MENU_SETTINGS, wxString("Settings"), wxString("Show the settings window"));
-	wxMenuItem* itemExit = new wxMenuItem(&menu, MENU_EXIT, wxString("Exit"), wxString("Exit the app"));
+	auto itemShow = new wxMenuItem(&menu, MENU_SHOW, wxString("Show"), wxString("Show the app window"));
+	auto itemSettings = new wxMenuItem(&menu, MENU_SETTINGS, wxString("Settings"), wxString("Show the settings window"));
+	auto itemExit = new wxMenuItem(&menu, MENU_EXIT, wxString("Exit"), wxString("Exit the app"));
 
 	menu.Append(itemShow);
 	menu.Append(itemSettings);
