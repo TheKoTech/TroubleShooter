@@ -3,6 +3,8 @@
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 #include "ChartController.h"
+#include "MultiPing.h"
+#include "Logger.h"
 #include "cSettingsFrame.h"
 
 enum AppStatus { green, yellow, red, black };
