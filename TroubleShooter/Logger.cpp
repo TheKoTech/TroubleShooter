@@ -4,7 +4,7 @@
 Logger::Logger(wxString set_Ip, int set_Delay) {
     setDelay(set_Ip, set_Delay);
 }
-void Logger::deletelines() { //удаляем старые  строки
+void Logger::deletelines() { //ГіГ¤Г Г«ГїГҐГ¬ Г±ГІГ Г°Г»ГҐ  Г±ГІГ°Г®ГЄГЁ
     wxString filename = "ping_res.csv";
     wxTextFile filein;
     filein.Open(filename);
@@ -19,17 +19,17 @@ void Logger::setDelay(wxString set_Ip, int set_Delay)
 
 }
 
-void Logger::WriteLog() //запись строки в файл
+void Logger::WriteLog() //Г§Г ГЇГЁГ±Гј Г±ГІГ°Г®ГЄГЁ Гў ГґГ Г©Г«
 {
     wxDateTime now = wxDateTime::Now();
-    wxString date1 = now.Format(wxT("%a %T"));
+    wxString date1 = now.Format(wxT("%d-%m-%y;%T"));
     wxFile file;
     file.Open(wxT("ping_res.csv"), wxFile::write_append);
     file.Write(Ip + ";" + wxString::Format(wxT("%i"), Delay) + ";" + date1 + "\n");
 
 }
 
-void Logger::Check() { //проверка кол-ва строк
+void Logger::Check() { //ГЇГ°Г®ГўГҐГ°ГЄГ  ГЄГ®Г«-ГўГ  Г±ГІГ°Г®ГЄ
     int num;
     wxTextFile file;
     file.Open(wxT("ping_res.csv"));
