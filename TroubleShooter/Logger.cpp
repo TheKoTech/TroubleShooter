@@ -4,8 +4,8 @@
 Logger::Logger(wxString set_Ip, int set_Delay) {
     setDelay(set_Ip, set_Delay);
 }
-void Logger::deletelines() { //óäàëÿåì ñòàðûå  ñòðîêè
-    wxString filename = "D:\\Labs_n_Other\\3Vorob\\TS2\\ping_res.txt";
+void Logger::deletelines() { //Ã³Ã¤Ã Ã«Ã¿Ã¥Ã¬ Ã±Ã²Ã Ã°Ã»Ã¥  Ã±Ã²Ã°Ã®ÃªÃ¨
+    wxString filename = "ping_res.csv";
     wxTextFile filein;
     filein.Open(filename);
     filein.RemoveLine(0);
@@ -19,22 +19,22 @@ void Logger::setDelay(wxString set_Ip, int set_Delay)
 
 }
 
-void Logger::WriteLog() //çàïèñü ñòðîêè â ôàéë
+void Logger::WriteLog() //Ã§Ã Ã¯Ã¨Ã±Ã¼ Ã±Ã²Ã°Ã®ÃªÃ¨ Ã¢ Ã´Ã Ã©Ã«
 {
     wxDateTime now = wxDateTime::Now();
-    wxString date1 = now.Format(wxT("%a %T"));
+    wxString date1 = now.Format(wxT("%d-%m-%y;%T"));
     wxFile file;
-    file.Open(wxT("D:\\Labs_n_Other\\3Vorob\\TS2\\ping_res.txt"), wxFile::write_append);
-    file.Write(Ip + " " + wxString::Format(wxT("%i"), Delay) + " " + date1 + "\n");
+    file.Open(wxT("ping_res.csv"), wxFile::write_append);
+    file.Write(Ip + ";" + wxString::Format(wxT("%i"), Delay) + ";" + date1 + "\n");
 
 }
 
-void Logger::Check() { //ïðîâåðêà êîë-âà ñòðîê
+void Logger::Check() { //Ã¯Ã°Ã®Ã¢Ã¥Ã°ÃªÃ  ÃªÃ®Ã«-Ã¢Ã  Ã±Ã²Ã°Ã®Ãª
     int num;
     wxTextFile file;
-    file.Open(wxT("D:\\Labs_n_Other\\3Vorob\\TS2\\ping_res.txt"));
+    file.Open(wxT("ping_res.csv"));
     num = file.GetLineCount();
-    if (num > 500) {
+    if (num > 3) {
         deletelines();
     }
 }

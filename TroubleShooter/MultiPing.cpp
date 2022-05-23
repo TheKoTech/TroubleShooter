@@ -2,8 +2,27 @@
 
 using namespace std;
 
+
 PingRes::PingRes()
 {
+}
+
+PingThread::PingThread() : wxThread(wxTHREAD_JOINABLE)
+{
+}
+
+void PingThread::SetParams(PingRes* result, string host, int timeout)
+{
+    this->result = result;
+    this->host = host;
+    this->timeout = timeout;
+}
+
+
+void* PingThread::Entry()
+{
+    Ping(result, host, timeout);
+    return 0;
 }
 
 void MultiPing256(PingRes* results, string base_ip, int timeout) {
@@ -14,21 +33,55 @@ void MultiPing256(PingRes* results, string base_ip, int timeout) {
         adresses[i] = base_ip + to_string(i);
     }
 
-    #pragma omp parallel for num_threads(num_adresses / 4)
+    PingThread* pt = new PingThread[num_adresses];
     for (int i = 0; i < num_adresses; ++i) {
-        //cout << adresses[i] << endl;
         results[i].adress = adresses[i];
-        Ping(&results[i], adresses[i], timeout); 
+        pt[i].SetParams(&results[i], adresses[i], timeout);
+        pt[i].Create();
+        pt[i].Run();
     }
+
+    time_t start = clock();
+    bool exist_alive = true;
+    while (exist_alive) {
+        exist_alive = false;
+        for (int i = 0; i < num_adresses; ++i)
+            if (pt[i].IsAlive()) {
+                if (clock() - start < timeout)
+                    exist_alive = true;
+                else {
+                    pt[i].Kill();
+                    results[i].time = -1;
+                }
+            }
+    }
+    delete[] pt;
 }
 
 void MultiPing(PingRes* results, string* adresses, int num_adresses, int timeout) {
-    #pragma omp parallel for num_threads(num_adresses)
+    PingThread* pt = new PingThread[num_adresses];
     for (int i = 0; i < num_adresses; ++i) {
-        //cout << adresses[i] << endl;
         results[i].adress = adresses[i];
-        Ping(&results[i], adresses[i], timeout);
+        pt[i].SetParams(&results[i], adresses[i], timeout);
+        pt[i].Create();
+        pt[i].Run();
     }
+
+    time_t start = clock();
+    bool exist_alive = true;
+    while (exist_alive) {
+        exist_alive = false;
+        for (int i = 0; i < num_adresses; ++i)
+            if (pt[i].IsAlive()) {
+                if (clock() - start < timeout)
+                    exist_alive = true;
+                else {
+                    pt[i].Kill();
+                    results[i].time = -1;
+                }
+            }
+    }
+    delete[] pt;
 }
 
 void Ping(PingRes* result, string host, int timeout) 
