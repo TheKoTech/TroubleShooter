@@ -22,8 +22,10 @@ public:
 private:
 	// AppStatus отражает статус соединения
 	// The AppStatus represents the current connection status: OK (green), Unstable (yellow), Outage (Red) or that the App is disabled (black)
-	AppStatus appStatus;
+	AppStatus appStatus = green;
+	// the main window
 	cFrame* mainFrame = nullptr;
+	// the settings window
 	cSettingsFrame* settingsFrame = nullptr;
 	cTaskBarIcon* taskBarIcon = nullptr;
 	ChartController chartController;

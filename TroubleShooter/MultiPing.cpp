@@ -22,18 +22,18 @@ void PingThread::SetParams(PingRes* result, string host, int timeout)
 void* PingThread::Entry()
 {
     Ping(result, host, timeout);
-    return 0;
+    return nullptr;
 }
 
 void MultiPing256(PingRes* results, string base_ip, int timeout) {
     int num_adresses = 256;
 
-    string* adresses = new string[num_adresses];
+    auto adresses = new string[num_adresses];
     for (int i = 0; i < num_adresses; ++i) {
         adresses[i] = base_ip + to_string(i);
     }
 
-    PingThread* pt = new PingThread[num_adresses];
+    auto pt = new PingThread[num_adresses];
     for (int i = 0; i < num_adresses; ++i) {
         results[i].adress = adresses[i];
         pt[i].SetParams(&results[i], adresses[i], timeout);
@@ -59,7 +59,7 @@ void MultiPing256(PingRes* results, string base_ip, int timeout) {
 }
 
 void MultiPing(PingRes* results, string* adresses, int num_adresses, int timeout) {
-    PingThread* pt = new PingThread[num_adresses];
+    auto pt = new PingThread[num_adresses];
     for (int i = 0; i < num_adresses; ++i) {
         results[i].adress = adresses[i];
         pt[i].SetParams(&results[i], adresses[i], timeout);
@@ -87,8 +87,8 @@ void MultiPing(PingRes* results, string* adresses, int num_adresses, int timeout
 void Ping(PingRes* result, string host, int timeout) 
 {
     int seq_no = 0;
-    ICMPHeader* send_buf = 0;
-    IPHeader* recv_buf = 0;
+    ICMPHeader* send_buf = nullptr;
+    IPHeader* recv_buf = nullptr;
 
     int packet_size = DEFAULT_PACKET_SIZE;
     int ttl = DEFAULT_TTL;
@@ -119,7 +119,7 @@ void Ping(PingRes* result, string host, int timeout)
                 result->time = -2;
 
                 unsigned short header_len = recv_buf->h_len * 4;
-                ICMPHeader* icmphdr = (ICMPHeader*)((char*)recv_buf + header_len);
+                auto icmphdr = (ICMPHeader*)((char*)recv_buf + header_len);
                 if (icmphdr->seq != seq_no) {
                     //cerr << " bad sequence number!" << endl;
                     continue;
@@ -151,5 +151,4 @@ cleanup:
     delete[]send_buf;
     delete[]recv_buf;
     WSACleanup();
-    return;
 }

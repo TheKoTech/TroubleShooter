@@ -140,8 +140,7 @@ bool cApp::UpdateIcon()
 	case red:
 		iconPath = wxString("res/Icon_red.ico");
 		break;
-	case black:
-	default: 
+	case black: 
 		iconPath = wxString("res/Icon_black.ico");
 		break;
 	}
