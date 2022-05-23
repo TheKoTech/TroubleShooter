@@ -1,3 +1,4 @@
-
-.vs/TroubleShooter/v16/ipch
-Debut/TroubleShooter.pdb
+.vs
+.idea
+Debug
+x64
