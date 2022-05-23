@@ -24,6 +24,9 @@
     <ClInclude Include="ChartController.h" />
     <ClInclude Include="cSettingsFrame.h" />
     <ClInclude Include="cTaskBarIcon.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="MultiPing.h" />
+    <ClInclude Include="MultiPingService.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
@@ -32,6 +35,9 @@
     <ClCompile Include="cSettingsFrame.cpp" />
     <ClCompile Include="cTaskBarIcon.cpp" />
     <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="MultiPing.cpp" />
+    <ClCompile Include="MultiPingService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon_black.ico" />
