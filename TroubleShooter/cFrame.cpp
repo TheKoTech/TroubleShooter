@@ -227,7 +227,7 @@ void cFrame::OnLeaveSettingsPanel(wxMouseEvent& event)
 void cFrame::OnSettingsLeftUp(wxMouseEvent& event)
 {
 	// if (event.GetId() == FRAME_SETTINGS) {
-	// 	parent->QueueEvent(event.Clone());
+	// 	handler->QueueEvent(event.Clone());
 	// }
 	event.Skip();
 

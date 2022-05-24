@@ -1,11 +1,11 @@
 #pragma once
-#include <list>
-#include <string>
 #include "wx/thread.h"
 #include "wx/app.h"
 #include "wx/timer.h"
 #include "MultiPing.h"
 #include "Logger.h"
+#include <list>
+#include <string>
 
 enum MainPingThreadEvents {
 	PING_THREAD_UPDATED = 16000,
@@ -21,7 +21,7 @@ public:
 	/// @param timeout - the thread will update every Timeout milliseconds
 	/// @param addressList - list of addressList that will be pinged
 	cMainPingThread(wxApp* handler, int timeout, std::list<wxString>* addressList);
-
+	~cMainPingThread();
 private:
 
 

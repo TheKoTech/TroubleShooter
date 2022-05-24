@@ -22,6 +22,7 @@
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="ChartController.h" />
+    <ClInclude Include="cMainPingThread.h" />
     <ClInclude Include="cSettingsFrame.h" />
     <ClInclude Include="cTaskBarIcon.h" />
     <ClInclude Include="Logger.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="ChartController.cpp" />
+    <ClCompile Include="cMainPingThread.cpp" />
     <ClCompile Include="cSettingsFrame.cpp" />
     <ClCompile Include="cTaskBarIcon.cpp" />
     <ClCompile Include="Colors.cpp" />

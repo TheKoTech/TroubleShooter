@@ -28,9 +28,10 @@ bool cApp::OnInit()
 	appStatus = green;
 
 	taskBarIcon = new cTaskBarIcon(this); 
-	mainFrame = nullptr; // hidden on start
+	//mainFrame = nullptr; // hidden on start
 	chartController = ChartController();
-	settingsFrame = nullptr;
+	settingsFrame;
+	initializeMainPingThread();
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
@@ -48,7 +49,7 @@ void cApp::OnClosed(wxCloseEvent& event)
 	// cFrame window closing is managed here in the controller, not in the class itself
 	if (event.GetEventObject() == mainFrame)
 		closeFrame();
-	if (event.GetEventObject() == settingsFrame)
+	else if (event.GetEventObject() == settingsFrame)
 		closeSettingsFrame();
 }
 void cApp::OnTaskBarIconMenuShow(wxCommandEvent& event) { createFrame(); }
@@ -57,6 +58,11 @@ void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event)
 { 
 	closeFrame(); 
 	closeSettingsFrame();
+	if (mainPingThread)
+	{
+		mainPingThread->Delete();
+		delete mainPingThread;
+	}
 }
 
 void cApp::OnPanelLeftUp(wxMouseEvent& event)
@@ -166,8 +172,12 @@ void cApp::initializeChartSeries(/*log file*/)
 void cApp::initializeMainPingThread()
 {
 	int timeout = 1000; //todo: save as a config
-	std::list<wxString>* addressList; //todo: save as a config
-	pingMainThread = new cMainPingThread(this, timeout, addressList);
+	auto addressList = new std::list<wxString>(); //todo: save as a config
+	addressList->push_back(wxString("yandex.ru"));
+	addressList->push_back(wxString("google.com"));
+	addressList->push_back(wxString("hhhhh"));
+	addressList->push_back(wxString("rutracker.org"));
+	mainPingThread = new cMainPingThread(this, timeout, addressList);
 }
 
 void cApp::createFrame()
