@@ -3,7 +3,7 @@
 // Ётот enum содержит ID событий контроллера.
 // An enum to store controller event IDs.
 enum ControllerEvents {
-	TIMER = 60
+	TIMER = 60,
 };
 //todo: move all event enums to a separate .cpp file?
 
@@ -14,9 +14,8 @@ wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_MENU(MENU_SHOW, OnTaskBarIconMenuShow)
 	EVT_MENU(MENU_SETTINGS, OnTaskBarIconMenuSettings)
 	EVT_MENU(MENU_EXIT, OnTaskBarIconMenuClose)
-	EVT_TIMER(TIMER, OnTimer)
-	EVT_BUTTON(SETTINGS_APPLY, OnApplySettingsButtonClick)
-	EVT_BUTTON(SETTINGS_DISCARD, OnDiscardSettingsButtonClick)
+	EVT_THREAD(PING_THREAD_UPDATED, OnThreadUpdate)
+	EVT_THREAD(PING_THREAD_COMPLETED, OnThreadUpdate)
 wxEND_EVENT_TABLE()
 
 // not used
@@ -38,28 +37,6 @@ bool cApp::OnInit()
 	wxImage::AddHandler(new wxICOHandler); 
 	UpdateIcon();
 
-	int timeout = 1000;
-
-	////// ѕроверка работоспособности кода //////
-	int num_adresses = 7;
-	string* adresses = new string[]{
-		"yandex.ru",
-		"google.com",
-		"ru.wikipedia.com",
-		"192.168.0.6",
-		"rutracker.org",
-		"hhhh",
-		"iafisher.com"
-	};
-	PingRes* res_ping = new PingRes[num_adresses];
-	MultiPing(res_ping, adresses, num_adresses, timeout);
-
-	for (int i = 0; i < num_adresses; ++i) {
-		Logger logger(res_ping[i].adress, res_ping[i].time);
-		logger.WriteLog();
-		logger.Check();
-	}
-	////// конец проверки работоспособности кода //////
 
 	return true;
 }
@@ -93,10 +70,18 @@ void cApp::OnApplySettingsButtonClick(wxCommandEvent& event)
 {
 
 }
-
 void cApp::OnDiscardSettingsButtonClick(wxCommandEvent& event)
 {
 
+}
+
+void cApp::OnThreadUpdate(wxThreadEvent& event)
+{
+	// todo: log data and update chart
+}
+void cApp::OnThreadCompleted(wxThreadEvent& event)
+{
+	
 }
 
 void cApp::createSettingsFrame()
@@ -112,18 +97,12 @@ void cApp::createSettingsFrame()
 		settingsFrame->Maximize(false);
 	}
 }
-
 void cApp::closeSettingsFrame()
 {
 	if (settingsFrame != nullptr) {
 		settingsFrame->Destroy();
 		settingsFrame = nullptr;
 	}
-}
-
-void cApp::OnTimer(wxTimerEvent& event)
-{
-	// ѕроисходит при обновлении таймера
 }
 
 bool cApp::UpdateIcon()
@@ -182,6 +161,13 @@ void cApp::initializeChartSeries(/*log file*/)
 
 	// serie goes to Frame
 	chartController.CreateSerie(ChartController::dsLAN, data);
+}
+
+void cApp::initializeMainPingThread()
+{
+	int timeout = 1000; //todo: save as a config
+	std::list<wxString>* addressList; //todo: save as a config
+	pingMainThread = new cMainPingThread(this, timeout, addressList);
 }
 
 void cApp::createFrame()

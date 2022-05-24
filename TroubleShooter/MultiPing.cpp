@@ -11,6 +11,7 @@ PingThread::PingThread() : wxThread(wxTHREAD_JOINABLE)
 {
 }
 
+// Используй конструктор
 void PingThread::SetParams(PingRes* result, string host, int timeout)
 {
     this->result = result;
@@ -18,7 +19,8 @@ void PingThread::SetParams(PingRes* result, string host, int timeout)
     this->timeout = timeout;
 }
 
-
+// Неоднозначное название. Возможно, SinglePingThread?
+// Нет обработчиков событий. Смотри cMainPingThread.cpp. ThreadUpdated необязателен.
 void* PingThread::Entry()
 {
     Ping(result, host, timeout);
@@ -50,7 +52,7 @@ void MultiPing256(PingRes* results, string base_ip, int timeout) {
                 if (clock() - start < timeout)
                     exist_alive = true;
                 else {
-                    pt[i].Kill();
+                    pt[i].Kill(); // читай описание функции. 
                     results[i].time = -1;
                 }
             }
@@ -58,6 +60,7 @@ void MultiPing256(PingRes* results, string base_ip, int timeout) {
     delete[] pt;
 }
 
+// Неоднозначное название
 void MultiPing(PingRes* results, string* adresses, int num_adresses, int timeout) {
     auto pt = new PingThread[num_adresses];
     for (int i = 0; i < num_adresses; ++i) {
@@ -66,7 +69,8 @@ void MultiPing(PingRes* results, string* adresses, int num_adresses, int timeout
         pt[i].Create();
         pt[i].Run();
     }
-
+    
+    // Вместо бесконечной проверки, используй событие wxEVT_THREAD с уникальным ID. Смотри cMainPingThread.cpp
     time_t start = clock();
     bool exist_alive = true;
     while (exist_alive) {
@@ -84,7 +88,8 @@ void MultiPing(PingRes* results, string* adresses, int num_adresses, int timeout
     delete[] pt;
 }
 
-void Ping(PingRes* result, string host, int timeout) 
+// Документируй код
+void Ping(PingRes* result, string host, int timeout) // параметр не используется
 {
     int seq_no = 0;
     ICMPHeader* send_buf = nullptr;
@@ -102,11 +107,11 @@ void Ping(PingRes* result, string host, int timeout)
     sockaddr_in dest, source;
     if (setup_for_ping((char*)host.c_str(), ttl, sd, dest) < 0) {
         result->time = -2;
-        goto cleanup;
+        goto cleanup; // Убрать
     }
     if (allocate_buffers(send_buf, recv_buf, packet_size) < 0) {
         result->time = -2;
-        goto cleanup;
+        goto cleanup; // Убрать
     }
 
     init_ping_packet(send_buf, packet_size, seq_no);
@@ -114,7 +119,7 @@ void Ping(PingRes* result, string host, int timeout)
     time_t start, end;
     start = clock();
     if (send_ping(sd, dest, send_buf, packet_size) >= 0) {
-        while (true) {
+        while (true) { // Использовать while(true) плохая практика. Используй булевскую переменную для выхода из цикла.
             if (recv_ping(sd, source, recv_buf, MAX_PING_PACKET_SIZE) < 0) {
                 result->time = -2;
 
@@ -122,11 +127,11 @@ void Ping(PingRes* result, string host, int timeout)
                 auto icmphdr = (ICMPHeader*)((char*)recv_buf + header_len);
                 if (icmphdr->seq != seq_no) {
                     //cerr << " bad sequence number!" << endl;
-                    continue;
+                    continue; // Зачем
                 }
                 else {
                     result->time = -2;
-                    goto cleanup;
+                    goto cleanup;// Убрать
                 }
             }
             int decode_res = decode_reply(recv_buf, packet_size, &source);
@@ -135,7 +140,7 @@ void Ping(PingRes* result, string host, int timeout)
                 if (decode_res == -1) {
                     result->time = -2;
                 }
-                goto cleanup;
+                goto cleanup; // Убрать
             }
         }
     }

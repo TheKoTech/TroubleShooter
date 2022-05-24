@@ -3,9 +3,8 @@
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 #include "ChartController.h"
-#include "MultiPing.h"
-#include "Logger.h"
 #include "cSettingsFrame.h"
+#include "cMainPingThread.h"
 
 enum AppStatus { green, yellow, red, black };
 
@@ -29,6 +28,7 @@ private:
 	cSettingsFrame* settingsFrame = nullptr;
 	cTaskBarIcon* taskBarIcon = nullptr;
 	ChartController chartController;
+	cMainPingThread* pingMainThread = nullptr;
 
 	// Todo: методы модели
 
@@ -41,6 +41,8 @@ private:
 	// Этот метод вызывается при создании cFrame. Он принимает данные из файла с логами, формирует их в wxVector и подаёт чарт контроллеру для отображения.
 	// This method is called on cFrame creation. It receives log data from a file, forms it into a wxVector and passes it to chartController for display.
 	void initializeChartSeries();
+	// This method collects the saved list of Addresses and starts the main pinging thread
+	void initializeMainPingThread();
 	void createFrame();
 	void closeFrame();
 	void createSettingsFrame();
@@ -56,7 +58,10 @@ private:
 	void OnApplySettingsButtonClick(wxCommandEvent& event);
 	void OnDiscardSettingsButtonClick(wxCommandEvent& event);
 
-	void OnTimer(wxTimerEvent& event);
+	// todo: Processes the ping results of the main ping thread
+	void OnThreadUpdate(wxThreadEvent& event);
+	// todo: Cleanup
+	void OnThreadCompleted(wxThreadEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };
