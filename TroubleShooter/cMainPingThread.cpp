@@ -5,6 +5,9 @@ cMainPingThread::cMainPingThread(wxApp* handler, int timeout, std::list<wxString
 	this->handler = handler;
 	this->timeout = timeout;
     this->addressList = addresses;
+    if (Run() != wxTHREAD_NO_ERROR) {
+        wxLogError("Can't create the thread!");
+    }
 }
 
 wxThread::ExitCode cMainPingThread::Entry()

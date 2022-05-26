@@ -43,7 +43,7 @@ private:
 	// This method is called on cFrame creation. It receives log data from a file, forms it into a wxVector and passes it to chartController for display.
 	void initializeChartSeries();
 	// This method collects the saved list of Addresses and starts the main pinging thread
-	void initializeMainPingThread();
+	void initializePingController();
 	void createFrame();
 	void closeFrame();
 	void createSettingsFrame();

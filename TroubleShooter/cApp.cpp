@@ -28,10 +28,10 @@ bool cApp::OnInit()
 	appStatus = green;
 
 	taskBarIcon = new cTaskBarIcon(this); 
-	//mainFrame = nullptr; // hidden on start
+	mainFrame = nullptr; // hidden on start
 	chartController = ChartController();
 	settingsFrame;
-	initializeMainPingThread();
+	initializePingController();
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
@@ -61,7 +61,6 @@ void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event)
 	if (mainPingThread)
 	{
 		mainPingThread->Delete();
-		delete mainPingThread;
 	}
 }
 
@@ -169,7 +168,7 @@ void cApp::initializeChartSeries(/*log file*/)
 	chartController.CreateSerie(ChartController::dsLAN, data);
 }
 
-void cApp::initializeMainPingThread()
+void cApp::initializePingController()
 {
 	int timeout = 1000; //todo: save as a config
 	auto addressList = new std::list<wxString>(); //todo: save as a config
