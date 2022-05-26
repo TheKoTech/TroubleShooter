@@ -96,7 +96,7 @@ int send_ping(SOCKET sd, const sockaddr_in& dest, ICMPHeader* send_buf, int pack
 {
     int bwrote = sendto(sd, (char*)send_buf, packet_size, 0, (sockaddr*)&dest, sizeof(dest));
     if (bwrote == SOCKET_ERROR) {
-        //cerr << "send failed: " << WSAGetLastError() << endl;
+        //cerr << "Send failed: " << WSAGetLastError() << endl;
         return -1;
     }
 
@@ -108,12 +108,12 @@ int recv_ping(SOCKET sd, sockaddr_in& source, IPHeader* recv_buf, int packet_siz
     int fromlen = sizeof(source);
     int bread = recvfrom(sd, (char*)recv_buf, packet_size + sizeof(IPHeader), 0, (sockaddr*)&source, &fromlen);
     if (bread == SOCKET_ERROR) {
-        //cerr << "read failed: ";
+        //cerr << "Read failed: ";
         if (WSAGetLastError() == WSAEMSGSIZE) {
-            //cerr << "buffer too small" << endl;
+            //cerr << "Buffer too small" << endl;
         }
         else {
-            //cerr << "error #" << WSAGetLastError() << endl;
+            //cerr << "Error #" << WSAGetLastError() << endl;
         }
         return -1;
     }
@@ -127,7 +127,7 @@ int decode_reply(IPHeader* reply, int bytes, sockaddr_in* from)
     ICMPHeader* icmphdr = (ICMPHeader*)((char*)reply + header_len);
 
     if (bytes < header_len + ICMP_MIN) {
-        //cerr << "too few bytes from " << inet_ntoa(from->sin_addr) << endl;
+        //cerr << "Too few bytes from " << inet_ntoa(from->sin_addr) << endl;
         return -1;
     }
     if (icmphdr->type != ICMP_ECHO_REPLY) {
@@ -143,14 +143,6 @@ int decode_reply(IPHeader* reply, int bytes, sockaddr_in* from)
     }
     else if (icmphdr->id != (USHORT)GetCurrentProcessId()) {
         return -2;
-    }
-
-    int nHops = int(256 - reply->ttl);
-    if (nHops == 192) {
-        nHops = 1;
-    }
-    else if (nHops == 128) {
-        nHops = 0;
     }
 
     return 0;

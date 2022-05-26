@@ -26,14 +26,6 @@
 #pragma pack(1)
 #endif
 
-struct PingRes
-{
-    PingRes();
-
-    std::string adress;   // ip адрес либо доменное имя в тестовом виде
-    int time = -1;   // число >=0, если пинг был успешен, -1, если не успешен
-};
-
 struct IPHeader {
     BYTE h_len : 4;           // Length of the header in dwords
     BYTE version : 4;         // Version of IP
