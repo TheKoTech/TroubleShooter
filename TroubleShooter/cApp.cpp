@@ -30,7 +30,7 @@ bool cApp::OnInit()
 	taskBarIcon = new cTaskBarIcon(this);
 	chartController = ChartController();
 	initializePingController();
-	readConfig();
+	applyConfig();
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
@@ -177,9 +177,9 @@ void cApp::initializePingController()
 	mainPingThread = new PingController(this, timeout, addressList);
 }
 
-void cApp::readConfig()
+void cApp::applyConfig()
 {
-	auto confCtr = SettingsController();
+	auto confCtr = ConfigController(this);
 	confCtr.getAddressList();
 }
 

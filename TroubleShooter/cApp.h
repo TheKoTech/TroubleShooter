@@ -45,7 +45,8 @@ private:
 	void initializeChartSeries();
 	// This method collects the saved list of Addresses and starts the main pinging thread
 	void initializePingController();
-	void readConfig();
+	// aply user settings/configuration
+	void applyConfig();
 	void createFrame();
 	void closeFrame();
 	void createSettingsFrame();

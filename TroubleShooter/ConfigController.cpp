@@ -1,23 +1,26 @@
 ﻿#include "ConfigController.h"
 
-std::list<wxString>* SettingsController::getAddressList() {
-    auto file = new wxFileConfig();
-    file->
+ConfigController::ConfigController(wxApp* handler)
+{
+    this->handler = handler;
+    configName = wxFileName(handler->argv[0]); // executable name
+}
+
+std::list<wxString>* ConfigController::getAddressList()
+{
     auto addressList = new std::list<wxString>();
-    if (!file->Open(wxString("config.json"), wxFile::read)) {
-        createDefaultConfigFile();
-    }
-    addressList->push_back(wxString("helo"));
-    file->Close();
-    delete file;    
+    // this monstrocity gets path to the executable
+    auto config = new wxFileConfig("", "", configName.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "config.ini");
+    config->Write(wxString("brl"), wxString("brlbrlbrllbrrlblbr"));
+
+
+    config->Flush();
+
+    delete config;    
     return addressList;
 }
 
-void SettingsController::createDefaultConfigFile() {
-    auto file = new wxFile();
-    file->Create(wxString("config.json"));
-    file->Write(wxString("{\n    \"LAN\": \"192.168.1.1\"\n}"));
-
-    file->Close();
-    delete file;
+void ConfigController::createDefaultConfigFile() 
+{
+    
 }
