@@ -1,6 +1,6 @@
-#include "cMainPingThread.h"
+#include "PingController.h"
 
-cMainPingThread::cMainPingThread(wxApp* handler, int timeout, std::list<wxString>* addresses) : wxThread()
+PingController::PingController(wxApp* handler, int timeout, std::list<wxString>* addresses) : wxThread()
 {
 	this->handler = handler;
 	this->timeout = timeout;
@@ -10,7 +10,7 @@ cMainPingThread::cMainPingThread(wxApp* handler, int timeout, std::list<wxString
     }
 }
 
-wxThread::ExitCode cMainPingThread::Entry()
+wxThread::ExitCode PingController::Entry()
 {
     // Exits loop, if the thread is asked to terminate
     while (!TestDestroy())
@@ -48,13 +48,13 @@ wxThread::ExitCode cMainPingThread::Entry()
     return (wxThread::ExitCode)0;
 }
 
-cMainPingThread::~cMainPingThread()
+PingController::~PingController()
 {
     delete addressList;
     handler = nullptr;
 }
 
-int cMainPingThread::CountAddresses()
+int PingController::CountAddresses()
 {
     return addressList->size();
 }

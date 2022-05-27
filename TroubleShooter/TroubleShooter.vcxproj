@@ -22,24 +22,26 @@
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="ChartController.h" />
-    <ClInclude Include="cMainPingThread.h" />
+    <ClInclude Include="PingController.h" />
     <ClInclude Include="cSettingsFrame.h" />
     <ClInclude Include="cTaskBarIcon.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MultiPing.h" />
     <ClInclude Include="MultiPingService.h" />
+    <ClInclude Include="ConfigController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="ChartController.cpp" />
-    <ClCompile Include="cMainPingThread.cpp" />
+    <ClCompile Include="PingController.cpp" />
     <ClCompile Include="cSettingsFrame.cpp" />
     <ClCompile Include="cTaskBarIcon.cpp" />
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MultiPing.cpp" />
     <ClCompile Include="MultiPingService.cpp" />
+    <ClCompile Include="ConfigController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon_black.ico" />

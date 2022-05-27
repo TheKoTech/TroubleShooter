@@ -4,7 +4,8 @@
 #include "cFrame.h"
 #include "ChartController.h"
 #include "cSettingsFrame.h"
-#include "cMainPingThread.h"
+#include "PingController.h"
+#include "ConfigController.h"
 #include <list>
 
 enum AppStatus { green, yellow, red, black };
@@ -29,7 +30,7 @@ private:
 	cSettingsFrame* settingsFrame = nullptr;
 	cTaskBarIcon* taskBarIcon = nullptr;
 	ChartController chartController;
-	cMainPingThread* mainPingThread = nullptr;
+	PingController* mainPingThread = nullptr;
 
 	// Todo: методы модели
 
@@ -44,6 +45,7 @@ private:
 	void initializeChartSeries();
 	// This method collects the saved list of Addresses and starts the main pinging thread
 	void initializePingController();
+	void readConfig();
 	void createFrame();
 	void closeFrame();
 	void createSettingsFrame();

@@ -27,11 +27,10 @@ bool cApp::OnInit()
 {
 	appStatus = green;
 
-	taskBarIcon = new cTaskBarIcon(this); 
-	mainFrame = nullptr; // hidden on start
+	taskBarIcon = new cTaskBarIcon(this);
 	chartController = ChartController();
-	settingsFrame;
 	initializePingController();
+	readConfig();
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
@@ -58,8 +57,7 @@ void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event)
 { 
 	closeFrame(); 
 	closeSettingsFrame();
-	if (mainPingThread)
-	{
+	if (mainPingThread) {
 		mainPingThread->Delete();
 	}
 }
@@ -73,7 +71,7 @@ void cApp::OnPanelLeftUp(wxMouseEvent& event)
 
 void cApp::OnApplySettingsButtonClick(wxCommandEvent& event)
 {
-
+	
 }
 void cApp::OnDiscardSettingsButtonClick(wxCommandEvent& event)
 {
@@ -176,7 +174,13 @@ void cApp::initializePingController()
 	addressList->push_back(wxString("google.com"));
 	addressList->push_back(wxString("hhhhh"));
 	addressList->push_back(wxString("rutracker.org"));
-	mainPingThread = new cMainPingThread(this, timeout, addressList);
+	mainPingThread = new PingController(this, timeout, addressList);
+}
+
+void cApp::readConfig()
+{
+	auto confCtr = SettingsController();
+	confCtr.getAddressList();
 }
 
 void cApp::createFrame()

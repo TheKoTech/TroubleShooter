@@ -13,15 +13,15 @@ enum MainPingThreadEvents {
 };
 
 /// The main thread to run all pinging classes and functions 
-class cMainPingThread : public wxThread
+class PingController : public wxThread
 {
 public:
 	/// The main thread to run all pinging classes and functions 
 	/// @param handler - controller (cApp)
 	/// @param timeout - the thread will update every Timeout milliseconds
 	/// @param addressList - list of addressList that will be pinged
-	cMainPingThread(wxApp* handler, int timeout, std::list<wxString>* addressList);
-	~cMainPingThread();
+	PingController(wxApp* handler, int timeout, std::list<wxString>* addressList);
+	~PingController();
 private:
 
 
