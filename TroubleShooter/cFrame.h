@@ -2,18 +2,14 @@
 #include "wx/wx.h"
 #include <wx/display.h>
 #include <wx/taskbar.h>
-#include <wx/statline.h>
 #include <wx/vector.h>
 #include <wx/gbsizer.h>
 #include "wx/chart.h"
-#include <wx/xy/xyplot.h>
-#include <wx/chartpanel.h>
-#include <wx/xy/xysimpledataset.h>
-#include <wx/xy/xylinerenderer.h>
 #include <wx/axisplot.h>
 
-//todo: optimize imports
-
+enum cFrameIDs {
+	FRAME_SETTINGS = 100
+};
 
 /*
 * The main window of the app or the TopLevelWindow
@@ -21,9 +17,13 @@
 class cFrame : public wxFrame
 {
 public:
-	cFrame(wxApp* parent, Chart* chart); 
+	cFrame(wxApp* parent, Chart* chart);
 	~cFrame();
-	
+
+	//Those panels act as buttons:
+	//wxPanel* LANpanel, ISPpanel
+	wxPanel* settingsPanel; // Basically, a button
+
 private:
 	wxApp* parent;
 
@@ -48,12 +48,15 @@ private:
 	void createStatusBar();
 	wxPanel* createStatusPanelElement();
 	void applyFrameSettings();
+	void bindMouseEventRecursive(wxWindow* window, void (cFrame::* method)(wxMouseEvent&));
 
 	// Event handlers
-	
-	// Not used
+
 	void OnButtonClick(wxCommandEvent& event);
 	void OnClosed(wxCloseEvent& event);
+	void OnEnterSettingsPanel(wxMouseEvent& event);
+	void OnLeaveSettingsPanel(wxMouseEvent& event);
+	void OnSettingsLeftUp(wxMouseEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

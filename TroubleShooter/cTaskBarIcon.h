@@ -1,6 +1,4 @@
 #pragma once
-
-#include <wx/msw/msvcrt.h>
 #include "wx/wx.h"
 #include <wx/taskbar.h>
 
@@ -21,23 +19,12 @@ public:
 	void ShowSettings(wxCommandEvent& event);
 	void Close(wxCommandEvent& event);
 
-	/**
-	 * Change cTaskBarIcon's image.
-	 * @param newIcon - new icon.
-	 */
+	// Change cTaskBarIcon's image.
 	bool UpdateIcon(wxIcon newIcon);
 
-	/**
-	 * Change cTaskBarIcon's image and tooltip.
-	 * @param newIcon - new icon.
-	 * @param newTooltip - new tooltip.
-	 */
+	// Change cTaskBarIcon's image and tooltip.
 	bool UpdateIcon(wxIcon newIcon, wxString newTooltip);
 
-	/**
-	 * Change cTaskBarIcon's tooltip.
-	 * @param newTooltip - new tooltip.
-	 */
 	void UpdateTooltip(wxString newTooltip);
 
 private:

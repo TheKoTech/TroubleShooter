@@ -3,6 +3,16 @@
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 #include "ChartController.h"
+#include "Ping.h"
+#pragma once
+#include "wx/wx.h"
+#include "cTaskBarIcon.h"
+#include "cFrame.h"
+#include "ChartController.h"
+#include "cSettingsFrame.h"
+#include "PingController.h"
+#include "ConfigController.h"
+#include <list>
 
 enum AppStatus { green, yellow, red, black };
 
@@ -19,10 +29,14 @@ public:
 private:
 	// AppStatus отражает статус соединения
 	// The AppStatus represents the current connection status: OK (green), Unstable (yellow), Outage (Red) or that the App is disabled (black)
-	AppStatus appStatus;
-	cFrame* mainFrame;
-	cTaskBarIcon* taskBarIcon;
+	AppStatus appStatus = green;
+	// the main window
+	cFrame* mainFrame = nullptr;
+	// the settings window
+	cSettingsFrame* settingsFrame = nullptr;
+	cTaskBarIcon* taskBarIcon = nullptr;
 	ChartController chartController;
+	PingController* mainPingThread = nullptr;
 
 	// Todo: методы модели
 
@@ -35,16 +49,26 @@ private:
 	// Этот метод вызывается при создании cFrame. Он принимает данные из файла с логами, формирует их в wxVector и подаёт чарт контроллеру для отображения.
 	// This method is called on cFrame creation. It receives log data from a file, forms it into a wxVector and passes it to chartController for display.
 	void initializeChartSeries();
+	// This method collects the saved list of Addresses and starts the main pinging thread
+	void initializePingController();
 	void createFrame();
 	void closeFrame();
+	void createSettingsFrame();
+	void closeSettingsFrame();
 
 	// Ивенты
 	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
 	void OnClosed(wxCloseEvent& event);
 	void OnTaskBarIconMenuShow(wxCommandEvent& event);
+	void OnTaskBarIconMenuSettings(wxCommandEvent& event);
 	void OnTaskBarIconMenuClose(wxCommandEvent& event);
+	void OnPanelLeftUp(wxMouseEvent& event);
+	void OnApplyButtonLeftUp(wxCommandEvent& event);
 
-	void OnTimer(wxTimerEvent& event);
+	// todo: Processes the ping results of the main ping thread
+	void OnThreadUpdate(wxThreadEvent& event);
+	// todo: Cleanup
+	void OnThreadCompleted(wxThreadEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

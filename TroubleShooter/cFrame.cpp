@@ -2,8 +2,8 @@
 #include "Colors.cpp"
 
 wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
-	EVT_CLOSE(OnClosed)
-	EVT_BUTTON(10000, OnButtonClick)
+EVT_CLOSE(OnClosed)
+EVT_BUTTON(10000, OnButtonClick)
 wxEND_EVENT_TABLE()
 
 const int clientWidth = 700;
@@ -161,7 +161,6 @@ void cFrame::createStatusBar()
 wxPanel* cFrame::createStatusPanelElement()
 {
 	
-
 	return nullptr;
 }
 
