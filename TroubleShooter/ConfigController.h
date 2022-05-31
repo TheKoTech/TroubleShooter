@@ -4,8 +4,6 @@
 #include <wx/app.h>
 #include <list>
 
-// 
-//
 
 class ConfigController {
 public:

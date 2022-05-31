@@ -10,36 +10,31 @@ ConfigController::ConfigController(wxApp* handler)
 
 wxVector<wxString>* ConfigController::GetAddressList()
 {
+    // todo: вынести в функцию
     auto addressList = new wxVector<wxString>();
     wxString str;
     // this monstrocity gets path to the executable
     auto config = new wxFileConfig("", "", configName.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "config.ini");
 
-    if (config->Read(wxString("lan"), &str)) wxLogMessage(str);
-    else {
+    if (!config->Read(wxString("lan"), &str)) {
         str = wxString("192.168.1.1");
         config->Write(wxString("lan"), wxString("192.168.1.1"));
     }
     addressList->push_back(str);
 
-    if (config->Read(wxString("isp"), &str)) wxLogMessage(str);
-    else {
+    if (!config->Read(wxString("isp"), &str)) {
         str = wxString("");
         config->Write(wxString("isp"), wxString(""));
     }
     addressList->push_back(str);
     
-    if (config->Read(wxString("dns"), &str)) wxLogMessage(str);
-    else {
+    if (!config->Read(wxString("dns"), &str)) {
         str = wxString("8.8.8.8");
         config->Write(wxString("dns"), wxString("8.8.8.8"));
     }
     addressList->push_back(str);
-
-    // todo: вынести в функцию
     
-    if (config->Read(wxString("host"), &str)) wxLogMessage(str);
-    else {
+    if (!config->Read(wxString("host"), &str)) {
         str = wxString("yandex.ru");
         config->Write(wxString("host"), wxString("yandex.ru"));
     }
@@ -79,5 +74,4 @@ void ConfigController::WriteAddresses(wxVector<wxString>* addresses)
     }
     config->Flush();
     delete config;
-    
 }

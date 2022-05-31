@@ -45,8 +45,6 @@ private:
 	void initializeChartSeries();
 	// This method collects the saved list of Addresses and starts the main pinging thread
 	void initializePingController();
-	// aply user settings/configuration
-	void applyConfig();
 	void createFrame();
 	void closeFrame();
 	void createSettingsFrame();
@@ -59,8 +57,7 @@ private:
 	void OnTaskBarIconMenuSettings(wxCommandEvent& event);
 	void OnTaskBarIconMenuClose(wxCommandEvent& event);
 	void OnPanelLeftUp(wxMouseEvent& event);
-	void OnApplySettingsButtonClick(wxCommandEvent& event);
-	void OnDiscardSettingsButtonClick(wxCommandEvent& event);
+	void OnApplyButtonLeftUp(wxCommandEvent& event);
 
 	// todo: Processes the ping results of the main ping thread
 	void OnThreadUpdate(wxThreadEvent& event);

@@ -10,18 +10,30 @@ wxEND_EVENT_TABLE()
 
 const wxSize minClientSize = wxSize(215, 290);
 
-cSettingsFrame::cSettingsFrame(wxApp* parent) : wxFrame(nullptr, wxID_ANY, "Settings")
+cSettingsFrame::cSettingsFrame(wxApp* parent, wxVector<wxString>* addresses) : wxFrame(nullptr, wxID_ANY, "Settings")
 {
 	this->parent = parent;
 	settingsChanged = false; // if text is changed, deny to close the window
 
-	initializeUI();
+
+
+	initializeUI(addresses);
 	applyFrameSettings();
 }
 
 cSettingsFrame::~cSettingsFrame() = default;
 
-void cSettingsFrame::initializeUI()
+wxVector<wxString>* cSettingsFrame::GetNewAdresses()
+{
+	auto adresses = new wxVector<wxString>();
+	adresses->push_back(lanInput->GetLineText(0));
+	adresses->push_back(ispInput->GetLineText(0));
+	adresses->push_back(dnsInput->GetLineText(0));
+	adresses->push_back(hostInput->GetLineText(0));
+	return adresses;
+}
+
+void cSettingsFrame::initializeUI(wxVector<wxString>* addresses)
 {
 	auto const windowSizer = new wxBoxSizer(wxVERTICAL);
 	auto const mainPanel = new wxPanel(this);
@@ -50,10 +62,10 @@ void cSettingsFrame::initializeUI()
 	dnsText->SetForegroundColour(COL_TITLE);
 	hostText->SetForegroundColour(COL_TITLE);
 
-	lanInput = new wxTextCtrl(mainPanel, SETTINGS_LAN, wxString("192.168.1.1"));
-	ispInput = new wxTextCtrl(mainPanel, SETTINGS_ISP, wxString(""));
-	dnsInput = new wxTextCtrl(mainPanel, SETTINGS_DNS, wxString("8.8.8.8"));
-	hostInput = new wxTextCtrl(mainPanel, SETTINGS_HOST, wxString("yandex.ru"));
+	lanInput = new wxTextCtrl(mainPanel, SETTINGS_LAN, addresses->at(0));
+	ispInput = new wxTextCtrl(mainPanel, SETTINGS_ISP, addresses->at(1));
+	dnsInput = new wxTextCtrl(mainPanel, SETTINGS_DNS, addresses->at(2));
+	hostInput = new wxTextCtrl(mainPanel, SETTINGS_HOST, addresses->at(3));
 
 	lanInput->SetBackgroundColour(COL_BG_AUX);
 	ispInput->SetBackgroundColour(COL_BG_AUX);
@@ -109,13 +121,13 @@ void cSettingsFrame::applyFrameSettings()
 
 void cSettingsFrame::OnApplyButtonClick(wxCommandEvent& event)
 {
-
+	event.Skip();
 }
 
 
 void cSettingsFrame::OnDiscardButtonClick(wxCommandEvent& event)
 {
-
+	this->Close();
 }
 
 void cSettingsFrame::OnClosed(wxCloseEvent& event)

@@ -15,9 +15,10 @@ enum {
 class cSettingsFrame : public wxFrame 
 {
 public:
-	cSettingsFrame(wxApp* parent);
+	cSettingsFrame(wxApp* parent, wxVector<wxString>* addresses);
 	~cSettingsFrame();
 
+	wxVector<wxString>* GetNewAdresses();
 private:
 	wxApp* parent = nullptr;
 
@@ -27,8 +28,9 @@ private:
 	wxTextCtrl* dnsInput = nullptr;
 	wxTextCtrl* hostInput = nullptr;
 
-	void initializeUI();
+	void initializeUI(wxVector<wxString>* addresses);
 	void applyFrameSettings();
+
 
 	void OnApplyButtonClick(wxCommandEvent& event);
 	void OnDiscardButtonClick(wxCommandEvent& event);

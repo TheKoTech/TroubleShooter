@@ -16,6 +16,7 @@ wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_MENU(MENU_EXIT, OnTaskBarIconMenuClose)
 	EVT_THREAD(PING_THREAD_UPDATED, OnThreadUpdate)
 	EVT_THREAD(PING_THREAD_COMPLETED, OnThreadUpdate)
+	EVT_BUTTON(SETTINGS_APPLY, OnApplyButtonLeftUp)
 wxEND_EVENT_TABLE()
 
 // not used
@@ -30,7 +31,6 @@ bool cApp::OnInit()
 	taskBarIcon = new cTaskBarIcon(this);
 	chartController = ChartController();
 	initializePingController();
-	applyConfig();
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
@@ -69,13 +69,12 @@ void cApp::OnPanelLeftUp(wxMouseEvent& event)
 	event.Skip();
 }
 
-void cApp::OnApplySettingsButtonClick(wxCommandEvent& event)
+void cApp::OnApplyButtonLeftUp(wxCommandEvent& event)
 {
-	
-}
-void cApp::OnDiscardSettingsButtonClick(wxCommandEvent& event)
-{
-
+	ConfigController config = ConfigController(this);
+	auto addresses = settingsFrame->GetNewAdresses();
+	config.WriteAddresses(addresses);
+	delete addresses;
 }
 
 void cApp::OnThreadUpdate(wxThreadEvent& event)
@@ -90,9 +89,13 @@ void cApp::OnThreadCompleted(wxThreadEvent& event)
 void cApp::createSettingsFrame()
 {
 	if (settingsFrame == nullptr) {
-		settingsFrame = new cSettingsFrame(this);
+		auto config = ConfigController(this);
+		auto addresses = config.GetAddressList();
+		settingsFrame = new cSettingsFrame(this, addresses);
 		UpdateIcon();
 		settingsFrame->Show();
+		
+		delete addresses;
 	}
 	else
 	{
@@ -175,12 +178,6 @@ void cApp::initializePingController()
 	addressList->push_back(wxString("hhhhh"));
 	addressList->push_back(wxString("rutracker.org"));
 	mainPingThread = new PingController(this, timeout, addressList);
-}
-
-void cApp::applyConfig()
-{
-	auto confCtr = ConfigController(this);
-	confCtr.GetAddressList();
 }
 
 void cApp::createFrame()
