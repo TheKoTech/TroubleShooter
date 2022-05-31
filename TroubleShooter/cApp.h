@@ -3,16 +3,11 @@
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
 #include "ChartController.h"
-#include "Ping.h"
-#pragma once
-#include "wx/wx.h"
-#include "cTaskBarIcon.h"
-#include "cFrame.h"
-#include "ChartController.h"
 #include "cSettingsFrame.h"
 #include "PingController.h"
 #include "ConfigController.h"
 #include <list>
+#include "Ping.h"
 
 enum AppStatus { green, yellow, red, black };
 
