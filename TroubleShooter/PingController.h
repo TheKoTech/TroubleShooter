@@ -2,10 +2,8 @@
 #include "wx/thread.h"
 #include "wx/app.h"
 #include "wx/timer.h"
-#include "MultiPing.h"
+#include "Ping.h"
 #include "Logger.h"
-#include <list>
-#include <string>
 
 enum MainPingThreadEvents {
 	PING_THREAD_UPDATED = 16000,
@@ -20,7 +18,7 @@ public:
 	/// @param handler - controller (cApp)
 	/// @param timeout - the thread will update every Timeout milliseconds
 	/// @param addressList - list of addressList that will be pinged
-	PingController(wxApp* handler, int timeout, std::list<wxString>* addressList);
+	PingController(wxApp* handler, int timeout, std::vector<wxString>* addressList);
 	~PingController();
 private:
 
@@ -28,15 +26,17 @@ private:
 
 	wxApp* handler;
 	int timeout; // Thread is updated every Timeout milliseconds
-	std::list<wxString>* addressList; // todo: turn into a struct with AddressType (LAN, DNS...)
+	std::vector<wxString>* addressVector; // TODO: turn into a struct with AddressType (LAN, DNS...)
+	PingRes* pings_results;
 
 protected:
-	
+
 	/// Acts like the "main" function. 
 	virtual ExitCode Entry();
 
 public:
 	int CountAddresses();
+	PingRes* GetPingResults();
 
 	// Unneeded?
 	//private:

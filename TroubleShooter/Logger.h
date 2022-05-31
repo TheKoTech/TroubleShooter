@@ -11,10 +11,11 @@ class Logger
 private:
     wxString Ip;  //  ip
     int Delay;  //задержка
+    int marker;
 public:
-    Logger(wxString set_Ip, int set_Delay);
+    Logger(wxString set_Ip, int set_Delay, int set_marker);
     void deletelines();
-    void setDelay(wxString set_Ip, int set_Delay);
+    void setDelay(wxString set_Ip, int set_Delay, int set_marker);
     void WriteLog();
     void Check();
 };

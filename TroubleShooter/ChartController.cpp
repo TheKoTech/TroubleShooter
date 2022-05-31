@@ -72,7 +72,7 @@ Chart* ChartController::CreateChart()
 	// create left and bottom number axes
 	auto* rightAxis = new NumberAxis(AXIS_RIGHT);
 	auto* bottomAxis = new NumberAxis(AXIS_BOTTOM);
-	rightAxis->SetFixedBounds(0, 2000);
+	//rightAxis->SetFixedBounds(0, 120);
 	bottomAxis->SetFixedBounds(0, 60);
 	rightAxis->IntegerValues(true);
 	bottomAxis->IntegerValues(true);

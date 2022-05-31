@@ -3,11 +3,11 @@
 #include "Colors.cpp"
 
 wxBEGIN_EVENT_TABLE(cTaskBarIcon, wxTaskBarIcon)
-	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
-	EVT_TASKBAR_RIGHT_UP(OnTaskBarIconRightUp)
-	EVT_MENU(MENU_SHOW, Show)
-	EVT_MENU(MENU_SETTINGS, ShowSettings)
-	EVT_MENU(MENU_EXIT, Close)
+EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
+EVT_TASKBAR_RIGHT_UP(OnTaskBarIconRightUp)
+EVT_MENU(MENU_SHOW, Show)
+EVT_MENU(MENU_SETTINGS, ShowSettings)
+EVT_MENU(MENU_EXIT, Close)
 wxEND_EVENT_TABLE()
 
 
@@ -19,8 +19,8 @@ cTaskBarIcon::cTaskBarIcon(wxApp* parent)
 }
 
 void cTaskBarIcon::OnTaskBarIconLeftUp(wxTaskBarIconEvent& event) { parent->ProcessEvent(event); }
-void cTaskBarIcon::OnTaskBarIconRightUp(wxTaskBarIconEvent& event) 
-{ 
+void cTaskBarIcon::OnTaskBarIconRightUp(wxTaskBarIconEvent& event)
+{
 	wxMenu menu;
 
 	auto itemShow = new wxMenuItem(&menu, MENU_SHOW, wxString("Show"), wxString("Show the app window"));
