@@ -1,13 +1,10 @@
 #include "PingController.h"
 
-PingController::PingController(wxApp* handler, int timeout, std::list<wxString>* addresses) : wxThread()
+PingController::PingController(wxApp* handler, int timeout, std::vector<wxString>* addresses) : wxThread()
 {
-	this->handler = handler;
-	this->timeout = timeout;
-    this->addressList = addresses;
-    if (Run() != wxTHREAD_NO_ERROR) {
-        wxLogError("Can't create the thread!");
-    }
+    this->handler = handler;
+    this->timeout = timeout;
+    this->addressVector = addresses;
 }
 
 wxThread::ExitCode PingController::Entry()
@@ -15,58 +12,49 @@ wxThread::ExitCode PingController::Entry()
     // Exits loop, if the thread is asked to terminate
     while (!TestDestroy())
     {
-        // The main thread loop
-        wxThread::This()->Sleep(10);
+        pings_results = new PingRes[CountAddresses()];
+        auto pt = new SinglePingThread[CountAddresses()];
+        for (int i = 0; i < CountAddresses(); ++i) {
+            pings_results[i].address = addressVector->at(i);
+            pt[i].SetParams(&pings_results[i], addressVector->at(i), timeout);
+            pt[i].Create();
+            pt[i].Run();
+        }
 
-        ////////////////
+        wxThread::This()->Sleep(timeout);
 
-        // Логика этого цикла такая:
-        // 1. Посылаются пакеты пинг
-        // 2. Через Timeout милисекунд после начала итерации все результаты должны прийти
-        // 3. (пока необяз.) Вызывается wxQueueEvent, посылающий сообщение в контроллер для отображения новых данных в графике
+        for (int i = 0; i < CountAddresses(); ++i) {
+            if (pt[i].IsAlive()) {
+                pt[i].Delete();
+                pings_results[i].time = -1;
+            }
+        }
+
+        for (int i = 0; i < 4; ++i) {
+            Logger logger(pings_results[i].address, pings_results[i].time, i + 1);
+            logger.WriteLog();
+            logger.Check();
+        }
+
         wxQueueEvent(handler, new wxThreadEvent(wxEVT_THREAD, PING_THREAD_UPDATED));
-        
-        // 4. Результаты сохраняются логгером
-
-
-        ////////////////
-
-        // Это плохой код:
-        // PingRes* res_ping = new PingRes[num_adresses];
-        // MultiPing(res_ping, adresses, num_adresses, timeout);
-        // Переменная результата инициализируется, и только затем заполняется в *неоднозначно* названной функции.
-
-        // Так его можно улучшить для понимания:
-        // PingRes* pingRes = MultiPing(...);
-
-        // Или даже 
-        // auto pingResults = SendPingPackages(...);
     }
 
-    // processed by handler - cApp
     wxQueueEvent(handler, new wxThreadEvent(wxEVT_THREAD, PING_THREAD_COMPLETED));
     return (wxThread::ExitCode)0;
 }
 
 PingController::~PingController()
 {
-    delete addressList;
+    delete addressVector;
     handler = nullptr;
 }
 
 int PingController::CountAddresses()
 {
-    return addressList->size();
+    return addressVector->size();
 }
 
-
-
-////// Проверка работоспособности кода //////
-
-
-//for (int i = 0; i < num_adresses; ++i) {
-//	Logger logger(res_ping[i].adress, res_ping[i].time);
-//	logger.WriteLog();
-//	logger.Check();
-//}
-////// конец проверки работоспособности кода //////
+PingRes* PingController::GetPingResults()
+{
+    return pings_results;
+}

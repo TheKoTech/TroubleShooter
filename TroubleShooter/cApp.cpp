@@ -24,7 +24,7 @@ cApp::cApp() = default;
 cApp::~cApp() = default;
 
 
-bool cApp::OnInit() 
+bool cApp::OnInit()
 {
 	appStatus = green;
 
@@ -34,7 +34,7 @@ bool cApp::OnInit()
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
-	wxImage::AddHandler(new wxICOHandler); 
+	wxImage::AddHandler(new wxICOHandler);
 	UpdateIcon();
 
 
@@ -42,8 +42,8 @@ bool cApp::OnInit()
 }
 
 
-void cApp::OnTaskBarIconLeftUp(wxTaskBarIconEvent& event) { createFrame(); }
-void cApp::OnClosed(wxCloseEvent& event)
+void cApp::OnTaskBarIconLeftUp(wxTaskBarIconEvent & event) { createFrame(); }
+void cApp::OnClosed(wxCloseEvent & event)
 {
 	// cFrame window closing is managed here in the controller, not in the class itself
 	if (event.GetEventObject() == mainFrame)
@@ -51,7 +51,7 @@ void cApp::OnClosed(wxCloseEvent& event)
 	else if (event.GetEventObject() == settingsFrame)
 		closeSettingsFrame();
 }
-void cApp::OnTaskBarIconMenuShow(wxCommandEvent& event) { createFrame(); }
+void cApp::OnTaskBarIconMenuShow(wxCommandEvent & event) { createFrame(); }
 void cApp::OnTaskBarIconMenuSettings(wxCommandEvent& event) { createSettingsFrame(); }
 void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event) 
 { 
@@ -77,13 +77,24 @@ void cApp::OnApplyButtonLeftUp(wxCommandEvent& event)
 	delete addresses;
 }
 
-void cApp::OnThreadUpdate(wxThreadEvent& event)
+void cApp::OnThreadUpdate(wxThreadEvent & event)
 {
 	// todo: log data and update chart
+
+	//for (int i = 0; i < 4; ++i) {
+	//	Logger logger(pings_results[i].address, pings_results[i].time, i);
+	//	logger.WriteLog();
+	//	logger.Check();
+	//}
+
+	wxLogMessage(wxString("update"));
+
+	//initializeChartSeries();
 }
-void cApp::OnThreadCompleted(wxThreadEvent& event)
+
+void cApp::OnThreadCompleted(wxThreadEvent & event)
 {
-	
+
 }
 
 void cApp::createSettingsFrame()
@@ -94,7 +105,7 @@ void cApp::createSettingsFrame()
 		settingsFrame = new cSettingsFrame(this, addresses);
 		UpdateIcon();
 		settingsFrame->Show();
-		
+
 		delete addresses;
 	}
 	else
@@ -150,20 +161,42 @@ void cApp::initializeChartSeries(/*log file*/)
 	// –азница в значени€х X должна совпадать с 3 секундным обновлением таймером, который пока оставим константой. Ќужно учесть, что мы добавим опцию изменить это врем€.
 	// The X value difference must match the 3s timer update that we will hardcode as a const. Keep in mind, that we will implement an option to change that time further on.
 
+	wxString str;
+	wxString filename = "ping_res.csv";
+	wxTextFile filein;
+	//wxFile fileout;
+	filein.Open(filename);
+	int num = filein.GetLineCount();
+	//str = filein.GetLine(num-3);
+	wxArrayString rows;
+	int s = 0;
+	int count;
+	if (num >= 80) {
+		count = 80;
+	}
+	else
+		count = num;
 	auto data = wxVector<wxRealPoint>();
-	data.push_back(wxRealPoint(60, 127));
-	data.push_back(wxRealPoint(55, 141));
-	data.push_back(wxRealPoint(50, 137));
-	data.push_back(wxRealPoint(45, 140));
-	data.push_back(wxRealPoint(40, 2000));
-	data.push_back(wxRealPoint(35, 2000));
-	data.push_back(wxRealPoint(30, 1719));
-	data.push_back(wxRealPoint(25, 145));
-	data.push_back(wxRealPoint(20, 141));
-	data.push_back(wxRealPoint(15, 135));
-	data.push_back(wxRealPoint(10, 137));
-	data.push_back(wxRealPoint(5, 129));
-	data.push_back(wxRealPoint(0, 133));
+	auto data1 = wxVector<wxRealPoint>();
+	auto data2 = wxVector<wxRealPoint>();
+	auto data3 = wxVector<wxRealPoint>();
+	for (int i = num - count; i < num; i++) {
+		str = filein.GetLine(i);
+		rows = wxSplit(str, ';');
+		if (atoi((rows[4].c_str())) == 1) {
+			data.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+			s += 3;
+		}
+		else if (atoi((rows[4].c_str())) == 2) {
+			data1.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+		}
+		else if (atoi((rows[4].c_str())) == 3) {
+			data2.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+		}
+		else if (atoi((rows[4].c_str())) == 4) {
+			data3.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+		}
+	}
 
 	// serie goes to Frame
 	chartController.CreateSerie(ChartController::dsLAN, data);
@@ -171,13 +204,15 @@ void cApp::initializeChartSeries(/*log file*/)
 
 void cApp::initializePingController()
 {
-	int timeout = 1000; //todo: save as a config
-	auto addressList = new std::list<wxString>(); //todo: save as a config
-	addressList->push_back(wxString("yandex.ru"));
-	addressList->push_back(wxString("google.com"));
-	addressList->push_back(wxString("hhhhh"));
-	addressList->push_back(wxString("rutracker.org"));
-	mainPingThread = new PingController(this, timeout, addressList);
+	int timeout = 3000; //todo: save as a config
+	auto addressVector = new std::vector<wxString>(); //todo: save as a config
+	addressVector->push_back(wxString("yandex.ru"));
+	addressVector->push_back(wxString("google.com"));
+	addressVector->push_back(wxString("hhhhh"));
+	addressVector->push_back(wxString("rutracker.org"));
+	mainPingThread = new PingController(this, timeout, addressVector);
+	mainPingThread->Create();
+	mainPingThread->Run();
 }
 
 void cApp::createFrame()

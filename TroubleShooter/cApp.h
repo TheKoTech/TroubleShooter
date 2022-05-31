@@ -7,6 +7,7 @@
 #include "PingController.h"
 #include "ConfigController.h"
 #include <list>
+#include "Ping.h"
 
 enum AppStatus { green, yellow, red, black };
 
