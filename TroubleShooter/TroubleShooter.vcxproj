@@ -22,16 +22,26 @@
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="ChartController.h" />
+    <ClInclude Include="ConfigController.h" />
+    <ClInclude Include="PingController.h" />
     <ClInclude Include="cSettingsFrame.h" />
     <ClInclude Include="cTaskBarIcon.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="PingService.h" />
+    <ClInclude Include="Ping.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="ChartController.cpp" />
+    <ClCompile Include="ConfigController.cpp" />
+    <ClCompile Include="PingController.cpp" />
     <ClCompile Include="cSettingsFrame.cpp" />
     <ClCompile Include="cTaskBarIcon.cpp" />
     <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="PingService.cpp" />
+    <ClCompile Include="Ping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon_black.ico" />
@@ -114,12 +124,15 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXFC)\include</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WXFC)\lib\vc_lib;$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(WXFC)\lib\vc_lib\wxFreeChart17ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,6 +144,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXFC)\include</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,6 +154,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WXFC)\lib\vc_lib;$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(WXFC)\lib\vc_lib\wxFreeChart17ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
