@@ -180,7 +180,7 @@ void cApp::initializePingController()
 void cApp::applyConfig()
 {
 	auto confCtr = ConfigController(this);
-	confCtr.getAddressList();
+	confCtr.GetAddressList();
 }
 
 void cApp::createFrame()

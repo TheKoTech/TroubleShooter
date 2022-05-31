@@ -10,8 +10,8 @@
 class ConfigController {
 public:
     ConfigController(wxApp* handler);
-    std::list<wxString>* getAddressList();
-    void createDefaultConfigFile();
+    wxVector<wxString>* GetAddressList();
+    void WriteAddresses(wxVector<wxString>* addresses);
 private:
     wxApp* handler;
     wxFileName configName;
