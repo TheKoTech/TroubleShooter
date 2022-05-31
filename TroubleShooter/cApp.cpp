@@ -87,7 +87,7 @@ void cApp::OnThreadUpdate(wxThreadEvent & event)
 	//	logger.Check();
 	//}
 
-	wxLogMessage(wxString("update"));
+	//wxLogMessage(wxString("update"));
 
 	//initializeChartSeries();
 }
@@ -103,7 +103,7 @@ void cApp::createSettingsFrame()
 		auto config = ConfigController(this);
 		auto addresses = config.GetAddressList();
 		settingsFrame = new cSettingsFrame(this, addresses);
-		UpdateIcon();
+		settingsFrame->SetIcon(wxIcon(wxString("res/Icon_settings.ico"), wxBITMAP_TYPE_ICO));
 		settingsFrame->Show();
 
 		delete addresses;
@@ -145,9 +145,6 @@ bool cApp::UpdateIcon()
 
 	if (mainFrame != nullptr)
 		mainFrame->SetIcon(icon);
-
-	if (settingsFrame != nullptr)
-		settingsFrame->SetIcon(wxIcon(wxString("res/Icon_settings.png")));
 
 	return taskBarIcon->UpdateIcon(icon, wxString("Pinger"));
 }

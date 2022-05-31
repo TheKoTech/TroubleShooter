@@ -33,13 +33,16 @@
     <ClInclude Include="Logger.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MultiPing.h">
+    <ClInclude Include="ConfigController.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MultiPingService.h">
+    <ClInclude Include="PingController.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="cMainPingThread.h">
+    <ClInclude Include="PingService.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Ping.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,13 +68,16 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MultiPing.cpp">
+    <ClCompile Include="ConfigController.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MultiPingService.cpp">
+    <ClCompile Include="PingController.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="cMainPingThread.cpp">
+    <ClCompile Include="PingService.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Ping.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,6 +104,9 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="res\status_icon_yellow.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\Icon_settings.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

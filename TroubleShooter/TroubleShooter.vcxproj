@@ -47,6 +47,7 @@
     <Image Include="res\Icon_black.ico" />
     <Image Include="res\Icon_green.ico" />
     <Image Include="res\Icon_red.ico" />
+    <Image Include="res\Icon_settings.ico" />
     <Image Include="res\Icon_settings.png" />
     <Image Include="res\Icon_yellow.ico" />
     <Image Include="res\status_icon_green.png" />
