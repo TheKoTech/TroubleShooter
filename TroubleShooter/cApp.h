@@ -36,7 +36,7 @@ private:
 	cSettingsFrame* settingsFrame = nullptr;
 	cTaskBarIcon* taskBarIcon = nullptr;
 	ChartController chartController;
-	PingController* mainPingThread = nullptr;
+	PingController* pingController = nullptr;
 
 	// Todo: методы модели
 

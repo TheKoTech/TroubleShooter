@@ -41,7 +41,4 @@ private:
     int timeout;
 };
 
-
-PingRes* MultiPing(std::vector<wxString> addresses, int num_addresses, int timeout);
-
 void Ping(PingRes* result, wxString host);
