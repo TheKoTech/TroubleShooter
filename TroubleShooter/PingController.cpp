@@ -12,28 +12,24 @@ wxThread::ExitCode PingController::Entry()
     // Exits loop, if the thread is asked to terminate
     while (!TestDestroy())
     {
-        pings_results = new PingRes[CountAddresses()];
+        pings_results_prev = *(new std::vector<PingRes>(pings_results.begin(), pings_results.end()));
+        pings_results.erase(pings_results.begin(), pings_results.end());
         auto pt = new SinglePingThread[CountAddresses()];
         for (int i = 0; i < CountAddresses(); ++i) {
-            pings_results[i].address = addressVector->at(i);
-            pt[i].SetParams(&pings_results[i], addressVector->at(i), timeout);
+            pings_results.emplace_back();
+            pings_results.at(i).address = addressVector->at(i);
+            pt[i].SetParams(&pings_results.at(i), addressVector->at(i), timeout);
             pt[i].Create();
             pt[i].Run();
         }
-
+        
         wxThread::This()->Sleep(timeout);
-
+        
         for (int i = 0; i < CountAddresses(); ++i) {
             if (pt[i].IsAlive()) {
                 pt[i].Delete();
-                pings_results[i].time = -1;
+                pings_results.at(i).time = -1;
             }
-        }
-
-        for (int i = 0; i < 4; ++i) {
-            Logger logger(pings_results[i].address, pings_results[i].time, i + 1);
-            logger.WriteLog();
-            logger.Check();
         }
 
         wxQueueEvent(handler, new wxThreadEvent(wxEVT_THREAD, PING_THREAD_UPDATED));
@@ -54,7 +50,15 @@ int PingController::CountAddresses()
     return addressVector->size();
 }
 
-PingRes* PingController::GetPingResults()
+std::vector<PingRes> PingController::GetPingResults()
 {
-    return pings_results;
+    return pings_results_prev;
+}
+
+void PingController::SetAddresses(wxVector<wxString>* newAddresses)
+{
+    addressVector->at(0) = newAddresses->at(0);
+    addressVector->at(1) = newAddresses->at(1);
+    addressVector->at(2) = newAddresses->at(2);
+    addressVector->at(3) = newAddresses->at(3);
 }

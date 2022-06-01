@@ -57,8 +57,8 @@ void cApp::OnTaskBarIconMenuClose(wxCommandEvent & event)
 {
 	closeFrame();
 	closeSettingsFrame();
-	if (mainPingThread) {
-		mainPingThread->Delete();
+	if (pingController) {
+		pingController->Delete();
 	}
 }
 
@@ -81,13 +81,14 @@ void cApp::OnThreadUpdate(wxThreadEvent & event)
 {
 	// todo: log data and update chart
 
-	//for (int i = 0; i < 4; ++i) {
-	//	Logger logger(pings_results[i].address, pings_results[i].time, i);
-	//	logger.WriteLog();
-	//	logger.Check();
-	//}
+	std::vector<PingRes> pings_results = pingController->GetPingResults();
+	int a = 0;
 
-	wxLogMessage(wxString("update"));
+	for (int i = 0; i < 4; ++i) {
+		Logger logger(pings_results[i].address, pings_results[i].time, i);
+		logger.WriteLog();
+		logger.Check();
+	}
 
 	//initializeChartSeries();
 }
@@ -117,6 +118,13 @@ void cApp::createSettingsFrame()
 void cApp::closeSettingsFrame()
 {
 	if (settingsFrame != nullptr) {
+		int timeout = 3000; //todo: save as a config
+		ConfigController config = ConfigController(this);
+		wxVector<wxString>* addressesSettings = settingsFrame->GetNewAdresses();
+
+		pingController->SetAddresses(addressesSettings);
+
+		addressesSettings->clear();
 		settingsFrame->Destroy();
 		settingsFrame = nullptr;
 	}
@@ -205,14 +213,19 @@ void cApp::initializeChartSeries(/*log file*/)
 void cApp::initializePingController()
 {
 	int timeout = 3000; //todo: save as a config
-	auto addressVector = new std::vector<wxString>(); //todo: save as a config
-	addressVector->push_back(wxString("yandex.ru"));
-	addressVector->push_back(wxString("google.com"));
-	addressVector->push_back(wxString("hhhhh"));
-	addressVector->push_back(wxString("rutracker.org"));
-	mainPingThread = new PingController(this, timeout, addressVector);
-	mainPingThread->Create();
-	mainPingThread->Run();
+	ConfigController config = ConfigController(this);
+	wxVector<wxString>* addressesConfig = config.GetAddressList();
+	auto addressVector = new std::vector<wxString>();
+
+	addressVector->push_back(wxString(addressesConfig->at(0)));
+	addressVector->push_back(wxString(addressesConfig->at(1)));
+	addressVector->push_back(wxString(addressesConfig->at(2)));
+	addressVector->push_back(wxString(addressesConfig->at(3)));
+	pingController = new PingController(this, timeout, addressVector);
+	pingController->Create();
+	pingController->Run();
+
+	addressesConfig->clear();
 }
 
 void cApp::createFrame()
