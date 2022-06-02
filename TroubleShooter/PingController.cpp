@@ -27,7 +27,7 @@ wxThread::ExitCode PingController::Entry()
         
         for (int i = 0; i < CountAddresses(); ++i) {
             if (pt[i].IsAlive()) {
-                pt[i].Delete();
+                pt[i].Kill();
                 pings_results.at(i).time = -1;
             }
         }
@@ -50,9 +50,9 @@ int PingController::CountAddresses()
     return addressVector->size();
 }
 
-std::vector<PingRes> PingController::GetPingResults()
+std::vector<PingRes>* PingController::GetPingResults()
 {
-    return pings_results_prev;
+    return &pings_results_prev;
 }
 
 void PingController::SetAddresses(wxVector<wxString>* newAddresses)

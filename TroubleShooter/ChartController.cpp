@@ -14,6 +14,22 @@ void ChartController::CreateSerie(SerieType type, wxVector<wxRealPoint> data)
 	}
 }
 
+void ChartController::CreateSeries(wxVector<wxRealPoint> data0,
+								  wxVector<wxRealPoint> data1, 
+								  wxVector<wxRealPoint> data2, 
+								  wxVector<wxRealPoint> data3)
+{
+	auto* serie0 = new XYSerie(data0);
+	dataset->AddSerie(serie0);
+	auto* serie1 = new XYSerie(data1);
+	dataset->AddSerie(serie1);
+	auto* serie2 = new XYSerie(data2);
+	dataset->AddSerie(serie2);
+	auto* serie3 = new XYSerie(data3);
+	dataset->AddSerie(serie3);
+	dataset->DatasetChanged();
+}
+
 void ChartController::AppendToSerie(SerieType type, double newDelay)
 {
 	// shift values to the left
