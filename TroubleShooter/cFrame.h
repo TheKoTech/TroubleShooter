@@ -17,9 +17,9 @@ enum cFrameIDs {
 class cFrame : public wxFrame
 {
 public:
-	cFrame(wxApp* parent, Chart* chart);
+	cFrame(wxApp* parent, Chart* chart); 
 	~cFrame();
-
+	
 	//Those panels act as buttons:
 	//wxPanel* LANpanel, ISPpanel
 	wxPanel* settingsPanel; // Basically, a button
@@ -51,8 +51,7 @@ private:
 	void bindMouseEventRecursive(wxWindow* window, void (cFrame::* method)(wxMouseEvent&));
 
 	// Event handlers
-
-	void OnButtonClick(wxCommandEvent& event);
+	
 	void OnClosed(wxCloseEvent& event);
 	void OnEnterSettingsPanel(wxMouseEvent& event);
 	void OnLeaveSettingsPanel(wxMouseEvent& event);

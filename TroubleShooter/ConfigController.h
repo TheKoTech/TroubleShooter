@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <wx/fileconf.h>
 #include <wx/filename.h>
 #include <wx/app.h>

@@ -20,7 +20,7 @@ The class provides a CreateChart() method that returns a chart with pointers to 
 class ChartController
 {
 public:
-	// The 4 types of IP addresses that are being pinged. Each represents one chart serie.
+	// The 4 types of IP addressList that are being pinged. Each represents one chart serie.
 	enum SerieType { dsLAN = 0,
 		dsISP = 1, 
 		dsDNS = 2, 

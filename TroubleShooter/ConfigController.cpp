@@ -1,4 +1,4 @@
-#include "ConfigController.h"
+п»ї#include "ConfigController.h"
 
 #include <ostream>
 
@@ -10,7 +10,7 @@ ConfigController::ConfigController(wxApp* handler)
 
 wxVector<wxString>* ConfigController::GetAddressList()
 {
-    // todo: вынести в функцию
+    // todo: РІС‹РЅРµСЃС‚Рё РІ С„СѓРЅРєС†РёСЋ
     auto addressList = new wxVector<wxString>();
     wxString str;
     // this monstrocity gets path to the executable
@@ -27,22 +27,22 @@ wxVector<wxString>* ConfigController::GetAddressList()
         config->Write(wxString("isp"), wxString(""));
     }
     addressList->push_back(str);
-
+    
     if (!config->Read(wxString("dns"), &str)) {
         str = wxString("8.8.8.8");
         config->Write(wxString("dns"), wxString("8.8.8.8"));
     }
     addressList->push_back(str);
-
+    
     if (!config->Read(wxString("host"), &str)) {
         str = wxString("yandex.ru");
         config->Write(wxString("host"), wxString("yandex.ru"));
     }
     addressList->push_back(str);
-
+    
     config->Flush();
     delete config;
-
+    
     return addressList;
 }
 
@@ -50,10 +50,10 @@ void ConfigController::WriteAddresses(wxVector<wxString>* addresses)
 {
     //todo: create a map instead of this bs
     auto config = new wxFileConfig("", "", configName.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "config.ini");
-
+    
     for (unsigned int i = 0; i < addresses->size(); i++) {
         wxString key;
-        switch (i) {
+        switch(i) {
         case 0:
             key = wxString("lan");
             break;

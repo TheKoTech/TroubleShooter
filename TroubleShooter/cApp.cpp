@@ -52,24 +52,24 @@ void cApp::OnClosed(wxCloseEvent & event)
 		closeSettingsFrame();
 }
 void cApp::OnTaskBarIconMenuShow(wxCommandEvent & event) { createFrame(); }
-void cApp::OnTaskBarIconMenuSettings(wxCommandEvent & event) { createSettingsFrame(); }
-void cApp::OnTaskBarIconMenuClose(wxCommandEvent & event)
-{
-	closeFrame();
+void cApp::OnTaskBarIconMenuSettings(wxCommandEvent& event) { createSettingsFrame(); }
+void cApp::OnTaskBarIconMenuClose(wxCommandEvent& event) 
+{ 
+	closeFrame(); 
 	closeSettingsFrame();
 	if (pingController) {
 		pingController->Delete();
 	}
 }
 
-void cApp::OnPanelLeftUp(wxMouseEvent & event)
+void cApp::OnPanelLeftUp(wxMouseEvent& event)
 {
 	if (event.GetId() == FRAME_SETTINGS)
 		createSettingsFrame();
 	event.Skip();
 }
 
-void cApp::OnApplyButtonLeftUp(wxCommandEvent & event)
+void cApp::OnApplyButtonLeftUp(wxCommandEvent& event)
 {
 	ConfigController config = ConfigController(this);
 	auto addresses = settingsFrame->GetNewAdresses();
@@ -100,7 +100,7 @@ void cApp::createSettingsFrame()
 		auto config = ConfigController(this);
 		auto addresses = config.GetAddressList();
 		settingsFrame = new cSettingsFrame(this, addresses);
-		UpdateIcon();
+		settingsFrame->SetIcon(wxIcon(wxString("res/Icon_settings.ico"), wxBITMAP_TYPE_ICO));
 		settingsFrame->Show();
 
 		delete addresses;
@@ -140,7 +140,7 @@ bool cApp::UpdateIcon()
 	case red:
 		iconPath = wxString("res/Icon_red.ico");
 		break;
-	case black:
+	case black: 
 		iconPath = wxString("res/Icon_black.ico");
 		break;
 	}
@@ -149,9 +149,6 @@ bool cApp::UpdateIcon()
 
 	if (mainFrame != nullptr)
 		mainFrame->SetIcon(icon);
-
-	if (settingsFrame != nullptr)
-		settingsFrame->SetIcon(wxIcon(wxString("res/Icon_settings.png")));
 
 	return taskBarIcon->UpdateIcon(icon, wxString("Pinger"));
 }

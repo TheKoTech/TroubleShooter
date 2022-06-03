@@ -1,3 +1,7 @@
-
-.vs/TroubleShooter/v16/ipch
-Debut/TroubleShooter.pdb
+.vs/
+!TroubleShooter/TroubleShooter.vcxproj
+!TroubleShooter/TroubleShooter.vcxproj.filters
+.idea/
+Debug/
+x64/
+TroubleShooter/ping_res.csv
