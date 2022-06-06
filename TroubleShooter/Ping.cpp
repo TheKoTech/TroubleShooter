@@ -37,6 +37,36 @@ void* SinglePingThread::Entry()
     return nullptr;
 }
 
+PingRes* MultiPing(vector<wxString> addresses, int num_addresses, int timeout) {
+    auto results = new PingRes[num_addresses];
+    auto pt = new SinglePingThread[num_addresses];
+    for (int i = 0; i < num_addresses; ++i) {
+        results[i].address = addresses[i];
+        pt[i].SetParams(&results[i], addresses[i], timeout);
+        pt[i].Create();
+        pt[i].Run();
+    }
+
+    // TODO Вместо бесконечной проверки, использовать событие wxEVT_THREAD с уникальным ID. См. cMainPingThread.cpp
+    time_t start = clock();
+    bool exist_alive = true;
+    while (exist_alive) {
+        wxThread::This()->Sleep(timeout / 10);
+        exist_alive = false;
+        for (int i = 0; i < num_addresses; ++i)
+            if (pt[i].IsAlive()) {
+                if (clock() - start < timeout)
+                    exist_alive = true;
+                else {
+                    pt[i].Delete();
+                    results[i].time = -1;
+                }
+            }
+    }
+
+    return results;
+}
+
 // TODO Задокументировать код
 void Ping(PingRes* result, wxString host)
 {
@@ -50,8 +80,7 @@ void Ping(PingRes* result, wxString host)
     bool finishPing = false;
     SOCKET sd;
     sockaddr_in dest, source;
-    const char* charhost = host.ToUTF8().data();
-    if (setup_for_ping(charhost, DEFAULT_TTL, sd, dest) < 0) {
+    if (setup_for_ping(host.ToUTF8().data(), DEFAULT_TTL, sd, dest) < 0) {
         result->time = -2;
         finishPing = true;
     }
