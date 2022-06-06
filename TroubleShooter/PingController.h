@@ -27,9 +27,7 @@ private:
 	wxApp* handler;
 	int timeout; // Thread is updated every Timeout milliseconds
 	std::vector<wxString>* addressVector; // TODO: turn into a struct with AddressType (LAN, DNS...)
-	std::vector<PingRes> pings_results;
-	std::vector<PingRes> pings_results_prev;
-public:
+	PingRes* pings_results;
 
 protected:
 
@@ -38,8 +36,7 @@ protected:
 
 public:
 	int CountAddresses();
-	std::vector<PingRes> GetPingResults();
-	void SetAddresses(wxVector<wxString>*);
+	PingRes* GetPingResults();
 
 	// Unneeded?
 	//private:
