@@ -18,7 +18,7 @@ public:
 	void Show(wxCommandEvent& event);
 	void ShowSettings(wxCommandEvent& event);
 	void Close(wxCommandEvent& event);
-	
+
 	// Change cTaskBarIcon's image.
 	bool UpdateIcon(wxIcon newIcon);
 

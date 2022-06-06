@@ -3,9 +3,9 @@
 
 
 wxBEGIN_EVENT_TABLE(cSettingsFrame, wxFrame)
-	EVT_CLOSE(OnClosed)
-	EVT_BUTTON(SETTINGS_APPLY, OnApplyButtonClick)
-	EVT_BUTTON(SETTINGS_DISCARD, OnDiscardButtonClick)
+EVT_CLOSE(OnClosed)
+EVT_BUTTON(SETTINGS_APPLY, OnApplyButtonClick)
+EVT_BUTTON(SETTINGS_DISCARD, OnDiscardButtonClick)
 wxEND_EVENT_TABLE()
 
 const wxSize minClientSize = wxSize(215, 290);
@@ -33,7 +33,7 @@ wxVector<wxString>* cSettingsFrame::GetNewAdresses()
 	return adresses;
 }
 
-void cSettingsFrame::initializeUI(wxVector<wxString>* addresses)
+void cSettingsFrame::initializeUI(wxVector<wxString>*addresses)
 {
 	auto const windowSizer = new wxBoxSizer(wxVERTICAL);
 	auto const mainPanel = new wxPanel(this);
@@ -119,18 +119,18 @@ void cSettingsFrame::applyFrameSettings()
 		wxDisplay().GetClientArea().GetHeight() - windowSize.GetHeight() - 25));
 }
 
-void cSettingsFrame::OnApplyButtonClick(wxCommandEvent& event)
+void cSettingsFrame::OnApplyButtonClick(wxCommandEvent & event)
 {
 	event.Skip();
 }
 
 
-void cSettingsFrame::OnDiscardButtonClick(wxCommandEvent& event)
+void cSettingsFrame::OnDiscardButtonClick(wxCommandEvent & event)
 {
 	this->Close();
 }
 
-void cSettingsFrame::OnClosed(wxCloseEvent& event)
+void cSettingsFrame::OnClosed(wxCloseEvent & event)
 {
 	parent->ProcessEvent(event);
 }

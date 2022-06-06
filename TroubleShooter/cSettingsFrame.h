@@ -12,7 +12,7 @@ enum {
 	SETTINGS_HOST = 3103
 };
 
-class cSettingsFrame : public wxFrame 
+class cSettingsFrame : public wxFrame
 {
 public:
 	cSettingsFrame(wxApp* parent, wxVector<wxString>* addresses);
