@@ -35,10 +35,6 @@ public:
 	// @param type - type of serie (LAN, ISP, DNS...).
 	// @param data - a vector of data to be shown.
 	void CreateSerie(SerieType type, wxVector<wxRealPoint> data);
-	void CreateSeries(wxVector<wxRealPoint> data0,
-		wxVector<wxRealPoint> data1,
-		wxVector<wxRealPoint> data2,
-		wxVector<wxRealPoint> data3);
 	
 
 	// [NOT TESTED] Appends a new point to a serie and shifts the other points to the left

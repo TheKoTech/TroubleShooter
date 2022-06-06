@@ -38,7 +38,7 @@ protected:
 
 public:
 	int CountAddresses();
-	std::vector<PingRes>* GetPingResults();
+	std::vector<PingRes> GetPingResults();
 	void SetAddresses(wxVector<wxString>*);
 
 	// Unneeded?

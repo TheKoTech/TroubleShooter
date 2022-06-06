@@ -79,14 +79,18 @@ void cApp::OnApplyButtonLeftUp(wxCommandEvent & event)
 
 void cApp::OnThreadUpdate(wxThreadEvent & event)
 {
-	std::vector<PingRes>* pings_results = pingController->GetPingResults();
+	// todo: log data and update chart
+
+	std::vector<PingRes> pings_results = pingController->GetPingResults();
 	int a = 0;
 
 	for (int i = 0; i < 4; ++i) {
-		Logger logger(pings_results->at(i).address, pings_results->at(i).time, i);
+		Logger logger(pings_results[i].address, pings_results[i].time, i);
 		logger.WriteLog();
 		logger.Check();
 	}
+
+	//initializeChartSeries();
 }
 
 void cApp::OnThreadCompleted(wxThreadEvent & event)
@@ -175,8 +179,8 @@ void cApp::initializeChartSeries(/*log file*/)
 	wxArrayString rows;
 	int s = 0;
 	int count;
-	if (num >= 84) {
-		count = 84;
+	if (num >= 80) {
+		count = 80;
 	}
 	else
 		count = num;
@@ -184,36 +188,26 @@ void cApp::initializeChartSeries(/*log file*/)
 	auto data1 = wxVector<wxRealPoint>();
 	auto data2 = wxVector<wxRealPoint>();
 	auto data3 = wxVector<wxRealPoint>();
-	int type = 0;
 	for (int i = num - count; i < num; i++) {
 		str = filein.GetLine(i);
 		rows = wxSplit(str, ';');
-		if (atoi((rows[4].c_str())) == 0) {
+		if (atoi((rows[4].c_str())) == 1) {
 			data.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
-		}
-		else if (atoi((rows[4].c_str())) == 1) {
-			data1.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+			s += 3;
 		}
 		else if (atoi((rows[4].c_str())) == 2) {
-			data2.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+			data1.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
 		}
 		else if (atoi((rows[4].c_str())) == 3) {
-			data3.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
+			data2.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
 		}
-
-		type++;
-		if (type == 4) {
-			type = 0;
-			s += 3;
+		else if (atoi((rows[4].c_str())) == 4) {
+			data3.push_back(wxRealPoint(s, atoi((rows[1].c_str()))));
 		}
 	}
 
 	// serie goes to Frame
-	chartController.CreateSeries(data, data1, data2, data3);
-	//chartController.CreateSerie(ChartController::dsLAN, data);
-	//chartController.CreateSerie(ChartController::dsISP, data1);
-	//chartController.CreateSerie(ChartController::dsDNS, data2);
-	//chartController.CreateSerie(ChartController::dsDomain, data3);
+	chartController.CreateSerie(ChartController::dsLAN, data);
 }
 
 void cApp::initializePingController()
