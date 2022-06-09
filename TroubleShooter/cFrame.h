@@ -7,9 +7,6 @@
 #include "wx/chart.h"
 #include <wx/axisplot.h>
 
-enum cFrameIDs {
-	FRAME_SETTINGS = 100
-};
 
 /*
 * The main window of the app or the TopLevelWindow

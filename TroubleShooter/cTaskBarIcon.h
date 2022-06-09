@@ -2,16 +2,11 @@
 #include "wx/wx.h"
 #include <wx/taskbar.h>
 
-enum MenuItems {
-	MENU_SHOW = 6000,
-	MENU_SETTINGS = 6001,
-	MENU_EXIT = 6002
-};
 
 class cTaskBarIcon : wxTaskBarIcon
 {
 public:
-	cTaskBarIcon(wxApp* parent);
+	cTaskBarIcon(wxApp* handler);
 
 	void OnTaskBarIconLeftUp(wxTaskBarIconEvent& event);
 	void OnTaskBarIconRightUp(wxTaskBarIconEvent& event);

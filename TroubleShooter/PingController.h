@@ -4,18 +4,15 @@
 #include "wx/timer.h"
 #include "Ping.h"
 #include "Logger.h"
+#include "AppEventIDs.cpp"
 
-enum MainPingThreadEvents {
-	PING_THREAD_UPDATED = 16000,
-	PING_THREAD_COMPLETED = 16001,
-};
 
 /// The main thread to run all pinging classes and functions 
 class PingController : public wxThread
 {
 public:
 	/// The main thread to run all pinging classes and functions 
-	/// @param handler - controller (cApp)
+	/// @param parent - controller (cApp)
 	/// @param timeout - the thread will update every Timeout milliseconds
 	/// @param addressList - list of addressList that will be pinged
 	PingController(wxApp* handler, int timeout, std::vector<wxString>* addressList);

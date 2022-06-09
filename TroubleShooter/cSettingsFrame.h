@@ -3,14 +3,6 @@
 #include <wx/display.h>
 #include <wx/gbsizer.h>
 
-enum {
-	SETTINGS_APPLY = 3000,
-	SETTINGS_DISCARD = 3001,
-	SETTINGS_LAN = 3100,
-	SETTINGS_ISP = 3101,
-	SETTINGS_DNS = 3102,
-	SETTINGS_HOST = 3103
-};
 
 class cSettingsFrame : public wxFrame
 {

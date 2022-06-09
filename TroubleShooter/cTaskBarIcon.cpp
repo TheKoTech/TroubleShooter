@@ -1,13 +1,14 @@
 #include "cTaskBarIcon.h"
 #include "wx/bitmap.h"
 #include "Colors.cpp"
+#include "AppEventIDs.cpp"
 
 wxBEGIN_EVENT_TABLE(cTaskBarIcon, wxTaskBarIcon)
-EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
-EVT_TASKBAR_RIGHT_UP(OnTaskBarIconRightUp)
-EVT_MENU(MENU_SHOW, Show)
-EVT_MENU(MENU_SETTINGS, ShowSettings)
-EVT_MENU(MENU_EXIT, Close)
+	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)
+	EVT_TASKBAR_RIGHT_UP(OnTaskBarIconRightUp)
+	EVT_MENU(MENU_SHOW, Show)
+	EVT_MENU(MENU_SETTINGS, ShowSettings)
+	EVT_MENU(MENU_EXIT, Close)
 wxEND_EVENT_TABLE()
 
 

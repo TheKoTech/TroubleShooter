@@ -30,7 +30,7 @@ void SinglePingThread::SetParams(PingRes* result, wxString host, int timeout)
     this->timeout = timeout;
 }
 
-// TODO Нет обработчиков событий. См. cMainPingThread.cpp. ThreadUpdated необязателен.
+// todo: Нет обработчиков событий. См. cMainPingThread.cpp. ThreadUpdated необязателен.
 void* SinglePingThread::Entry()
 {
     Ping(result, host);
@@ -47,7 +47,7 @@ PingRes* MultiPing(vector<wxString> addresses, int num_addresses, int timeout) {
         pt[i].Run();
     }
 
-    // TODO Вместо бесконечной проверки, использовать событие wxEVT_THREAD с уникальным ID. См. cMainPingThread.cpp
+    // todo: Вместо бесконечной проверки, использовать событие wxEVT_THREAD с уникальным ID. См. cMainPingThread.cpp
     time_t start = clock();
     bool exist_alive = true;
     while (exist_alive) {
@@ -67,7 +67,7 @@ PingRes* MultiPing(vector<wxString> addresses, int num_addresses, int timeout) {
     return results;
 }
 
-// TODO Задокументировать код
+// todo: Задокументировать код
 void Ping(PingRes* result, wxString host)
 {
     ICMPHeader* send_buf = nullptr;

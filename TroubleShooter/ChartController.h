@@ -17,11 +17,13 @@ The data is taken from the log file in cApp, then managed and saved here as Seri
 Each serie belongs to one SerieType that is being pinged.
 The class provides a CreateChart() method that returns a chart with pointers to the data that can be changed from here.
 */
+
 class ChartController
 {
 public:
 	// The 4 types of IP addresses that are being pinged. Each represents one chart serie.
-	enum SerieType { dsLAN = 0,
+	enum SerieType { 
+		dsLAN = 0,
 		dsISP = 1, 
 		dsDNS = 2, 
 		dsDomain = 3

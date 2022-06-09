@@ -2,16 +2,12 @@
 #include "wx/wx.h"
 #include "cTaskBarIcon.h"
 #include "cFrame.h"
-#include "ChartController.h"
-#include "Ping.h"
-#pragma once
-#include "wx/wx.h"
-#include "cTaskBarIcon.h"
-#include "cFrame.h"
-#include "ChartController.h"
 #include "cSettingsFrame.h"
+#include "ChartController.h"
 #include "PingController.h"
 #include "ConfigController.h"
+#include "Ping.h"
+#include "AppEventIDs.cpp"
 #include <list>
 
 enum AppStatus { green, yellow, red, black };

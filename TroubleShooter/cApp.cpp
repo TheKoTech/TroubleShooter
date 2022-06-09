@@ -2,9 +2,7 @@
 
 // Этот enum содержит ID событий контроллера.
 // An enum to store controller event IDs.
-enum ControllerEvents {
-	TIMER = 60,
-};
+
 //todo: move all event enums to a separate .cpp file?
 
 wxBEGIN_EVENT_TABLE(cApp, wxApp)
@@ -48,7 +46,7 @@ void cApp::OnClosed(wxCloseEvent & event)
 	// cFrame window closing is managed here in the controller, not in the class itself
 	if (event.GetEventObject() == mainFrame)
 		closeFrame();
-	else if (event.GetEventObject() == settingsFrame)
+	if (event.GetEventObject() == settingsFrame)
 		closeSettingsFrame();
 }
 void cApp::OnTaskBarIconMenuShow(wxCommandEvent & event) { createFrame(); }
@@ -203,7 +201,7 @@ void cApp::initializeChartSeries(/*log file*/)
 void cApp::initializePingController()
 {
 	int timeout = 3000; //todo: save as a config
-	auto addressVector = new std::vector<wxString>(); //todo: save as a config
+	auto addressVector = new std::vector<wxString>(); //todo: save as a config, memory leak
 	addressVector->push_back(wxString("yandex.ru"));
 	addressVector->push_back(wxString("google.com"));
 	addressVector->push_back(wxString("hhhhh"));
