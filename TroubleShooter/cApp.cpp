@@ -87,8 +87,6 @@ void cApp::OnThreadUpdate(wxThreadEvent & event)
 	//	logger.Check();
 	//}
 
-	wxLogMessage(wxString("update"));
-
 	//initializeChartSeries();
 }
 

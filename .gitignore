@@ -1,3 +1,7 @@
-
-.vs/TroubleShooter/v16/ipch
-Debut/TroubleShooter.pdb
+.idea/
+.vs/
+Debug/
+Release/
+x64/
+config.ini
+!.vcxproj
