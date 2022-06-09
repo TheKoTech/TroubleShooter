@@ -3,5 +3,5 @@
 Debug/
 Release/
 x64/
-config.ini
+TroubleShooter/ping_res.csv
 !.vcxproj
