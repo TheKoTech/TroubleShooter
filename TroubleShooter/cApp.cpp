@@ -218,12 +218,12 @@ void cApp::initializePingController()
 {
     // TODO: Save the variables in a config
     constexpr int timeout = 3000;
-    const auto addressVector = new std::vector<wxString>{
-        wxString("yandex.ru"),
-        wxString("google.com"),
-        wxString("amazon.com"),
-        wxString("rutracker.org")
-    };
+    const auto addressVector = new wxVector<wxString>();
+    addressVector->push_back("yandex.ru");
+    addressVector->push_back("google.com");
+    addressVector->push_back("amazon.com");
+    addressVector->push_back("rutracker.org");
+    
     mainPingThread = new PingController(this, addressVector, timeout);
     mainPingThread->Create();
     mainPingThread->Run();
