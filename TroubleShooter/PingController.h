@@ -1,45 +1,35 @@
 #pragma once
+#include "Ping.h"
+
 #include "wx/thread.h"
 #include "wx/app.h"
-#include "wx/timer.h"
-#include "Ping.h"
-#include "Logger.h"
 
-enum MainPingThreadEvents {
-	PING_THREAD_UPDATED = 16000,
-	PING_THREAD_COMPLETED = 16001,
-};
+#define PING_THREAD_UPDATED 16000
+#define PING_THREAD_COMPLETED 16001
 
 /// The main thread to run all pinging classes and functions 
-class PingController : public wxThread
+class PingController final : public wxThread
 {
 public:
 	/// The main thread to run all pinging classes and functions 
-	/// @param handler - controller (cApp)
+	/// @param parent - controller (cApp)
+	/// @param domains - list of domains that will be pinged
 	/// @param timeout - the thread will update every Timeout milliseconds
-	/// @param addressList - list of addressList that will be pinged
-	PingController(wxApp* handler, int timeout, std::vector<wxString>* addressList);
-	~PingController();
+	PingController(wxApp* parent, std::vector<wxString>* domains, int timeout);
+	~PingController() override;
+	
 private:
-
-
-
-	wxApp* handler;
-	int timeout; // Thread is updated every Timeout milliseconds
-	std::vector<wxString>* addressVector; // TODO: turn into a struct with AddressType (LAN, DNS...)
-	PingRes* pings_results;
+	wxApp* parent_;
+	int timeout_;
+	std::vector<wxString>* domains_;
+	ping_res* pings_results_;
 
 protected:
-
 	/// Acts like the "main" function. 
-	virtual ExitCode Entry();
+	ExitCode Entry() override;
 
 public:
-	int CountAddresses();
-	PingRes* GetPingResults();
-
-	// Unneeded?
-	//private:
-	//	wxDECLARE_EVENT_TABLE();
+	unsigned int domains_count() const;
+	ping_res* get_ping_results() const;
 };
 

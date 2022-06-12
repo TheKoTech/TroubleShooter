@@ -1,6 +1,4 @@
 #pragma once
-
-#include "PingService.h"
 #include <wx/event.h>
 #include <wx/thread.h>
 #include <vector>
@@ -13,35 +11,25 @@ enum AddressType
     HOST
 };
 
-enum PING_END
+struct ping_res
 {
-    GOOD,
-    FAIL
-};
-
-struct PingRes
-{
-    PingRes();
-
-    wxString address;   // ip адрес либо доменное имя в тестовом виде
-    int time = -1;   // число >=0, если пинг был успешен, -1, если не успешен
+    wxString domain;
+    int ping_time = -1; // Ping time in millisecond or -1 if request timed out
 };
 
 class SinglePingThread : public wxThread
 {
 public:
     SinglePingThread();
-    SinglePingThread(const SinglePingThread&);
-    SinglePingThread(PingRes* result, wxString host, int timeout);
-    void SetParams(PingRes* result, wxString host, int timeout);
+    void set_params(ping_res* result, wxString host, int timeout);
+
 private:
     void* Entry() override;
-    PingRes* result;
-    wxString host;
-    int timeout;
+    ping_res* result_;
+    wxString host_;
+    int timeout_;
 };
 
-
-PingRes* MultiPing(std::vector<wxString> addresses, int num_addresses, int timeout);
-
-void Ping(PingRes* result, wxString host);
+ping_res* multi_ping(std::vector<wxString> addresses, int num_addresses, int timeout);
+int ping(const char* host);
+void ping(ping_res* result, wxString host);

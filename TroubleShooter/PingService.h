@@ -1,12 +1,9 @@
 #pragma once
 
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-
 #pragma comment(lib, "Ws2_32.lib")
 
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <iostream>
+#define NOMINMAX
+#include <WinSock2.h>
 
 #define DEFAULT_PACKET_SIZE 32
 #define DEFAULT_TTL 30
@@ -15,7 +12,6 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#define ICMP_ECHO_REPLY 0
 #define ICMP_DEST_UNREACH 3
 #define ICMP_TTL_EXPIRE 11
 #define ICMP_ECHO_REQUEST 8
@@ -27,8 +23,8 @@
 #endif
 
 struct IPHeader {
-    BYTE h_len : 4;           // Length of the header in dwords
-    BYTE version : 4;         // Version of IP
+    BYTE h_len : 4;         // Length of the header in dwords
+    BYTE version : 4;       // Version of IP
     BYTE tos;               // Type of service
     USHORT total_len;       // Length of the packet in dwords
     USHORT ident;           // unique identifier
