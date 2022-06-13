@@ -1,5 +1,7 @@
 #include "PingController.h"
 
+#include <iostream>
+
 #pragma region Constructor
 
 PingController::PingController(wxApp* parent, wxVector<wxString>* domains, const int timeout) : wxThread()
@@ -11,9 +13,12 @@ PingController::PingController(wxApp* parent, wxVector<wxString>* domains, const
     timeout_ = timeout;
 
     // Initialize Winsock
-    if (WSAStartup(MAKEWORD(2, 2), new WSAData()) != 0) { throw; }
+    auto wsa_data = WSAData();
+    constexpr WORD dll_version = MAKEWORD(2, 2);
+    if (WSAStartup(dll_version, &wsa_data) != 0)
+        std::cout << "WSAData didn't start" << std::endl;
 
-    // Initialize timer
+    // Initialize wxTimer
     timer_.SetOwner(this);
     Bind(wxEVT_TIMER, &PingController::OnTimer, this);
     timer_.Start(timeout_);
@@ -21,28 +26,28 @@ PingController::PingController(wxApp* parent, wxVector<wxString>* domains, const
 
 PingController::~PingController()
 {
-    Unbind(wxEVT_TIMER, &PingController::OnTimer, this);
-    timer_.Stop();
-    WSACleanup();
-
-    wxQueueEvent(parent_, new wxThreadEvent(wxEVT_THREAD, PING_THREAD_COMPLETED));
-    
-    parent_ = nullptr;
-    delete parent_;
-    delete ping_threads_;
-    delete domains_;
-
-    Exit();
+    if (parent_ != nullptr)
+    {
+        parent_ = nullptr;
+        Exit();
+    }
 }
 
 #pragma endregion Constructor
 
 wxThread::ExitCode PingController::Entry()
 {
-    while(!TestDestroy())
+    while (!TestDestroy())
     {
-        Sleep(timeout_);
+        Sleep(100);
     }
+
+    Unbind(wxEVT_TIMER, &PingController::OnTimer, this);
+    timer_.Stop();
+    WSACleanup();
+    ping_threads_->clear();
+    wxQueueEvent(parent_, new wxThreadEvent(wxEVT_THREAD, PING_THREAD_COMPLETED));
+
     return nullptr;
 }
 
@@ -59,7 +64,7 @@ void PingController::OnTimer(wxTimerEvent&)
         }
 
     wxQueueEvent(parent_, new wxThreadEvent(wxEVT_THREAD, PING_THREAD_UPDATED));
-    
+
     ping_threads_->clear();
     for (int i = 0; i < domains_size_; i++)
     {

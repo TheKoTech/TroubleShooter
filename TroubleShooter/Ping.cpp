@@ -78,12 +78,12 @@ int SinglePingThread::ping() const
     }
 
     const auto echo_reply = reinterpret_cast<const ICMP_ECHO_REPLY*>(reply_buffer);
-    IN_ADDR addr;
+    /* IN_ADDR addr;
     addr.S_un.S_addr = echo_reply->Address;
     constexpr DWORD addr_buffer_size = 32;
     char addr_buffer[addr_buffer_size]{};
     const char* s_ip = inet_ntop(AF_INET, &addr, addr_buffer, addr_buffer_size);
-    std::cout << "Reply from: " << s_ip << " time=" << echo_reply->RoundTripTime << std::endl;
+    std::cout << "Reply from: " << s_ip << " time=" << echo_reply->RoundTripTime << "ms" << std::endl; */
 
     // Close ICMP context.
     IcmpCloseHandle(const_cast<HANDLE>(icmp_handle));

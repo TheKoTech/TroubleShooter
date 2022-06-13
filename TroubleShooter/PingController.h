@@ -29,6 +29,7 @@ private:
     int timeout_;
 
     wxTimer timer_;
+    // ReSharper disable once CppInconsistentNaming
     void OnTimer(wxTimerEvent &WXUNUSED(ev));
 
 protected:
