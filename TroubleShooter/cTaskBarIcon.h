@@ -1,7 +1,13 @@
 #pragma once
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include <wx/taskbar.h>
+#include "app_ids.h"
 
+enum {
+	MENU_SHOW = MENU_ITEMS + 1,
+	MENU_SETTINGS = MENU_ITEMS + 2,
+	MENU_EXIT = MENU_ITEMS + 3,
+};
 
 class cTaskBarIcon : wxTaskBarIcon
 {

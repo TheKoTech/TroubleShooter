@@ -1,6 +1,6 @@
 #include "cSettingsFrame.h"
-#include "Colors.cpp"
-#include "AppEventIDs.cpp"
+#include "ThemeDefault.h"
+#include "app_ids.h"
 
 wxBEGIN_EVENT_TABLE(cSettingsFrame, wxFrame)
 EVT_CLOSE(OnClosed)

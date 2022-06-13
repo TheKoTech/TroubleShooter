@@ -1,7 +1,6 @@
 #include "cTaskBarIcon.h"
 #include "wx/bitmap.h"
-#include "Colors.cpp"
-#include "AppEventIDs.cpp"
+#include "app_ids.h"
 
 wxBEGIN_EVENT_TABLE(cTaskBarIcon, wxTaskBarIcon)
 	EVT_TASKBAR_LEFT_UP(OnTaskBarIconLeftUp)

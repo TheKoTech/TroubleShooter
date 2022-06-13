@@ -22,6 +22,7 @@
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="ChartController.h" />
+    <ClInclude Include="cHighlightPanel.h" />
     <ClInclude Include="ConfigController.h" />
     <ClInclude Include="PingController.h" />
     <ClInclude Include="cSettingsFrame.h" />
@@ -31,15 +32,16 @@
     <ClInclude Include="Ping.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AppEventIDs.cpp" />
+    <ClCompile Include="app_ids.h" />
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="ChartController.cpp" />
+    <ClCompile Include="cHighlightPanel.cpp" />
     <ClCompile Include="ConfigController.cpp" />
     <ClCompile Include="PingController.cpp" />
     <ClCompile Include="cSettingsFrame.cpp" />
     <ClCompile Include="cTaskBarIcon.cpp" />
-    <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="ThemeDefault.h" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="PingService.cpp" />
     <ClCompile Include="Ping.cpp" />

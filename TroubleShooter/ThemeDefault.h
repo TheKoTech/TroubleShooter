@@ -1,3 +1,4 @@
+#pragma once
 #include "wx/colour.h"
 
 #define COL_TITLE wxColour(255, 255, 255)

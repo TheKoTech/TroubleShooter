@@ -6,6 +6,11 @@
 #include <wx/gbsizer.h>
 #include "wx/chart.h"
 #include <wx/axisplot.h>
+#include "app_ids.h"
+
+enum {
+	FRAME_SETTINGS = MAIN_FRAME + 1,
+};
 
 
 /*

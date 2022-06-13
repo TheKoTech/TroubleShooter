@@ -1,11 +1,15 @@
 #pragma once
-#include "wx/thread.h"
-#include "wx/app.h"
-#include "wx/timer.h"
+#include <wx/thread.h>
+#include <wx/app.h>
+#include <wx/timer.h>
 #include "Ping.h"
 #include "Logger.h"
-#include "AppEventIDs.cpp"
+#include "app_ids.h"
 
+enum {
+	PING_THREAD_UPDATED = PING_THREAD + 1,
+	PING_THREAD_COMPLETED = PING_THREAD + 2,
+};
 
 /// The main thread to run all pinging classes and functions 
 class PingController : public wxThread

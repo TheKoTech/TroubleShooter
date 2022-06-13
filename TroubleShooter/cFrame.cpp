@@ -1,5 +1,7 @@
 #include "cFrame.h"
-#include "Colors.cpp"
+#include "ThemeDefault.h"
+#include "cHighlightPanel.h"
+
 
 wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
 EVT_CLOSE(OnClosed)
@@ -139,23 +141,24 @@ void cFrame::createContent()
 }
 void cFrame::createStatusBar()
 {	
-	wxFont font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+	auto font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 
 
-	wxPanel* settingsPanel = new wxPanel(statusbarPanel);
-	wxBoxSizer* settingsSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxImage settingsImage = wxImage("res/Icon_settings.png", wxBITMAP_TYPE_PNG);
-	wxStaticBitmap * settingsBmp = new wxStaticBitmap(settingsPanel, wxID_ANY, wxBitmapBundle(settingsImage));
+	auto settingsPanel = new cHighlightPanel(statusbarPanel, COL_BG_STATUSBAR, COL_BLUE);
+	auto settingsSizer = new wxBoxSizer(wxHORIZONTAL);
+	auto settingsImage = wxImage(wxString("res/Icon_settings.png"), wxBITMAP_TYPE_PNG);
+	settingsImage.Rescale(20, 20, wxIMAGE_QUALITY_HIGH);
+	auto settingsBmp = new wxStaticBitmap(settingsPanel, wxID_ANY, wxBitmapBundle(settingsImage));
 
-	wxStaticText* settingsText = new wxStaticText(settingsPanel, wxID_ANY, "Settings");
+	auto settingsText = new wxStaticText(settingsPanel, wxID_ANY, "Settings");
 	settingsText->SetForegroundColour(COL_FG_STATUSBAR);
 	settingsText->SetFont(font);
 
-	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL);
+	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT | wxLEFT, 7);
+	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 	settingsPanel->SetSizerAndFit(settingsSizer);
 
-	statusBarSizer->Add(settingsPanel, 1, wxALIGN_RIGHT | wxRIGHT, 10);
+	statusBarSizer->Add(settingsPanel, 1, wxALIGN_RIGHT);
 }
 
 wxPanel* cFrame::createStatusPanelElement()
