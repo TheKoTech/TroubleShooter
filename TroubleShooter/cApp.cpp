@@ -15,6 +15,7 @@ wxBEGIN_EVENT_TABLE(cApp, wxApp)
 	EVT_THREAD(PING_THREAD_UPDATED, OnThreadUpdate)
 	EVT_THREAD(PING_THREAD_COMPLETED, OnThreadUpdate)
 	EVT_BUTTON(SETTINGS_APPLY, OnApplyButtonLeftUp)
+	EVT_BUTTON(FRAME_TEMPBUTTON, OnTempbutton)
 wxEND_EVENT_TABLE()
 
 // not used
@@ -28,7 +29,7 @@ bool cApp::OnInit()
 
 	taskBarIcon = new cTaskBarIcon(this);
 	chartController = ChartController();
-	initializePingController();
+	//initializePingController();
 
 	// those are required for image files to be loaded
 	wxImage::AddHandler(new wxPNGHandler);
@@ -75,6 +76,11 @@ void cApp::OnApplyButtonLeftUp(wxCommandEvent & event)
 	delete addresses;
 }
 
+void cApp::OnTempbutton(wxCommandEvent& event)
+{
+	wxLogMessage("controller message");
+}
+
 void cApp::OnThreadUpdate(wxThreadEvent & event)
 {
 	// todo: log data and update chart
@@ -99,7 +105,7 @@ void cApp::createSettingsFrame()
 		auto config = ConfigController(this);
 		auto addresses = config.GetAddressList();
 		settingsFrame = new cSettingsFrame(this, addresses);
-		UpdateIcon();
+		settingsFrame->SetIcon(wxIcon(wxString("Icon_settings_dark.ico")));
 		settingsFrame->Show();
 
 		delete addresses;
@@ -141,9 +147,6 @@ bool cApp::UpdateIcon()
 
 	if (mainFrame != nullptr)
 		mainFrame->SetIcon(icon);
-
-	if (settingsFrame != nullptr)
-		settingsFrame->SetIcon(wxIcon(wxString("res/Icon_settings.png")));
 
 	return taskBarIcon->UpdateIcon(icon, wxString("Pinger"));
 }

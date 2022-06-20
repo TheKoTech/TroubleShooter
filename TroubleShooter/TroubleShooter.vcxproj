@@ -36,7 +36,6 @@
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="ChartController.cpp" />
-    <ClCompile Include="cHighlightPanel.cpp" />
     <ClCompile Include="ConfigController.cpp" />
     <ClCompile Include="PingController.cpp" />
     <ClCompile Include="cSettingsFrame.cpp" />
@@ -47,6 +46,9 @@
     <ClCompile Include="Ping.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\Icon_addr_list.png" />
+    <Image Include="res\Icon_addr_list_Plus.png" />
+    <Image Include="res\Icon_addr_list_X.png" />
     <Image Include="res\Icon_black.ico" />
     <Image Include="res\Icon_green.ico" />
     <Image Include="res\Icon_red.ico" />
@@ -129,6 +131,7 @@
       <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXFC)\include</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +152,7 @@
       <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXFC)\include</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

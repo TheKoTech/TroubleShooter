@@ -83,9 +83,6 @@
     <ClCompile Include="app_ids.h">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
-    <ClCompile Include="cHighlightPanel.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="ThemeDefault.h">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
@@ -113,6 +110,15 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="res\status_icon_yellow.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\Icon_addr_list.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\Icon_addr_list_Plus.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\Icon_addr_list_X.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

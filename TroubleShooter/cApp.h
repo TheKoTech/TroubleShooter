@@ -61,6 +61,8 @@ private:
 	void OnPanelLeftUp(wxMouseEvent& event);
 	void OnApplyButtonLeftUp(wxCommandEvent& event);
 
+	void OnTempbutton(wxCommandEvent& event);
+
 	// todo: Processes the ping results of the main ping thread
 	void OnThreadUpdate(wxThreadEvent& event);
 	// todo: Cleanup

@@ -7,9 +7,19 @@
 #include "wx/chart.h"
 #include <wx/axisplot.h>
 #include "app_ids.h"
+#include "cHighlightPanel.h"
 
-enum {
-	FRAME_SETTINGS = MAIN_FRAME + 1,
+
+enum FrameIds {
+	FRAME_ADDRLIST = MAIN_FRAME + 1,
+	FRAME_SETTINGS = MAIN_FRAME + 2,
+	FRAME_TEMPBUTTON = MAIN_FRAME + 10,
+};
+
+enum Tab {
+	TAB_NONE = -1,
+	TAB_ADDRLIST = 0,
+	TAB_SETTINGS = 1,
 };
 
 
@@ -22,43 +32,43 @@ public:
 	cFrame(wxApp* parent, Chart* chart);
 	~cFrame();
 
-	//Those panels act as buttons:
-	//wxPanel* LANpanel, ISPpanel
-	wxPanel* settingsPanel; // Basically, a button
-
 private:
 	wxApp* parent;
 
-	// The window is divided into 3 main panels:
-	wxPanel* mainPanel;
-	wxPanel* titleBarPanel;
-	wxPanel* contentPanel;
-	wxPanel* statusbarPanel;
+	wxPanel* mainPanel = nullptr;
+	wxPanel* titleBarPanel = nullptr;
+	wxPanel* contentPanel = nullptr;
+	wxPanel* contPanelRight = nullptr;
+	wxPanel* statusbarPanel = nullptr;
 
-	// Each requires a separate Sizer to put items in order. Additionally, all panels are put into a sizer.
-	wxBoxSizer* mainSizer;
-	wxBoxSizer* titleBarSizer;
-	wxBoxSizer* statusBarSizer;
-	wxBoxSizer* contentSizer;
+	wxBoxSizer* mainSizer = nullptr;
+	wxBoxSizer* titleBarSizer = nullptr;
+	wxBoxSizer* statusBarSizer = nullptr;
+	wxBoxSizer* contentSizer = nullptr;
 
-	Chart* chart;
+	Chart* chart = nullptr;
+
+	cHighlightPanel* currentHPanel = nullptr;
+	cHighlightPanel* addrlistHPanel = nullptr;
+	cHighlightPanel* settingsHPanel = nullptr;
+
+	Tab currentTab;
 
 	// UI methods
 	void initializeUI();
 	void createTitleBar();
 	void createContent();
+	void createAddrlistPanel();
+	void createSettingsPanel();
 	void createStatusBar();
-	wxPanel* createStatusPanelElement();
-	void applyFrameSettings();
-	void bindMouseEventRecursive(wxWindow* window, void (cFrame::* method)(wxMouseEvent&));
+
+	void selectTab(Tab tab);
 
 	// Event handlers
-
-	void OnButtonClick(wxCommandEvent& event);
 	void OnClosed(wxCloseEvent& event);
-	void OnEnterSettingsPanel(wxMouseEvent& event);
-	void OnLeaveSettingsPanel(wxMouseEvent& event);
-	void OnSettingsLeftUp(wxMouseEvent& event);
+	void OnStatusBarHPanelUp(wxMouseEvent& event);
+
+	void OnTempButtonUp(wxCommandEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

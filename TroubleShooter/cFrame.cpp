@@ -1,11 +1,9 @@
 #include "cFrame.h"
 #include "ThemeDefault.h"
-#include "cHighlightPanel.h"
 
 
 wxBEGIN_EVENT_TABLE(cFrame, wxFrame)
 EVT_CLOSE(OnClosed)
-EVT_BUTTON(10000, OnButtonClick)
 wxEND_EVENT_TABLE()
 
 const int clientWidth = 700;
@@ -20,14 +18,19 @@ cFrame::cFrame(wxApp* parent, Chart* chart) : wxFrame(nullptr, wxID_ANY, "App pr
 	this->parent = parent;
 	this->chart = chart;
 
+	currentTab = TAB_NONE;
+	
 	initializeUI();
-	applyFrameSettings();
+	
+	this->SetClientSize(clientSize);
+	this->SetMinClientSize(clientSize);
+	wxSize windowSize = this->ClientToWindowSize(clientSize);
+	this->SetPosition(wxPoint(
+		wxDisplay().GetClientArea().GetWidth() - windowSize.GetWidth() - 10,
+		wxDisplay().GetClientArea().GetHeight() - windowSize.GetHeight() - 10));
 }
 
-cFrame::~cFrame()
-{
-
-}
+cFrame::~cFrame() = default;
 
 void cFrame::initializeUI() 
 {
@@ -64,53 +67,36 @@ void cFrame::createTitleBar()
 
 	//todo: add buttons as images
 }
+
 void cFrame::createContent()
 {
 	// content is divided into 2 panels - chart and labels.
 
-	wxPanel* contPanelLeft = new wxPanel(contentPanel);
-	wxPanel* contPanelRight = new wxPanel(contentPanel);
-	wxGridBagSizer* leftSizer = new wxGridBagSizer();
-	wxGridBagSizer* rightSizer = new wxGridBagSizer();
+	auto contPanelChart = new wxPanel(contentPanel);
+	auto leftSizer = new wxGridBagSizer();
 
-	contPanelLeft->SetBackgroundColour(COL_BG);
-	contPanelRight->SetBackgroundColour(COL_BG_AUX);
-
-	contentSizer->Add(contPanelLeft, 1, wxALL | wxGROW, 0);
-	contentSizer->Add(contPanelRight, 1, wxALL | wxGROW, 0);
-
+	contPanelRight = new wxPanel(contentPanel);
+	selectTab(TAB_ADDRLIST);
+	
+	
+	contPanelChart->SetBackgroundColour(COL_BG);
 
 
 	// initialize controls
+	auto titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+	auto subtitleFont = wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
 
-	wxFont titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
-	wxFont subtitleFont = wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
-
-	wxStaticText* connectionTitle = new wxStaticText(contPanelLeft, wxID_ANY, "Connection Stability");
+	auto connectionTitle = new wxStaticText(contPanelChart, wxID_ANY, "Connection Stability");
 	connectionTitle->SetForegroundColour(COL_TITLE);
 	connectionTitle->SetFont(titleFont);
 	
 	chart->GetPlot()->SetBackground(new FillAreaDraw(COL_TITLE, COL_BG));
 	chart->SetBackground(new FillAreaDraw(COL_BG_AUX, COL_BG));
-	wxChartPanel* chartPanel = new wxChartPanel(contPanelLeft, wxID_ANY, chart, wxDefaultPosition, wxSize(400, 240));
+	auto chartPanel = new wxChartPanel(contPanelChart, wxID_ANY, chart, wxDefaultPosition, wxSize(400, 240));
 	chartPanel->SetAntialias(true);
 
 
-
-	wxStaticText* statusTitle = new wxStaticText(contPanelRight, wxID_ANY, "Status");
-	statusTitle->SetForegroundColour(COL_TITLE);
-	statusTitle->SetFont(titleFont);
-	
-	wxStaticText* warningTitle = new wxStaticText(contPanelRight, wxID_ANY, "Warnings");
-	warningTitle->SetForegroundColour(COL_FG);
-	warningTitle->SetFont(subtitleFont);
-
-	//wxPanel* lanPanel = createStatusPanelElement();
-
-
-
 	// Add controls to sizers
-
 	leftSizer->Add(connectionTitle,
 		wxGBPosition(0, 0),
 		wxDefaultSpan,
@@ -122,69 +108,159 @@ void cFrame::createContent()
 		wxLeft | wxRight | wxGROW,
 		12);
 
-	rightSizer->Add(statusTitle,
-		wxGBPosition(0, 0),
-		wxDefaultSpan,
-		wxALL | wxALIGN_TOP,
-		12);
-	rightSizer->Add(warningTitle,
-		wxGBPosition(0, 1),
-		wxDefaultSpan,
-		wxLEFT | wxTOP | wxALIGN_TOP,
-		15);
+	contentSizer->Add(contPanelChart, 8, wxALL | wxGROW, 0);
+	contentSizer->Add(contPanelRight, 5, wxALL | wxGROW, 0);
 
-	contPanelLeft->SetSizerAndFit(leftSizer);
-	contPanelRight->SetSizerAndFit(rightSizer);
-
-	// todo: Link events
-
+	contPanelChart->SetSizerAndFit(leftSizer);
 }
+
+void cFrame::createAddrlistPanel()
+{
+	auto sizer = contPanelRight->GetSizer();
+	if (!sizer) sizer = new wxBoxSizer(wxVERTICAL);
+
+	contPanelRight->SetBackgroundColour(COL_BG_AUX);
+
+	auto titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+
+	auto title = new wxStaticText(contPanelRight, wxID_ANY, "Address list");
+	title->SetForegroundColour(COL_TITLE);
+	title->SetFont(titleFont);
+
+	sizer->Add(title,
+		0,
+		wxALL,
+		12);
+
+	contPanelRight->SetSizerAndFit(sizer);
+}
+
+void cFrame::createSettingsPanel()
+{
+	auto sizer = new wxBoxSizer(wxVERTICAL);
+
+	contPanelRight->SetBackgroundColour(COL_BG_AUX);
+
+	auto titleFont = wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFontWeight(100));
+
+	auto title = new wxStaticText(contPanelRight, wxID_ANY, "Settings");
+	title->SetForegroundColour(COL_TITLE);
+	title->SetFont(titleFont);
+
+	auto tempButton = new wxButton(contPanelRight, FRAME_TEMPBUTTON, "Push and shift");
+	tempButton->Bind(wxEVT_BUTTON, &cFrame::OnTempButtonUp, this);
+
+	auto tempTextinput = new wxTextCtrl(contPanelRight, wxID_ANY, "0");
+
+
+
+	sizer->Add(title,		
+		0, wxALL, 12);
+
+	sizer->Add(tempButton,
+		0, wxLEFT, 12);
+
+	contPanelRight->SetSizerAndFit(sizer);
+}
+
 void cFrame::createStatusBar()
-{	
+{
+	auto buttonPanel = new wxPanel(statusbarPanel);
+	auto hozrizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 	auto font = wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 
+	addrlistHPanel = new cHighlightPanel(buttonPanel, COL_BG_STATUSBAR, COL_HL_STATUSBAR, COL_BG_AUX, FRAME_ADDRLIST);
+	auto addrSizer = new wxBoxSizer(wxHORIZONTAL);
+	auto addrImage = wxImage(wxString("res/Icon_addr_list.png"), wxBITMAP_TYPE_PNG);
+	auto addrBmp = new wxStaticBitmap(addrlistHPanel, FRAME_ADDRLIST, wxBitmapBundle(addrImage));
+	currentHPanel = addrlistHPanel;
+	currentHPanel->Activate();
 
-	auto settingsPanel = new cHighlightPanel(statusbarPanel, COL_BG_STATUSBAR, COL_BLUE);
+	auto addrText = new wxStaticText(addrlistHPanel, FRAME_ADDRLIST, "Address list");
+	addrText->SetForegroundColour(COL_FG_STATUSBAR);
+	addrText->SetFont(font);
+
+	addrSizer->Add(addrBmp, 0, wxALIGN_CENTER | wxRIGHT | wxLEFT, 5);
+	addrSizer->Add(addrText, 1, wxALIGN_CENTER | wxRIGHT, 10);
+	addrlistHPanel->SetSizerAndFit(addrSizer);
+
+	settingsHPanel = new cHighlightPanel(buttonPanel, 
+		COL_BG_STATUSBAR, COL_HL_STATUSBAR, COL_BG_AUX, FRAME_SETTINGS);
 	auto settingsSizer = new wxBoxSizer(wxHORIZONTAL);
 	auto settingsImage = wxImage(wxString("res/Icon_settings.png"), wxBITMAP_TYPE_PNG);
-	settingsImage.Rescale(20, 20, wxIMAGE_QUALITY_HIGH);
-	auto settingsBmp = new wxStaticBitmap(settingsPanel, wxID_ANY, wxBitmapBundle(settingsImage));
+	auto settingsBmp = new wxStaticBitmap(settingsHPanel, FRAME_SETTINGS, wxBitmapBundle(settingsImage));
 
-	auto settingsText = new wxStaticText(settingsPanel, wxID_ANY, "Settings");
+	auto settingsText = new wxStaticText(settingsHPanel, FRAME_SETTINGS, "Settings");
 	settingsText->SetForegroundColour(COL_FG_STATUSBAR);
 	settingsText->SetFont(font);
 
-	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT | wxLEFT, 7);
-	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
-	settingsPanel->SetSizerAndFit(settingsSizer);
+	settingsSizer->Add(settingsBmp, 0, wxALIGN_CENTER | wxRIGHT | wxLEFT, 5);
+	settingsSizer->Add(settingsText, 1, wxALIGN_CENTER | wxRIGHT, 10);
+	settingsHPanel->SetSizerAndFit(settingsSizer);
 
-	statusBarSizer->Add(settingsPanel, 1, wxALIGN_RIGHT);
+
+	hozrizontalSizer->Add(addrlistHPanel, 0, wxEXPAND);
+	hozrizontalSizer->Add(settingsHPanel, 0, wxEXPAND);
+	buttonPanel->SetSizerAndFit(hozrizontalSizer);
+
+	statusBarSizer->Add(buttonPanel, 1, wxALIGN_RIGHT);
+
+	addrlistHPanel->BindRecursively(wxEVT_LEFT_UP, &cFrame::OnStatusBarHPanelUp, this);
+	settingsHPanel->BindRecursively(wxEVT_LEFT_UP, &cFrame::OnStatusBarHPanelUp, this);
 }
 
-wxPanel* cFrame::createStatusPanelElement()
+void cFrame::selectTab(Tab tab)
 {
-	
-	return nullptr;
-}
+	//if (currentTab == tab)
+	//	return;
 
-void cFrame::applyFrameSettings()
-{
-	this->SetBackgroundColour(*wxWHITE);
-	this->SetClientSize(clientSize);
-	this->SetMinClientSize(clientSize);
-	wxSize windowSize = this->ClientToWindowSize(clientSize);
-	this->SetPosition(wxPoint(
-		wxDisplay().GetClientArea().GetWidth() - windowSize.GetWidth() - 10,
-		wxDisplay().GetClientArea().GetHeight() - windowSize.GetHeight() - 10));
+	currentTab = tab;
+	auto size = contPanelRight->GetSize();
+
+	if (contPanelRight->GetSizer())
+		contPanelRight->GetSizer()->Clear(true);
+
+	switch (tab) {
+	case TAB_ADDRLIST:
+		createAddrlistPanel();
+		break;
+	case TAB_SETTINGS:
+		createSettingsPanel();
+		break;
+	}
+
+	contPanelRight->SetSize(size);
 }
 
 // Event handlers
-void cFrame::OnButtonClick(wxCommandEvent& event)
-{
-	parent->ProcessEvent(event);
-}
 void cFrame::OnClosed(wxCloseEvent& event)
 {
-	parent->ProcessEvent(event);
-	this->Destroy();
+	parent->QueueEvent(event.Clone());
+}
+
+void cFrame::OnStatusBarHPanelUp(wxMouseEvent& event)
+{
+	if (currentHPanel->GetId() == event.GetId())
+		return;
+
+	currentHPanel->Deactivate();
+	switch (event.GetId()) {
+
+	case FRAME_ADDRLIST:
+		currentHPanel = addrlistHPanel;
+		currentHPanel->Activate();
+		selectTab(TAB_ADDRLIST);
+		break;
+
+	case FRAME_SETTINGS:
+		currentHPanel = settingsHPanel;
+		currentHPanel->Activate();
+		selectTab(TAB_SETTINGS);
+		break;
+	}
+}
+
+void cFrame::OnTempButtonUp(wxCommandEvent& event) 
+{
+	parent->QueueEvent(event.Clone());
 }
